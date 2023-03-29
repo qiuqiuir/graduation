@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cslg.graduation.dao.ScoreMapper">
+    <sql id="insertFields">
+        username, time, daily_score, total_score
+    </sql>
+
+    <sql id="selectFields">
+        id, username, time, daily_score, total_score
+    </sql>
+
+    <select id="findTotalScoreByUsername" resultType="double">
+        select max(total_score)
+        from score
+        where username = #{username}
+    </select>
+
+    <select id="findDailyScoreByUsername" resultType="double">
+        select daily_score
+        from score
+        where username = #{username} and time = #{time}
+    </select>
+
+    <insert id="insertScore" parameterType="Score" keyProperty="id">
+        insert into score (<include refid="insertFields"></include>)
+        values(#{username}, #{time}, #{dailyScore}, #{totalScore})
+    </insert>
+    
+    <update id="updateDailyScore">
+        update score set daily_score = #{dailyScore}
+        where username = #{username} and time = #{time}
+    </update>
+
+    <update id="updateTotalScore">
+        update score set total_score = total_score + #{addScore}
+        where username = #{username} and time >= #{time}
+    </update>
+
+    <select id="selectScoreByUsernameTime" resultType="Score">
+        select <include refid="selectFields"></include>
+        from score
+        where username = #{username} and time = #{time}
+    </select>
+
+</mapper>
