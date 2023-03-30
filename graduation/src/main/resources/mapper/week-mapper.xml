@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cslg.graduation.dao.WeekMapper">
+
+    <sql id="insertFields">
+        time, contest_id, platform, count, sum, avg
+    </sql>
+
+    <sql id="selectFields">
+        time, contest_id, platform, count, sum, avg
+    </sql>
+
+    <insert id="insertWeek" parameterType="Week">
+        insert into week (<include refid="insertFields"></include>)
+        values(#{time}, #{contestId}, #{platform}, #{count}, #{sum} ,#{avg})
+    </insert>
+    
+    <update id="updateCount">
+        update week set count = #{count}
+        where time = #{time}
+    </update>
+
+    <update id="updateSum">
+        update week set sum = #{sum}
+        where time = #{time}
+    </update>
+
+    <update id="updateAvg">
+        update week set avg = sum/count
+        where time = #{time}
+    </update>
+
+    <select id="selectAllTime" resultType="Date">
+        select distinct time
+        from week
+        ORDER BY time asc
+    </select>
+
+
+
+</mapper>

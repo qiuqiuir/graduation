@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cslg.graduation.dao.ContestMapper">
+    <sql id="insertFields">
+        username, level, name, year,type
+    </sql>
+
+    <sql id="selectFields">
+        id, username, level, name, year,type
+    </sql>
+
+    <select id="selectAllContest" resultType="Contest">
+        select <include refid="selectFields"></include>
+        from contest
+    </select>
+
+    <insert id="insertContest" parameterType="Contest" keyProperty="id">
+        insert into contest (<include refid="insertFields"></include>)
+        values(#{username}, #{level}, #{name}, #{year}, #{type})
+    </insert>
+
+
+
+</mapper>
