@@ -1,5 +1,6 @@
 package com.cslg.graduation.controller;
 
+import com.cslg.graduation.dao.ScoreMapper;
 import com.cslg.graduation.dao.UserMapper;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.service.AlphaService;
@@ -29,11 +30,14 @@ public class AlphaController {
     private UserMapper userMapper ;
 
 
+
+
     @RequestMapping("/hello")
     @ResponseBody
     public String sayHello(){
         return "ÄãºÃ";
     }
+
 
     @RequestMapping("/data")
     @ResponseBody

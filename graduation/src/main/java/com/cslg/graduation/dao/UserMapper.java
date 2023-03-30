@@ -27,6 +27,6 @@ public interface UserMapper {
 
     List<String> selectIsScoreUsers();
 
-    List<Date> selectIsScoreDate();
+
 
 }

@@ -1,5 +1,7 @@
 package com.cslg.graduation.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -10,6 +12,7 @@ public class Score {
 
     private int id;
     private String username;
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date time;
     private double dailyScore;
     private double totalScore;

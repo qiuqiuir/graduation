@@ -56,10 +56,6 @@
         where is_score = 1
     </select>
 
-    <select id="selectIsScoreDate" resultType="Date">
-        select distinct time
-        from score
-        ORDER BY time asc
-    </select>
+
 
 </mapper>

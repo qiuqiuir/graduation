@@ -1,9 +1,14 @@
 package com.cslg.graduation;
 
+import com.cslg.graduation.dao.ContestMapper;
 import com.cslg.graduation.dao.ScoreMapper;
 import com.cslg.graduation.dao.UserMapper;
+import com.cslg.graduation.dao.WeekMapper;
+import com.cslg.graduation.entity.Contest;
 import com.cslg.graduation.entity.Score;
 import com.cslg.graduation.entity.User;
+import com.cslg.graduation.entity.Week;
+import com.cslg.graduation.service.ContestService;
 import com.cslg.graduation.service.ScoreService;
 import com.cslg.graduation.service.UserService;
 import org.junit.jupiter.api.Test;
@@ -34,16 +39,25 @@ public class DataBaseTest {
     @Autowired
     private ScoreService scoreService;
 
+    @Autowired
+    private ContestMapper contestMapper;
+
+    @Autowired
+    private ContestService contestService;
+
+    @Autowired
+    private WeekMapper weekMapper;
+
     @Test
-    public void testUserFind(){
+    public void testUserFind() {
 
         User user = userMapper.selectByUsername("test");
         System.out.println(user);
 
         System.out.println("--------------");
-        List<String> userList= userMapper.selectIsScoreUsers();
+        List<String> userList = userMapper.selectIsScoreUsers();
 
-        for(String user1: userList){
+        for (String user1 : userList) {
             System.out.println(user1);
         }
 
@@ -52,7 +66,7 @@ public class DataBaseTest {
     }
 
     @Test
-    public void testScore(){
+    public void testScore() {
 
 //        double val = scoreMapper.findDailyScoreByUsername("test",new Date(2023-1900,2,29));
 //        System.out.println(val);
@@ -68,15 +82,43 @@ public class DataBaseTest {
 
 //        scoreMapper.updateTotalScore("test",new Date(2023-1900,2,12),1.1);
 
-        List<Date> timeList = userMapper.selectIsScoreDate();
+        List<Date> timeList = weekMapper.selectAllTime();
 
-        for (Date date : timeList){
+        for (Date date : timeList) {
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
-            System.out.print(calendar.get(Calendar.YEAR)+" ");
-            System.out.print(calendar.get(Calendar.MONTH)+1+" ");
-            System.out.println(calendar.get(Calendar.DATE)+" ");
+            System.out.print(calendar.get(Calendar.YEAR) + " ");
+            System.out.print(calendar.get(Calendar.MONTH) + 1 + " ");
+            System.out.println(calendar.get(Calendar.DATE) + " ");
         }
+    }
+
+    @Test
+    public void testContest() {
+
+        List<Contest> contestList = contestMapper.selectAllContest();
+        for (Contest contest : contestList) {
+            System.out.println(contest);
+        }
+
+        Contest contest = new Contest().setUsername("test2")
+                .setName("ICPC")
+                .setLevel("国家级")
+                .setYear(2022)
+                .setType("三等奖");
+
+        contestService.addContest(contest);
+    }
+
+    @Test
+    public void testWeek(){
+//        Week week = new Week().setTime(new Date());
+//        weekMapper.insertWeek(week);
+
+        weekMapper.updateCount(new Date(2023-1900, 2,8),6);
+        weekMapper.updateSum(new Date(2023-1900, 2,8),18.6);
+        weekMapper.updateAvg(new Date(2023-1900, 2,8));
+
     }
 
 }
