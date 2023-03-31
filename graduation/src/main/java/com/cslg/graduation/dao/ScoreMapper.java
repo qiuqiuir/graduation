@@ -30,9 +30,10 @@ public interface ScoreMapper {
     // 更新用户某日总积分
     public void updateTotalScore(String username, Date time, double addScore);
 
-    // 根据学号和时间获取用户该日积分数据
-    public Score selectScoreByUsernameTime(String username, Date time);
+    // 统计某天多少人参加比赛
+    public int selectCountByTime(Date time);
 
-
+    // 计算某天所有人积分和
+    public double selectSumByTime(Date time);
 
 }

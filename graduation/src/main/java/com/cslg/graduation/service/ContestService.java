@@ -33,4 +33,6 @@ public class ContestService {
     public void addContest(Contest contest){
         contestMapper.insertContest(contest);
     }
+
+
 }

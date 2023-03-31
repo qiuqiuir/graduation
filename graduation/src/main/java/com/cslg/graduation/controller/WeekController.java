@@ -2,8 +2,11 @@ package com.cslg.graduation.controller;
 
 import com.cslg.graduation.entity.Week;
 import com.cslg.graduation.service.WeekService;
+import com.cslg.graduation.util.GraduationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /**
  * @auther xurou
@@ -25,6 +28,9 @@ public class WeekController {
     @PostMapping("/addWeek")
     public void addWeek(@RequestBody Week week){
         System.out.println("1");
+        Date time = GraduationUtil.changeTime(week.getTime());
+        week.setTime(time);
         weekService.addWeek(week);
+        System.out.println("end");
     }
 }

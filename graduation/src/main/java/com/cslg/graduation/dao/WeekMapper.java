@@ -22,6 +22,6 @@ public interface WeekMapper {
     public void updateAvg(Date time);
 
     // 获取所有周赛时间
-    List<Date> selectAllTime();
+    List<Date> selectAllTime(Date time);
 
 }

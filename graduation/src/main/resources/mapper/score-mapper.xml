@@ -12,9 +12,12 @@
     </sql>
 
     <select id="findTotalScoreByUsername" resultType="double">
-        select max(total_score)
+        select max( if (
+        username = #{username},
+        total_score,
+        0.0
+        ))
         from score
-        where username = #{username}
     </select>
 
     <select id="findDailyScoreByUsername" resultType="double">
@@ -35,13 +38,19 @@
 
     <update id="updateTotalScore">
         update score set total_score = total_score + #{addScore}
-        where username = #{username} and time >= #{time}
+        where username = #{username} and time = #{time}
     </update>
 
-    <select id="selectScoreByUsernameTime" resultType="Score">
-        select <include refid="selectFields"></include>
+    <select id="selectCountByTime" resultType="int">
+        select count(username)
         from score
-        where username = #{username} and time = #{time}
+        where time = #{time} and daily_score > 0
+    </select>
+
+    <select id="selectSumByTime" resultType="double">
+        select sum(daily_score)
+        from score
+        where time = #{time} and daily_score > 0
     </select>
 
 

@@ -35,6 +35,7 @@
     <select id="selectAllTime" resultType="Date">
         select distinct time
         from week
+        where time >= #{time}
         ORDER BY time asc
     </select>
 

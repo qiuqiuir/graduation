@@ -1,5 +1,7 @@
 package com.cslg.graduation.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -9,9 +11,10 @@ import java.util.Date;
 public class Week {
 
     private int id;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
     private Date time;
     private String platform;
-    private int contestId;
+    private String contestId;
     private int count;
     private double sum;
     private double avg;
@@ -43,11 +46,11 @@ public class Week {
         return this;
     }
 
-    public int getContestId() {
+    public String getContestId() {
         return contestId;
     }
 
-    public Week setContestId(int contestId) {
+    public Week setContestId(String contestId) {
         this.contestId = contestId;
         return this;
     }

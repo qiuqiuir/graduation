@@ -1,12 +1,10 @@
 package com.cslg.graduation.util;
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson2.JSON;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.DigestUtils;
 
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class GraduationUtil {
 
@@ -23,7 +21,7 @@ public class GraduationUtil {
         return DigestUtils.md5DigestAsHex(key.getBytes());
     }
 
-    public static String getJSONString(int code, String msg, Map<String, Object> map) {
+    public static JSONObject getJSONString(int code, String msg, Map<String, Object> map) {
         JSONObject json = new JSONObject();
         json.put("code", code);
         json.put("msg", msg);
@@ -32,15 +30,18 @@ public class GraduationUtil {
                 json.put(key, map.get(key));
             }
         }
-        return json.toJSONString();
+        return json;
     }
 
-    public static String getJSONString(int code, String msg) {
+    public static JSONObject getJSONString(int code, String msg) {
         return getJSONString(code, msg, null);
     }
 
-    public static Map<String,Object> getJSONToMap(String s){
-        Map<String, Object> map = JSON.parseObject(s);
-        return map;
+    // 时间加一天，解决前后端差8h问题
+    public static Date changeTime(Date time){
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(time);
+        calendar.add(Calendar.DATE,1);
+        return calendar.getTime();
     }
 }

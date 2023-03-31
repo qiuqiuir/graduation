@@ -1,16 +1,8 @@
 package com.cslg.graduation;
 
-import com.cslg.graduation.dao.ContestMapper;
-import com.cslg.graduation.dao.ScoreMapper;
-import com.cslg.graduation.dao.UserMapper;
-import com.cslg.graduation.dao.WeekMapper;
-import com.cslg.graduation.entity.Contest;
-import com.cslg.graduation.entity.Score;
-import com.cslg.graduation.entity.User;
-import com.cslg.graduation.entity.Week;
-import com.cslg.graduation.service.ContestService;
-import com.cslg.graduation.service.ScoreService;
-import com.cslg.graduation.service.UserService;
+import com.cslg.graduation.dao.*;
+import com.cslg.graduation.entity.*;
+import com.cslg.graduation.service.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,20 +40,36 @@ public class DataBaseTest {
     @Autowired
     private WeekMapper weekMapper;
 
+    @Autowired
+    private WeekService weekService;
+
+    @Autowired
+    private OjMapper ojMapper;
+
+    @Autowired
+    private SpiderService spiderService;
+
     @Test
-    public void testUserFind() {
+    public void testUser() {
 
-        User user = userMapper.selectByUsername("test");
-        System.out.println(user);
+//        User user = userMapper.selectByUsername("test");
+//        System.out.println(user);
 
-        System.out.println("--------------");
-        List<String> userList = userMapper.selectIsScoreUsers();
+//        System.out.println("--------------");
+//        List<String> userList = userMapper.selectIsScoreUsers();
+//
+//        for (String user1 : userList) {
+//            System.out.println(user1);
+//        }
+//
+//        System.out.println("--------------");
 
-        for (String user1 : userList) {
-            System.out.println(user1);
-        }
+        User user = new User()
+                .setUsername("Z09422125")
+                .setName("杨斌")
+                .setPassword("e10adc3949ba59abbe56e057f20f883e");
 
-        System.out.println("--------------");
+        userMapper.insertUser(user);
 
     }
 
@@ -82,15 +90,20 @@ public class DataBaseTest {
 
 //        scoreMapper.updateTotalScore("test",new Date(2023-1900,2,12),1.1);
 
-        List<Date> timeList = weekMapper.selectAllTime();
+//        List<Date> timeList = weekMapper.selectAllTime();
+//
+//        for (Date date : timeList) {
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.setTime(date);
+//            System.out.print(calendar.get(Calendar.YEAR) + " ");
+//            System.out.print(calendar.get(Calendar.MONTH) + 1 + " ");
+//            System.out.println(calendar.get(Calendar.DATE) + " ");
+//        }
 
-        for (Date date : timeList) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            System.out.print(calendar.get(Calendar.YEAR) + " ");
-            System.out.print(calendar.get(Calendar.MONTH) + 1 + " ");
-            System.out.println(calendar.get(Calendar.DATE) + " ");
-        }
+
+        double score = spiderService.getNowcoderScore("679852081","53378");
+        scoreService.addScore("020619203",new Date(2023-1900,2,19),score);
+//        System.out.println(scoreService.getNumByTime(new Date(2022-1900,2,19)));
     }
 
     @Test
@@ -112,12 +125,29 @@ public class DataBaseTest {
 
     @Test
     public void testWeek(){
-//        Week week = new Week().setTime(new Date());
-//        weekMapper.insertWeek(week);
+        Week week = new Week().setTime(new Date(2022-1900,2,19));
+        weekService.addWeek(week);
 
-        weekMapper.updateCount(new Date(2023-1900, 2,8),6);
-        weekMapper.updateSum(new Date(2023-1900, 2,8),18.6);
-        weekMapper.updateAvg(new Date(2023-1900, 2,8));
+//        weekMapper.updateCount(new Date(2023-1900, 2,8),6);
+//        weekMapper.updateSum(new Date(2023-1900, 2,8),18.6);
+//        weekMapper.updateAvg(new Date(2023-1900, 2,8));
+
+    }
+
+
+    @Test
+    public void testOj(){
+//        Oj oj = new Oj()
+//                .setOjId("qiuqiur")
+//                .setUsername("093119134")
+//                .setPlatform("codeforces");
+//
+//        ojMapper.insertOj(oj);
+
+//        List<String> list = ojMapper.selectListOjId("093119134","codeforces");
+//        for(String s:list){
+//            System.out.println(s);
+//        }
 
     }
 

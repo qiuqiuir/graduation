@@ -23,9 +23,9 @@ public class SpiderController {
     public String spider() {
         String url = "http://47.94.81.95:8081/rank/list?page=1&size=100&keyword=&date=2023-03-28";
         try {
-            String object = GetUrlJson.getHttpJson(url);
-            Map<String,Object> map = GraduationUtil.getJSONToMap(object);
-            return object;
+//            String object = GetUrlJson.getHttpJson(url);
+//            Map<String,Object> map = GraduationUtil.getJSONToMap(object);
+            return "1";
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
