@@ -7,7 +7,6 @@ import com.cslg.graduation.service.UserService;
 import com.cslg.graduation.service.WeekService;
 import com.cslg.graduation.util.GraduationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
