@@ -10,7 +10,7 @@ public class GraduationUtil {
 
     // 生成随机字符串
     public static String generateUUID() {
-        return UUID.randomUUID().toString().replaceAll("-","");
+        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     // MD5加密
@@ -38,10 +38,21 @@ public class GraduationUtil {
     }
 
     // 时间加一天，解决前后端差8h问题
-    public static Date changeTime(Date time){
+    public static Date changeTime(Date time) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(time);
-        calendar.add(Calendar.DATE,1);
+        calendar.add(Calendar.DATE, 1);
         return calendar.getTime();
+    }
+
+    public static String DateToString(Date time) {
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(time);
+        String mouth = (1+calendar.get(Calendar.MONTH)) + "";
+        if (mouth.length() == 1) mouth = "0" + mouth;
+        String day = calendar.get(Calendar.DATE) + "";
+        if (day.length() == 1) day = "0" + day;
+        String date = mouth + "-" + day;
+        return date;
     }
 }

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cslg.graduation.dao.OjMapper">
+    <sql id="insertFields">
+        platform,oj_id,username
+    </sql>
+
+    <sql id="selectFields">
+        platform,oj_id,username
+    </sql>
+
+
+    <insert id="insertOj" parameterType="Oj" keyProperty="id">
+        insert into oj (<include refid="insertFields"></include>)
+        values(#{platform}, #{ojId}, #{username})
+    </insert>
+
+    <select id="selectListOjId" resultType="String">
+        select oj_id
+        from oj
+        where username = #{username} and platform = #{platform}
+    </select>
+
+
+
+
+
+</mapper>

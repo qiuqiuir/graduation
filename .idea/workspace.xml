@@ -4,26 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6072d8ba-9e4e-411f-86e7-c6bc3598e9c5" name="Changes" comment="周赛信息+积分+前端新增数据到后端">
+    <list default="true" id="6072d8ba-9e4e-411f-86e7-c6bc3598e9c5" name="Changes" comment="周赛积分展示">
+      <change afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/OjMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/Oj.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/OjService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/SpiderService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/oj-mapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/ScoreTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ScoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ScoreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/SpiderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/SpiderController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/WeekController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/WeekController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/ScoreMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/ScoreMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/WeekMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/WeekMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/Score.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/Score.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/Week.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/Week.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ContestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ContestService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ScoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ScoreService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/WeekService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/WeekService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/util/GetUrlJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/util/GetUrlJson.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/util/GraduationUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/util/GraduationUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/score-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/score-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/week-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/week-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/SpiderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/SpiderTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +76,7 @@
       <command value="mvn clean" />
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.DataBaseTest.testScore">
+  <component name="RunManager" selected="Application.GraduationApplication">
     <configuration name="GraduationApplication" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.GraduationApplication" />
       <module name="graduation" />
@@ -164,9 +156,9 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.GraduationApplication" />
         <item itemvalue="JUnit.DataBaseTest.testScore" />
         <item itemvalue="JUnit.DataBaseTest.testUser" />
-        <item itemvalue="Application.GraduationApplication" />
         <item itemvalue="JUnit.DataBaseTest.testWeek" />
         <item itemvalue="JUnit.DataBaseTest.testOj" />
       </list>
@@ -195,7 +187,14 @@
       <option name="project" value="LOCAL" />
       <updated>1680187855000</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="周赛分数爬虫计算+oj">
+      <created>1680271233322</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1680271233322</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -211,7 +210,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="周赛信息+积分+前端新增数据到后端" />
-    <option name="LAST_COMMIT_MESSAGE" value="周赛信息+积分+前端新增数据到后端" />
+    <MESSAGE value="周赛分数爬虫计算+oj" />
+    <MESSAGE value="周赛积分展示" />
+    <option name="LAST_COMMIT_MESSAGE" value="周赛积分展示" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

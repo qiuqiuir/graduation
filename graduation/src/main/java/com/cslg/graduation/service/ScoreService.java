@@ -132,7 +132,9 @@ public class ScoreService {
         return scoreMapper.selectSumByTime(time);
     }
 
-
+    public double getDailyScoreByUsernameAndTime(String username, Date time){
+        return scoreMapper.findDailyScoreByUsername(username, time);
+    }
 
 
 }

@@ -52,11 +52,20 @@ public class WeekService {
         weekMapper.updateAvg(time);
     }
 
-    List<Date> getAllTime(Date time){
+    /**
+     * 获取某天之后的所有周赛时间
+     * @param time
+     * @return
+     */
+    public List<Date> getAllTime(Date time){
         return weekMapper.selectAllTime(time);
     }
 
-    List<Date> getAllTime(){
+    /**
+     * 获取所有周赛时间
+     * @return
+     */
+    public List<Date> getAllTime(){
         return weekMapper.selectAllTime(new Date(0,0,0));
     }
 }
