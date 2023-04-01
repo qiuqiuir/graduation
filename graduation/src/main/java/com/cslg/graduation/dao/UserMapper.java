@@ -3,19 +3,16 @@ package com.cslg.graduation.dao;
 import com.cslg.graduation.entity.User;
 import org.apache.ibatis.annotations.Mapper;
 
-import java.util.Date;
 import java.util.List;
 
 @Mapper
 public interface UserMapper {
 
-//    User selectById(int id);
 
     User selectByUsername(String username);
 
     User selectByName(String name);
 
-//    User selectByEmail(String email);
 
     int insertUser(User user);
 
