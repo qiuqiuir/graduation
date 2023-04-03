@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @auther xurou
@@ -32,5 +33,11 @@ public class WeekController {
         week.setTime(time);
         weekService.addWeek(week);
         System.out.println("end");
+    }
+
+    @ResponseBody
+    @RequestMapping("/getAllWeek")
+    public List<Week> getAllWeek(){
+        return weekService.getAllWeek();
     }
 }

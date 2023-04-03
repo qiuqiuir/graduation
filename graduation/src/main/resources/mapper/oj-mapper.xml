@@ -23,6 +23,11 @@
         where username = #{username} and platform = #{platform}
     </select>
 
+    <select id="selectAllOj" resultType="Oj">
+        select <include refid="selectFields"></include>
+        from oj
+    </select>
+
 
 
 

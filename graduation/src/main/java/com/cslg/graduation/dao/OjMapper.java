@@ -17,5 +17,7 @@ public interface OjMapper {
     // 获取用户在某个平台上的所有账号
     public List<String> selectListOjId(String username, String platform);
 
+    public List<Oj> selectAllOj();
+
 
 }

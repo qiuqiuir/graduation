@@ -100,8 +100,6 @@ public class DataBaseTest {
 //        }
 
 
-        double score = spiderService.getNowcoderScore("679852081","53378");
-        scoreService.addScore("020619203",new Date(2023-1900,2,19),score);
 //        System.out.println(scoreService.getNumByTime(new Date(2022-1900,2,19)));
     }
 
@@ -124,8 +122,12 @@ public class DataBaseTest {
 
     @Test
     public void testWeek(){
-        Week week = new Week().setTime(new Date(2022-1900,2,19));
-        weekService.addWeek(week);
+//        Week week = new Week().setTime(new Date(2022-1900,2,19));
+//        weekService.addWeek(week);
+        List<Week> weekList = weekMapper.selectAllWeek();
+        for(Week week:weekList){
+            System.out.println(week);
+        }
 
 //        weekMapper.updateCount(new Date(2023-1900, 2,8),6);
 //        weekMapper.updateSum(new Date(2023-1900, 2,8),18.6);

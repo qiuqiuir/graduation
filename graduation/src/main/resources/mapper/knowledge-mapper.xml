@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cslg.graduation.dao.KnowledgeMapper">
+    <sql id="insertFields">
+        username,knowledge_name,count
+    </sql>
+
+    <sql id="selectFields">
+        username,knowledge_name,count
+    </sql>
+
+
+    <insert id="insertknowledge" parameterType="knowledge" keyProperty="id">
+        insert into knowledge (<include refid="insertFields"></include>)
+        values(#{username}, #{knowledgeName}, #{count})
+    </insert>
+
+    <select id="selectKnowledgeByUsername" resultType="Knowledge">
+        select knowledge_name,count
+        from knowledge
+        where username = #{username}
+    </select>
+
+    <update id="updateKnowledgeCount">
+        update knowledge set count = #{count}
+        where username = #{username} and knowledge_name = #{knowledgeName}
+    </update>
+
+    <select id="selectKnowledgeByUsernameAndKnowledgeName" resultType="int">
+        select if(sum(count)>0,sum(count),0)
+        from knowledge
+        where username = #{username} and knowledge_name = #{knowledgeName}
+    </select>
+
+
+
+
+
+</mapper>

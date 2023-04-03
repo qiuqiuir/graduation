@@ -35,4 +35,12 @@ public class OjService {
         return ojMapper.selectListOjId(username, platform);
     }
 
+    /**
+     * 获取所有oj信息
+     * @return
+     */
+    public List<Oj> getAllOj(){
+        return ojMapper.selectAllOj();
+    }
+
 }

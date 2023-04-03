@@ -25,9 +25,10 @@ public class WeekService {
 
     /**
      * 新增一场周赛信息
+     *
      * @param week
      */
-    public void addWeek(Week week){
+    public void addWeek(Week week) {
         // 插入新周赛
         weekMapper.insertWeek(week);
         // 对于每位同学计算积分
@@ -40,32 +41,43 @@ public class WeekService {
 
     /**
      * 更新一场周赛的总信息：总分、人数、平均分
+     *
      * @param time
      */
-    public void updateNumSumAvgByTime(Date time){
+    public void updateNumSumAvgByTime(Date time) {
         // 统计周赛总积分
         double sumScore = scoreService.getSumByTime(time);
         // 获取周赛参与人数
         int cntScore = scoreService.getNumByTime(time);
-        weekMapper.updateSum(time,sumScore);
-        weekMapper.updateCount(time,cntScore);
+        weekMapper.updateSum(time, sumScore);
+        weekMapper.updateCount(time, cntScore);
         weekMapper.updateAvg(time);
     }
 
     /**
      * 获取某天之后的所有周赛时间
+     *
      * @param time
      * @return
      */
-    public List<Date> getAllTime(Date time){
+    public List<Date> getAllTime(Date time) {
         return weekMapper.selectAllTime(time);
     }
 
     /**
      * 获取所有周赛时间
+     *
      * @return
      */
-    public List<Date> getAllTime(){
-        return weekMapper.selectAllTime(new Date(0,0,0));
+    public List<Date> getAllTime() {
+        return weekMapper.selectAllTime(new Date(0, 0, 0));
+    }
+
+    /**
+     * 获取所有周赛信息
+     * @return
+     */
+    public List<Week> getAllWeek(){
+        return weekMapper.selectAllWeek();
     }
 }
