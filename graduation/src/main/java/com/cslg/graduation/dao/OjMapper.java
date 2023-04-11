@@ -19,5 +19,7 @@ public interface OjMapper {
 
     public List<Oj> selectAllOj();
 
+    public List<Oj> selectListOj(String username);
+
 
 }

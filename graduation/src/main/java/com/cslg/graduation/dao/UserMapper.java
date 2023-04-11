@@ -16,14 +16,17 @@ public interface UserMapper {
 
     int insertUser(User user);
 
-    int updateStatus(int id, int status);
+    void updateStatus(String username, int status);
 
-    int updateHeader(int id, String headerUrl);
+    void updateHeader(String username, String headerUrl);
 
-    int updatePassword(int id, String password);
+    void updatePassword(String username, String password);
 
     List<String> selectIsScoreUsers();
 
+    List<String> selectAllUsers();
+
+    void updateUser(User user);
 
 
 }

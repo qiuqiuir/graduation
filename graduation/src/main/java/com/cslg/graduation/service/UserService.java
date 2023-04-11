@@ -1,11 +1,19 @@
 package com.cslg.graduation.service;
 
+import com.cslg.graduation.common.ResponseCode;
+import com.cslg.graduation.expection.MallException;
 import com.cslg.graduation.dao.UserMapper;
 import com.cslg.graduation.entity.User;
+import com.cslg.graduation.util.GraduationUtil;
+import com.cslg.graduation.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @auther xurou
@@ -17,6 +25,9 @@ public class UserService {
 
     @Autowired
     private UserMapper userMapper;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
 
 
     /**
@@ -43,6 +54,58 @@ public class UserService {
     public List<String> IsScoreUsers(){
         return userMapper.selectIsScoreUsers();
     }
+
+    /**
+     * 用户登录
+     * @param user
+     * @return
+     */
+    public User login(User user){
+        User u = userMapper.selectByUsername(user.getUsername());
+        if(u == null){
+            throw new MallException(400, "该学号未注册");
+        }
+        String password = GraduationUtil.md5(user.getPassword());
+        if(!password.equals(u.getPassword())){
+            throw new MallException(400, "密码错误");
+        }
+        return u;
+    }
+
+
+    /**
+     * 用户注册
+     * @param user
+     * @return
+     */
+    public void register(User user){
+        User u = userMapper.selectByUsername(user.getUsername());
+        if(u != null){
+            throw new MallException(400,"该学号已注册");
+        }
+        user.setPassword(GraduationUtil.md5(user.getPassword()));
+        user.setStatus(0);
+        user.setIsScore(1);
+//        String nowDate = "";
+//        GraduationUtil.DateToString(new Date());
+        user.setCreateDate(new Date());
+        userMapper.insertUser(user);
+        return;
+    }
+
+    public void updateHeaderUrl(String username, String headUrl){
+        userMapper.updateHeader(username,headUrl);
+    }
+
+    public List<String> getAllUser(){
+        return userMapper.selectAllUsers();
+    }
+
+    public void updateUser(User user){
+        userMapper.updateUser(user);
+    }
+
+
 
 
 

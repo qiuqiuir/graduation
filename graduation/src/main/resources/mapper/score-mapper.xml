@@ -21,9 +21,21 @@
     </select>
 
     <select id="findDailyScoreByUsername" resultType="double">
-        select daily_score
+        select max( if (
+        username = #{username} and time = #{time},
+        daily_score,
+        0.0
+        ))
         from score
-        where username = #{username} and time = #{time}
+    </select>
+
+    <select id="findRankByUsername" resultType="double">
+        select max( if (
+        username = #{username} and time = #{time},
+        rank,
+        0.0
+        ))
+        from score
     </select>
 
     <insert id="insertScore" parameterType="Score" keyProperty="id">

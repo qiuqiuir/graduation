@@ -16,6 +16,7 @@ public class Score {
     private Date time;
     private double dailyScore;
     private double totalScore;
+    private int rank;
 
     public int getId() {
         return id;
@@ -62,6 +63,15 @@ public class Score {
         return this;
     }
 
+    public int getRank() {
+        return rank;
+    }
+
+    public Score setRank(int rank) {
+        this.rank = rank;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Score{" +
@@ -70,6 +80,7 @@ public class Score {
                 ", time=" + time +
                 ", dailyScore=" + dailyScore +
                 ", totalScore=" + totalScore +
+                ", rank=" + rank +
                 '}';
     }
 }

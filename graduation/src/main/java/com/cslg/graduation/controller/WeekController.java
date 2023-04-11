@@ -1,5 +1,6 @@
 package com.cslg.graduation.controller;
 
+import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.entity.Week;
 import com.cslg.graduation.service.WeekService;
 import com.cslg.graduation.util.GraduationUtil;
@@ -27,17 +28,19 @@ public class WeekController {
      * @param week
      */
     @PostMapping("/addWeek")
-    public void addWeek(@RequestBody Week week){
+    public ResponseService addWeek(@RequestBody Week week){
         System.out.println("1");
         Date time = GraduationUtil.changeTime(week.getTime());
         week.setTime(time);
         weekService.addWeek(week);
         System.out.println("end");
+        return ResponseService.createBySuccess();
     }
 
     @ResponseBody
     @RequestMapping("/getAllWeek")
-    public List<Week> getAllWeek(){
-        return weekService.getAllWeek();
+    public ResponseService getAllWeek(){
+        List<Week> weekList = weekService.getAllWeek();
+        return ResponseService.createBySuccess(weekList);
     }
 }

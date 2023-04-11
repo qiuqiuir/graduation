@@ -32,22 +32,22 @@
     
     <insert id="insertUser" parameterType="User">
         insert into user (<include refid="insertFields"></include>)
-        values(#{username}, #{password}, #{status}, #{create_date}, #{major}, #{identity_card}, #{phone}, #{email}, #{name}, #{header_url}, #{clothing_size}, #{gender})
+        values(#{username}, #{password}, #{status}, #{createDate}, #{major}, #{identityCard}, #{phone}, #{email}, #{name}, #{headerUrl}, #{clothingSize}, #{gender},#{isScore})
     </insert>
 
     <update id="updateStatus">
         update user set status = #{status}
-        where id = #{id}
+        where username = #{username}
     </update>
 
     <update id="updateHeader">
         update user set header_url = #{headerUrl}
-        where id = #{id}
+        where username = #{username}
     </update>
 
     <update id="updatePassword">
         update user set password = #{password}
-        where id = #{id}
+        where username = #{username}
     </update>
     
     <select id="selectIsScoreUsers" resultType="String">
@@ -55,6 +55,16 @@
         from user
         where is_score = 1
     </select>
+
+    <select id="selectAllUsers" resultType="String">
+        select username
+        from user
+    </select>
+
+    <update id="updateUser">
+        update user set name = #{name},major= #{major}, email=#{email},gender=#{gender},phone=#{phone},identity_card=#{identityCard},clothing_size=#{clothingSize}
+        where username = #{username}
+    </update>
 
 
 

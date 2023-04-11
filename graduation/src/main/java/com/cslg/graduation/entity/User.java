@@ -1,5 +1,7 @@
 package com.cslg.graduation.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.util.Date;
 
 /**
@@ -11,14 +13,15 @@ public class User {
     private String username;
     private String password;
     private int status;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
     private Date createDate;
     private String major;
     private String identityCard;
     private String phone;
     private String email;
     private String name;
-    private String header_url;
-    private String chothingSize;
+    private String headerUrl;
+    private String clothingSize;
     private String gender;
     private int isScore;
 
@@ -103,21 +106,21 @@ public class User {
         return this;
     }
 
-    public String getHeader_url() {
-        return header_url;
+    public String getHeaderUrl() {
+        return headerUrl;
     }
 
-    public User setHeader_url(String header_url) {
-        this.header_url = header_url;
+    public User setHeaderUrl(String headerUrl) {
+        this.headerUrl = headerUrl;
         return this;
     }
 
-    public String getChothingSize() {
-        return chothingSize;
+    public String getClothingSize() {
+        return clothingSize;
     }
 
-    public User setChothingSize(String chothingSize) {
-        this.chothingSize = chothingSize;
+    public User setClothingSize(String clothingSize) {
+        this.clothingSize = clothingSize;
         return this;
     }
 
@@ -151,8 +154,8 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", header_url='" + header_url + '\'' +
-                ", chothingSize='" + chothingSize + '\'' +
+                ", headerUrl='" + headerUrl + '\'' +
+                ", clothingSize='" + clothingSize + '\'' +
                 ", gender='" + gender + '\'' +
                 ", isScore=" + isScore +
                 '}';

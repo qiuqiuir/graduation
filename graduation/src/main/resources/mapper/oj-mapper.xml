@@ -28,6 +28,12 @@
         from oj
     </select>
 
+    <select id="selectListOj" resultType="Oj">
+        select oj_id,platform
+        from oj
+        where username = #{username}
+    </select>
+
 
 
 

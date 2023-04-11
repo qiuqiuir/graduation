@@ -1,5 +1,6 @@
 package com.cslg.graduation.controller;
 
+import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.entity.Oj;
 import com.cslg.graduation.service.OjService;
 import com.cslg.graduation.service.UserService;
@@ -14,9 +15,9 @@ import java.util.List;
  * @date 2023/4/3
  */
 
-@Controller
+@RestController
 @RequestMapping("/oj")
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 public class OjController {
 
     @Autowired
@@ -26,20 +27,16 @@ public class OjController {
     private UserService userService;
 
     @PostMapping("/addOj")
-    public void addOj(@RequestBody  Oj oj) {
+    public ResponseService addOj(@RequestBody Oj oj) {
         ojService.addOj(oj);
+        return ResponseService.createBySuccess();
     }
 
-    @ResponseBody
-    @RequestMapping("/getAllOj")
-    public List<Oj> getAllOj(){
-        List<Oj> ojList = ojService.getAllOj();
-        for(int i=0;i<ojList.size();i++){
-            String username = ojList.get(i).getUsername();
-            String name = userService.findUserByUsername(username).getName();
-            ojList.get(i).setUsername(name);
-        }
-        return ojList;
+//    @ResponseBody
+    @RequestMapping("/getAll/{username}")
+    public ResponseService getAllOj(@PathVariable("username")String username){
+        List<Oj> ojList = ojService.getAllOjId(username);
+        return ResponseService.createBySuccess(ojList);
     }
 
 }

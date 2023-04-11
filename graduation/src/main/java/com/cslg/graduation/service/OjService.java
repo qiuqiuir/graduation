@@ -43,4 +43,13 @@ public class OjService {
         return ojMapper.selectAllOj();
     }
 
+    /**
+     * 获取某个学号所有的第三方id
+     * @param username
+     * @return
+     */
+    public List<Oj> getAllOjId(String username){
+        return ojMapper.selectListOj(username);
+    }
+
 }

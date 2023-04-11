@@ -1,10 +1,9 @@
 package com.cslg.graduation;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cslg.graduation.entity.User;
 import com.cslg.graduation.entity.Week;
-import com.cslg.graduation.service.KnowledgeService;
-import com.cslg.graduation.service.ScoreService;
-import com.cslg.graduation.service.SpiderService;
+import com.cslg.graduation.service.*;
 import com.cslg.graduation.util.GetUrlJson;
 import com.cslg.graduation.util.GraduationUtil;
 import org.junit.jupiter.api.Test;
@@ -13,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 //import org.js
 
@@ -31,6 +31,12 @@ public class SpiderTest {
 
     @Autowired
     private KnowledgeService knowledgeService;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private OjService ojService;
 
     @Test
     public void spider() {
@@ -51,6 +57,21 @@ public class SpiderTest {
 //            System.out.println(entry.getKey()+":"+entry.getValue());
 //        }
 //        knowledgeService.addCodeforcesKnowledge("093119134","cslg093119134");
-            spiderService.getLuoguSubmission("276450");
+//        spiderService.getAtcoderScore("abc290");
+
+        List<String> userList = userService.getAllUser();
+        for(String s:userList) {
+            if(s.equals("093119134")) continue;
+            System.out.print(s+":");
+            List<String>list = ojService.getAllOjId(s,"codeforces");
+            if(list.size()>0) {
+                for(String name: list) {
+                    knowledgeService.addCodeforcesKnowledge(s,name);
+                }
+                System.out.println(" over");
+            }else{
+                System.out.println("no");
+            }
+        }
     }
 }

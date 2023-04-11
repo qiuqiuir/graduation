@@ -59,7 +59,16 @@ public class KnowledgeService {
      * @param count
      */
     public void updateKnowledgeCount(String username, String knowledgeName, int count) {
-        knowledgeMapper.updateKnowledgeCount(username, knowledgeName, count);
+        int number = knowledgeMapper.selectKnowledgeByUsernameAndKnowledgeName(username, knowledgeName);
+        if(number>0) {
+            knowledgeMapper.updateKnowledgeCount(username, knowledgeName, count);
+        }else{
+            Knowledge knowledge = new Knowledge()
+                    .setUsername(username)
+                    .setKnowledgeName(knowledgeName)
+                    .setCount(count);
+            insertKnowledge(knowledge);
+        }
     }
 
     /**

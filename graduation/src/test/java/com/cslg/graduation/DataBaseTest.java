@@ -48,6 +48,12 @@ public class DataBaseTest {
     @Autowired
     private SpiderService spiderService;
 
+    @Autowired
+    private NewsMapper newsMapper;
+
+    @Autowired
+    private TrainingMapper trainingMapper;
+
     @Test
     public void testUser() {
 
@@ -64,11 +70,17 @@ public class DataBaseTest {
 //        System.out.println("--------------");
 
         User user = new User()
-                .setUsername("Z09422125")
-                .setName("杨斌")
-                .setPassword("e10adc3949ba59abbe56e057f20f883e");
-
-        userMapper.insertUser(user);
+                .setUsername("093119134")
+                .setName("徐柔")
+                .setMajor("数据科学与大数据技术")
+                .setEmail("1143853098@qq.com")
+                .setGender("女")
+                .setIdentityCard("350102200111151624")
+                .setClothingSize("M");
+        userService.updateUser(user);
+//
+//        userMapper.insertUser(user);
+//        System.out.println(userService.findUserByUsername("093119134"));
 
     }
 
@@ -101,6 +113,7 @@ public class DataBaseTest {
 
 
 //        System.out.println(scoreService.getNumByTime(new Date(2022-1900,2,19)));
+        System.out.println(scoreService.getDailyScoreByUsernameAndTime("040722109",new Date(2023-1900,1,24)));
     }
 
     @Test
@@ -149,7 +162,41 @@ public class DataBaseTest {
 //        for(String s:list){
 //            System.out.println(s);
 //        }
+        List<Oj> list = ojMapper.selectListOj("093119134");
+        for(Oj oj:list){
+            System.out.println(oj);
+        }
 
     }
 
+    @Test
+    public void testNews(){
+//        News news = new News()
+//                .setTime(new Date(2022-1900,10,14))
+//                .setTitle("集训队学子在第47届国际大学生程序设计竞赛亚洲区域赛（西安）获铜奖")
+//                .setUrl("http://acm.cse.cslg.cn/archives/2653");
+//
+//        newsMapper.insertNews(news);
+        List<News> newsList= newsMapper.selectAllNews();
+        for(News news:newsList) {
+            System.out.println(news);
+        }
+
+    }
+
+
+    @Test
+    public void testTraining(){
+//        Training training = new Training()
+//                .setPlatform("牛客")
+//                .setTitle("数学")
+//                .setUrl("https://ac.nowcoder.com/courses/cover/live/731");
+//
+//        trainingMapper.insertTraining(training);
+        List<Training> newsList= trainingMapper.selectAllTraining();
+        for(Training news:newsList) {
+            System.out.println(news);
+        }
+
+    }
 }

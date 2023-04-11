@@ -21,6 +21,7 @@ public interface KnowledgeMapper {
     // 选择某个用户通过的所有知识点
     public List<Knowledge> selectKnowledgeByUsername(String username);
 
+    // 查看某个用户通过的某个知识点有几道
     public int selectKnowledgeByUsernameAndKnowledgeName(String username, String knowledgeName);
 
 

@@ -20,6 +20,9 @@ public interface ScoreMapper {
     // 根据学号和时间获取用户该日积分
     public double findDailyScoreByUsername(String username, Date time);
 
+    // 根据学号和时间获取用户该日排名
+    public double findRankByUsername(String username, Date time);
+
     // 新增一条积分
     public void insertScore(Score score);
 

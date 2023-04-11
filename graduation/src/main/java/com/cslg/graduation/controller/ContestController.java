@@ -1,8 +1,10 @@
 package com.cslg.graduation.controller;
 
+import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.dao.ContestMapper;
 import com.cslg.graduation.entity.Contest;
 import com.cslg.graduation.service.ContestService;
+import com.cslg.graduation.service.UserService;
 import com.cslg.graduation.util.GraduationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,13 +17,16 @@ import java.util.Map;
  * @auther xurou
  * @date 2023/3/30
  */
-@Controller
+@RestController
 @RequestMapping("/contest")
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 public class ContestController {
 
     @Autowired
     private ContestService contestService;
+
+    @Autowired
+    private UserService userService;
 
     /**
      * 获取所有比赛获奖记录
@@ -29,8 +34,14 @@ public class ContestController {
      */
     @RequestMapping("/getAll")
     @ResponseBody
-    public List<Contest> getAll(){
-        return contestService.getAllContest();
+    public ResponseService getAll(){
+        List<Contest> contestList = contestService.getAllContest();
+        for(int i=0;i<contestList.size();i++){
+            String username = contestList.get(i).getUsername();
+            String name = userService.findUserByUsername(username).getName();
+            contestList.get(i).setUsername(name);
+        }
+        return ResponseService.createBySuccess(contestList);
     }
 
     /**
@@ -38,8 +49,9 @@ public class ContestController {
      * @param contest
      */
     @PostMapping("/addContest")
-    public void addContest(@RequestBody Contest contest){
+    public ResponseService addContest(@RequestBody Contest contest){
         contestService.addContest(contest);
+        return ResponseService.createBySuccess();
     }
 
 }

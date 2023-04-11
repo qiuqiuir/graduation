@@ -1,5 +1,6 @@
 package com.cslg.graduation.controller;
 
+import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.dao.ScoreMapper;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.service.ScoreService;
@@ -34,9 +35,9 @@ public class ScoreController {
     @Autowired
     private WeekService weekService;
 
-    @RequestMapping("/getAll")
+    @RequestMapping("/getAllScore")
     @ResponseBody
-    public List<Map<String,Object>> getScore(){
+    public ResponseService getScore(){
         // 返回的所有积分数据
         List<Map<String,Object>> scoreList = new ArrayList<>();
         // 获取所有显示的学号
@@ -73,7 +74,7 @@ public class ScoreController {
         }
 
 
-        return scoreList;
+        return ResponseService.createBySuccess(scoreList);
     }
 
 

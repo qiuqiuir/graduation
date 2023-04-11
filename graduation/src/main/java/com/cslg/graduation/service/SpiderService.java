@@ -81,7 +81,8 @@ public class SpiderService {
         String url = "https://atcoder.jp/contests/" + id + "/standings/json";
         JSONObject data = null;
         Map<String, String> cookies = new HashMap<>();
-        cookies.put("Cookie", "REVEL_SESSION=6aa9af3fbca23c8816be033df1f704a2d24f34ed-%00UserScreenName%3Acslg093119134%00%00csrf_token%3A3NacyQTQR%2BQSIlCHzwKfZ73PMsbQBhGa6MrkuiMQcWM%3D%00%00Rating%3A1513%00%00a%3Afalse%00%00w%3Afalse%00%00SessionKey%3A76d0acf2c8127b52b15781605138525494df537689867ba513512e6dd9993d94a665f95e280b34-d0c1a7cc00d335d770e17741f002a8403714c4bd79ee6833185f975d548dd999%00%00_TS%3A1680704534%00%00UserName%3Acslg093119134%00; Path=/; Expires=Wed, 05 Apr 2023 14:22:14 GMT; Max-Age=15552000; HttpOnly; Secure");
+        cookies.put("Cookie", "REVEL_SESSION=eb5fd7b3f3f78632feff17e291e23eeed583a894-%00Rating%3A1513%00%00_TS%3A1696669167%00%00UserScreenName%3Acslg093119134%00%00csrf_token%3A3NacyQTQR%2BQSIlCHzwKfZ73PMsbQBhGa6MrkuiMQcWM%3D%00%00SessionKey%3A7b174f93ca8c5f5df748448db7b689f6bdfccd6e8765439f020542ce6b50802fd1f1aa117c6824-241a3d88027318a4d15f5ca45d0c6309b0e1f1e78592695e4e2e9301340e2ac2%00%00UserName%3Acslg093119134%00%00a%3Afalse%00%00w%3Afalse%00; Path=/; Expires=Sat, 07 Oct 2023 08:59:27 GMT; Max-Age=15552000; HttpOnly; Secure");
+        cookies.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.54");
         try {
             data = GetUrlJson.getHttpJson(url, cookies);
         } catch (Exception e) {

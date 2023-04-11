@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cslg.graduation.dao.NewsMapper">
+    <sql id="insertFields">
+        url, title, time
+    </sql>
+
+    <sql id="selectFields">
+        url, title, time
+    </sql>
+
+
+    <insert id="insertNews" parameterType="News" keyProperty="id">
+        insert into news (<include refid="insertFields"></include>)
+        values(#{url}, #{title}, #{time})
+    </insert>
+
+    <select id="selectAllNews" resultType="News">
+        select url, title, time
+        from news
+    </select>
+
+
+
+
+
+</mapper>

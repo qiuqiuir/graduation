@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cslg.graduation.dao.TrainingMapper">
+    <sql id="insertFields">
+        url, title, platform
+    </sql>
+
+    <sql id="selectFields">
+        url, title, platform
+    </sql>
+
+
+    <insert id="insertTraining" parameterType="Training" keyProperty="id">
+        insert into training (<include refid="insertFields"></include>)
+        values(#{url}, #{title}, #{platform})
+    </insert>
+
+    <select id="selectAllTraining" resultType="Training">
+        select url, title, platform
+        from training
+    </select>
+
+
+
+
+
+</mapper>
