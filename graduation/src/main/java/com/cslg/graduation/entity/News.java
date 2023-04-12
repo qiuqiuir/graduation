@@ -2,7 +2,7 @@ package com.cslg.graduation.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.sql.Date;
+import java.util.Date;
 
 /**
  * @auther xurou

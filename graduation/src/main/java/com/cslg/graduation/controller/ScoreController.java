@@ -44,18 +44,24 @@ public class ScoreController {
         List<String> userList = userService.IsScoreUsers();
         // 获取所有周赛时间
         List<Date> allTime = weekService.getAllTime();
+        Collections.reverse(allTime);
         for(String username: userList){
             // 存储该用户的数据
             Map<String,Object> map = new HashMap<>();
-            Map<String, Double> allDailyScore = new HashMap<>();
             User user = userService.findUserByUsername(username);
             double totalScore = scoreService.getTotalScoreByUsername(username);
+            List<Map<String ,Object>> allDailyScore = new ArrayList<>();
             for(Date time : allTime){
+                Map<String ,Object> ScoreAll = new HashMap<>();
                 double dailyScore = scoreService.getDailyScoreByUsernameAndTime(username,time);
-                allDailyScore.put(GraduationUtil.DateToString(time),dailyScore);
+                ScoreAll.put("score",dailyScore);
+                ScoreAll.put("rank",scoreService.getRankByUsernameAndTime(username,time));
+                ScoreAll.put("time", GraduationUtil.DateToString(time));
+                allDailyScore.add(ScoreAll);
             }
             map.put("total",totalScore);
             map.put("name",user.getName());
+            map.put("username",user.getUsername());
             map.put("week",allDailyScore);
             scoreList.add(map);
         }

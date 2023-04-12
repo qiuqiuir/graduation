@@ -4,14 +4,13 @@ import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.entity.News;
 import com.cslg.graduation.entity.Week;
 import com.cslg.graduation.service.NewsService;
+import com.cslg.graduation.util.GraduationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -31,6 +30,15 @@ public class NewsController {
     public ResponseService getAllNews(){
         List<News> newsList = newsService.getAllNews();
         return ResponseService.createBySuccess(newsList);
+    }
+
+    @RequestMapping("/addNews")
+    public ResponseService addNews(@RequestBody News news){
+        Date time = news.getTime();
+        time = GraduationUtil.changeTime(time);
+        news.setTime(time);
+        newsService.addNews(news);
+        return ResponseService.createBySuccess();
     }
 
 }

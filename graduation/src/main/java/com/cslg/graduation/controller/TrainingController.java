@@ -27,7 +27,7 @@ public class TrainingController {
     }
 
     @PostMapping("/addTraining")
-    public ResponseService addTraining(Training training){
+    public ResponseService addTraining(@RequestBody Training training){
         trainingService.addTraining(training);
         return ResponseService.createBySuccess();
     }

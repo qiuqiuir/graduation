@@ -4,20 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cslg.graduation.dao.ScoreMapper">
     <sql id="insertFields">
-        username, time, daily_score, total_score
+        username, time, daily_score, total_score,`rank`
     </sql>
 
     <sql id="selectFields">
-        id, username, time, daily_score, total_score
+        id, username, time, daily_score, total_score,`rank`
     </sql>
 
     <select id="findTotalScoreByUsername" resultType="double">
-        select max( if (
-        username = #{username},
-        total_score,
-        0.0
-        ))
-        from score
+        SELECT IFNULL(max(total_score),0.0) from score
+        where username = #{username}
     </select>
 
     <select id="findDailyScoreByUsername" resultType="double">
@@ -29,18 +25,14 @@
         from score
     </select>
 
-    <select id="findRankByUsername" resultType="double">
-        select max( if (
-        username = #{username} and time = #{time},
-        rank,
-        0.0
-        ))
-        from score
+    <select id="findRankByUsername" resultType="int">
+        SELECT IFNULL(max(`rank`),0.0) from score
+        where username = #{username} and time = #{time}
     </select>
 
     <insert id="insertScore" parameterType="Score" keyProperty="id">
         insert into score (<include refid="insertFields"></include>)
-        values(#{username}, #{time}, #{dailyScore}, #{totalScore})
+        values(#{username}, #{time}, #{dailyScore}, #{totalScore},#{rank})
     </insert>
     
     <update id="updateDailyScore">

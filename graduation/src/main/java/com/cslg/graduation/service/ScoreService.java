@@ -6,10 +6,7 @@ import com.cslg.graduation.entity.Week;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @auther xurou
@@ -47,22 +44,10 @@ public class ScoreService {
 
     /**
      * 新增username在某天的分数
-     *
-     * @param username
-     * @param time
-     * @param dailyScore
+     * @param score
      */
-    public void addScore(String username, Date time, double dailyScore) {
-        // 获取此前总分
-        double totalScore = getTotalScoreByUsername(username);
-
-        Score score = new Score()
-                .setUsername(username)
-                .setTime(time)
-                .setDailyScore(dailyScore)
-                .setTotalScore(dailyScore + totalScore);
+    public void addScore(Score score) {
         scoreMapper.insertScore(score);
-//        weekService.updateNumSumAvgByTime(time);
     }
 
     /**
@@ -104,26 +89,51 @@ public class ScoreService {
         } else if (week.getPlatform().equals("atcoder")) {
             rankData = spiderService.getAtcoderScore(week.getContestId());
         }
+        // 所有用户本周总积分，用于计算排名
+        List<Score> scoreList = new ArrayList<>();
         System.out.println("All data crawling completed");
         for (String username : usernameList) {
 //            System.out.print("username:" + username + ",platform:atcoder,score:");
             // 该用户的积分
-            double score = 0.0;
+            double scorevalue = 0.0;
             // 该用户在该平台的所有id
             List<String> ojIdlist = ojService.getAllOjId(username, week.getPlatform());
             for (String ojId : ojIdlist) {
                 for (Map.Entry<String, Double> entry : rankData.entrySet()) {
                     if (entry.getKey().equals(ojId)) {
                         double nowScore = entry.getValue();
-                        if (nowScore > score) score = nowScore;
+                        if (nowScore > scorevalue) scorevalue = nowScore;
                     }
                 }
             }
 //            System.out.println(score);
-            // 添加积分
-            addScore(username, week.getTime(), score);
+            // 添加积分到list
+            double totalScore = getTotalScoreByUsername(username);
+            Score score = new Score()
+                    .setUsername(username)
+                    .setTime(week.getTime())
+                    .setDailyScore(scorevalue)
+                    .setTotalScore(scorevalue + totalScore);
+            scoreList.add(score);
         }
+        Collections.sort(scoreList, new Comparator<Score>() {
+            @Override
+            public int compare(Score o1, Score o2) {
+                return Double.compare(o2.getTotalScore(),o1.getTotalScore());
+            }
+        });
 
+        int last=1;
+        for(int i=0;i<scoreList.size();i++){
+            Score nowScore = scoreList.get(i);
+            if(i!=0&&nowScore.getTotalScore()==scoreList.get(i-1).getTotalScore()){
+                nowScore = nowScore.setRank(last);
+            }else {
+                nowScore = nowScore.setRank(i + 1);
+                last=i+1;
+            }
+            addScore(nowScore);
+        }
     }
 
     /**
@@ -148,6 +158,10 @@ public class ScoreService {
 
     public double getDailyScoreByUsernameAndTime(String username, Date time) {
         return scoreMapper.findDailyScoreByUsername(username, time);
+    }
+
+    public int getRankByUsernameAndTime(String username, Date time) {
+        return scoreMapper.findRankByUsername(username, time);
     }
 
 
