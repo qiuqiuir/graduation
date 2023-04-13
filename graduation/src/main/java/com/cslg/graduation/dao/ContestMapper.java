@@ -8,10 +8,10 @@ import java.util.List;
 @Mapper
 public interface ContestMapper {
 
-    // 获取所有比赛获奖记录
+    // 获取所有比赛记录
     public List<Contest> selectAllContest();
 
-    // 插入一条比赛获奖记录
+    // 插入一条比赛记录
     public void insertContest(Contest contest);
 
 }

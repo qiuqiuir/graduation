@@ -56,8 +56,8 @@
         where is_score = 1
     </select>
 
-    <select id="selectAllUsers" resultType="String">
-        select username
+    <select id="selectAllUsers" resultType="User">
+        select <include refid="selectFields"></include>
         from user
     </select>
 

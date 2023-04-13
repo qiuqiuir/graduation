@@ -59,19 +59,20 @@ public class SpiderTest {
 //        knowledgeService.addCodeforcesKnowledge("093119134","cslg093119134");
 //        spiderService.getAtcoderScore("abc290");
 
-        List<String> userList = userService.getAllUser();
-        for(String s:userList) {
-            if(s.equals("093119134")) continue;
-            System.out.print(s+":");
-            List<String>list = ojService.getAllOjId(s,"codeforces");
-            if(list.size()>0) {
-                for(String name: list) {
-                    knowledgeService.addCodeforcesKnowledge(s,name);
-                }
-                System.out.println(" over");
-            }else{
-                System.out.println("no");
-            }
-        }
+//        List<User> userList = userService.IsScoreUsers();
+//        for(User  user:userList) {
+//            String s = user.getUsername();
+//            if(s.equals("093119134")) continue;
+//            System.out.print(s+":");
+//            List<String>list = ojService.getAllOjId(s,"codeforces");
+//            if(list.size()>0) {
+//                for(String name: list) {
+//                    knowledgeService.addCodeforcesKnowledge(s,name);
+//                }
+//                System.out.println(" over");
+//            }else{
+//                System.out.println("no");
+//            }
+//        }
     }
 }

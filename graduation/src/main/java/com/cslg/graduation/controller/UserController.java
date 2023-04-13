@@ -77,33 +77,9 @@ public class UserController {
         return ResponseService.createBySuccess();
     }
 
-//    @PostMapping("/updateHeader")
-//    public ResponseService uploadHeader(MultipartFile headerImage) {
-//        if (headerImage == null) {
-//            ResponseService.createByCodeErrorMessage(400,"您还没有选择图片!");
-//        }
-//        String fileName = headerImage.getOriginalFilename();
-//        String suffix = fileName.substring(fileName.lastIndexOf('.'));
-//        if (StringUtils.isBlank(suffix)) {
-//            ResponseService.createByCodeErrorMessage(400,"文件的格式不正确!");
-//        }
-//        // 生成随机文件名
-//        fileName = GraduationUtil.generateUUID() + suffix;
-//        // 确定文件存放的路径
-//        File dest = new File(uploadPath + "/" + fileName);
-//        try {
-//            // 存储文件
-//            headerImage.transferTo(dest);
-//        } catch (IOException e) {
-//            throw new RuntimeException("上传文件失败,服务器发生异常!", e);
-//        }
-//
-//        // 更新当前用户的头像的路径(web访问路径)
-//        //http://localhost:8080/community/user/header/xxx.png
-//        User user = hostHolder.getUser();
-//        String headUrl = domain + contextPath + "/user/header/" + fileName;
-//        userService.updateHeader(user.getId(), headUrl);
-//
-//        return "redirect:/index";
-//    }
+    @GetMapping("/getAllUser")
+    public ResponseService getAllUser(){
+        List<Map<String, Object>> userList = userService.getAllUserMessage();
+        return ResponseService.createBySuccess(userList);
+    }
 }

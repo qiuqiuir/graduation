@@ -1,5 +1,9 @@
 package com.cslg.graduation.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.util.Date;
+
 /**
  * @auther xurou
  * @date 2023/3/30
@@ -7,11 +11,11 @@ package com.cslg.graduation.entity;
 public class Contest {
 
     private int id;
-    private String username;
     private String level;
     private String name;
-    private int year;
-    private String type;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
+    private Date time;
+    private String remark;
 
     public int getId() {
         return id;
@@ -19,15 +23,6 @@ public class Contest {
 
     public Contest setId(int id) {
         this.id = id;
-        return this;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public Contest setUsername(String username) {
-        this.username = username;
         return this;
     }
 
@@ -49,21 +44,21 @@ public class Contest {
         return this;
     }
 
-    public int getYear() {
-        return year;
+    public Date getTime() {
+        return time;
     }
 
-    public Contest setYear(int year) {
-        this.year = year;
+    public Contest setTime(Date time) {
+        this.time = time;
         return this;
     }
 
-    public String getType() {
-        return type;
+    public String getRemark() {
+        return remark;
     }
 
-    public Contest setType(String type) {
-        this.type = type;
+    public Contest setRemark(String remark) {
+        this.remark = remark;
         return this;
     }
 
@@ -71,11 +66,10 @@ public class Contest {
     public String toString() {
         return "Contest{" +
                 "id=" + id +
-                ", username='" + username + '\'' +
                 ", level='" + level + '\'' +
                 ", name='" + name + '\'' +
-                ", year=" + year +
-                ", type='" + type + '\'' +
+                ", time=" + time +
+                ", remark='" + remark + '\'' +
                 '}';
     }
 }

@@ -24,7 +24,7 @@ public interface UserMapper {
 
     List<String> selectIsScoreUsers();
 
-    List<String> selectAllUsers();
+    List<User> selectAllUsers();
 
     void updateUser(User user);
 

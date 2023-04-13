@@ -36,11 +36,6 @@ public class ContestController {
     @ResponseBody
     public ResponseService getAll(){
         List<Contest> contestList = contestService.getAllContest();
-        for(int i=0;i<contestList.size();i++){
-            String username = contestList.get(i).getUsername();
-            String name = userService.findUserByUsername(username).getName();
-            contestList.get(i).setUsername(name);
-        }
         return ResponseService.createBySuccess(contestList);
     }
 

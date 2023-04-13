@@ -4,11 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cslg.graduation.dao.ContestMapper">
     <sql id="insertFields">
-        username, level, name, year,type
+        level, name, time,remark
     </sql>
 
     <sql id="selectFields">
-        id, username, level, name, year,type
+        level, name, time,remark
     </sql>
 
     <select id="selectAllContest" resultType="Contest">
@@ -18,7 +18,7 @@
 
     <insert id="insertContest" parameterType="Contest" keyProperty="id">
         insert into contest (<include refid="insertFields"></include>)
-        values(#{username}, #{level}, #{name}, #{year}, #{type})
+        values( #{level}, #{name}, #{time}, #{remark})
     </insert>
 
 
