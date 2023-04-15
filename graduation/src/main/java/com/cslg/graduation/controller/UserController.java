@@ -51,7 +51,6 @@ public class UserController {
         mp.put("token",token);
         mp.put("name",user.getName());
         mp.put("username",user.getUsername());
-        mp.put("avatar",user.getHeaderUrl());
         mp.put("admin",user.getStatus()+"");
         return ResponseService.createBySuccess(mp);
     }
@@ -79,6 +78,12 @@ public class UserController {
 
     @GetMapping("/getAllUser")
     public ResponseService getAllUser(){
+        List<User> userList = userService.getAllUsers();
+        return ResponseService.createBySuccess(userList);
+    }
+
+    @GetMapping("/getAllUserMessage")
+    public ResponseService getAllUserMessage(){
         List<Map<String, Object>> userList = userService.getAllUserMessage();
         return ResponseService.createBySuccess(userList);
     }

@@ -2,6 +2,7 @@ package com.cslg.graduation.service;
 
 import com.cslg.graduation.dao.ScoreMapper;
 import com.cslg.graduation.entity.Score;
+import com.cslg.graduation.entity.User;
 import com.cslg.graduation.entity.Week;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -81,7 +82,7 @@ public class ScoreService {
      */
     public void addWeekScore(Week week) {
         // 所有计算积分的用户
-        List<String> usernameList = userService.IsScoreUsers();
+        List<User> usernameList = userService.getAllUsers();
         // 爬虫获取本场比赛所有用户的分数
         Map<String, Double> rankData = new HashMap<>();
         if (week.getPlatform().equals("nowcoder")) {
@@ -92,7 +93,8 @@ public class ScoreService {
         // 所有用户本周总积分，用于计算排名
         List<Score> scoreList = new ArrayList<>();
         System.out.println("All data crawling completed");
-        for (String username : usernameList) {
+        for (User user : usernameList) {
+            String username = user.getUsername();
 //            System.out.print("username:" + username + ",platform:atcoder,score:");
             // 该用户的积分
             double scorevalue = 0.0;

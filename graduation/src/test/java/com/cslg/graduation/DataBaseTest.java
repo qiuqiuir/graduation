@@ -3,6 +3,7 @@ package com.cslg.graduation;
 import com.cslg.graduation.dao.*;
 import com.cslg.graduation.entity.*;
 import com.cslg.graduation.service.*;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,6 +54,9 @@ public class DataBaseTest {
 
     @Autowired
     private TrainingMapper trainingMapper;
+
+    @Autowired
+    private AwardService awardService;
 
     @Test
     public void testUser() {
@@ -119,18 +123,21 @@ public class DataBaseTest {
     @Test
     public void testContest() {
 
-        List<Contest> contestList = contestMapper.selectAllContest();
+        List<Contest> contestList = contestService.getAllContest();
         for (Contest contest : contestList) {
             System.out.println(contest);
+            System.out.println(contest.getRemark());
+            System.out.println(contest.getRemark()==null);
+            System.out.println(StringUtils.isBlank(contest.getRemark()));
         }
-
-        Contest contest = new Contest().setUsername("test2")
-                .setName("ICPC")
-                .setLevel("国家级")
-                .setYear(2022)
-                .setType("三等奖");
-
-        contestService.addContest(contest);
+//
+//        Contest contest = new Contest().setUsername("test2")
+//                .setName("ICPC")
+//                .setLevel("国家级")
+//                .setYear(2022)
+//                .setType("三等奖");
+//
+//        contestService.addContest(contest);
     }
 
     @Test
@@ -198,5 +205,10 @@ public class DataBaseTest {
             System.out.println(news);
         }
 
+    }
+
+    @Test
+    public void award(){
+        awardService.getAwardByIdAndType(120,"三等奖");
     }
 }

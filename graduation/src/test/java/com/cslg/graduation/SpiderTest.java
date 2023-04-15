@@ -41,6 +41,8 @@ public class SpiderTest {
     @Test
     public void spider() {
 
+        spiderService.getNowcoderRank("093119134");
+
 //        System.out.println(spiderService.getNowcoderScore("115325176","53378"));
 //        System.out.println(spiderService.getNowcoderScore("694559251","53378"));
 //        System.out.println(spiderService.getNowcoderScore("684484379","53378"));

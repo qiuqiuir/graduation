@@ -22,8 +22,6 @@ public interface UserMapper {
 
     void updatePassword(String username, String password);
 
-    List<String> selectIsScoreUsers();
-
     List<User> selectAllUsers();
 
     void updateUser(User user);

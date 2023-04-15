@@ -20,7 +20,7 @@ public class User {
     private String phone;
     private String email;
     private String name;
-    private String headerUrl;
+    private String session;
     private String clothingSize;
     private String gender;
     private int isScore;
@@ -106,13 +106,12 @@ public class User {
         return this;
     }
 
-    public String getHeaderUrl() {
-        return headerUrl;
+    public String getSession() {
+        return session;
     }
 
-    public User setHeaderUrl(String headerUrl) {
-        this.headerUrl = headerUrl;
-        return this;
+    public void setSession(String session) {
+        this.session = session;
     }
 
     public String getClothingSize() {
@@ -154,7 +153,7 @@ public class User {
                 ", phone='" + phone + '\'' +
                 ", email='" + email + '\'' +
                 ", name='" + name + '\'' +
-                ", headerUrl='" + headerUrl + '\'' +
+                ", session='" + session + '\'' +
                 ", clothingSize='" + clothingSize + '\'' +
                 ", gender='" + gender + '\'' +
                 ", isScore=" + isScore +

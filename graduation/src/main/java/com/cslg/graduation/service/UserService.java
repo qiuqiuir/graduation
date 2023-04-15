@@ -50,8 +50,8 @@ public class UserService {
     /**
      * 返回所有在积分表显示的同学
      */
-    public List<String> IsScoreUsers() {
-        return userMapper.selectIsScoreUsers();
+    public List<User> getAllUsers() {
+        return userMapper.selectAllUsers();
     }
 
     /**

@@ -16,6 +16,7 @@ public class Contest {
     @JsonFormat(pattern = "yyyy-MM-dd", timezone="GMT+8")
     private Date time;
     private String remark;
+    private int number;
 
     public int getId() {
         return id;
@@ -62,6 +63,15 @@ public class Contest {
         return this;
     }
 
+    public int getNumber() {
+        return number;
+    }
+
+    public Contest setNumber(int number) {
+        this.number = number;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Contest{" +
@@ -70,6 +80,7 @@ public class Contest {
                 ", name='" + name + '\'' +
                 ", time=" + time +
                 ", remark='" + remark + '\'' +
+                ", number=" + number +
                 '}';
     }
 }

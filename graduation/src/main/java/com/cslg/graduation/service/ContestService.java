@@ -34,5 +34,31 @@ public class ContestService {
         contestMapper.insertContest(contest);
     }
 
+    /**
+     * 根据id获取该比赛单次获奖多少人
+     * @param id
+     * @return
+     */
+    public int getNumberById(int id){
+        return contestMapper.selectNumberById(id);
+    }
+
+    /**
+     * 获取比赛数量
+     * @return
+     */
+    public int getCountContest(){
+        return contestMapper.selectCountContest();
+    }
+
+    /**
+     * 根据比赛id查找比赛
+     * @param id
+     * @return
+     */
+    public Contest getContestById(int id){
+        return contestMapper.selectContestById(id);
+    }
+
 
 }

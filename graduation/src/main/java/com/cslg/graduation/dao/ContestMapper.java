@@ -9,9 +9,16 @@ import java.util.List;
 public interface ContestMapper {
 
     // 获取所有比赛记录
-    public List<Contest> selectAllContest();
+    List<Contest> selectAllContest();
 
     // 插入一条比赛记录
-    public void insertContest(Contest contest);
+    void insertContest(Contest contest);
+
+    Contest selectContestById(int id);
+
+    int selectNumberById(int id);
+
+    int selectCountContest();
+
 
 }

@@ -5,11 +5,11 @@
 <mapper namespace="com.cslg.graduation.dao.UserMapper">
 
     <sql id="insertFields">
-        username, password, status, create_date, major, identity_card, phone, email, name, header_url, clothing_size, gender, is_score
+        username, password, status, create_date, major, identity_card, phone, email, name, clothing_size, gender, is_score, session
     </sql>
 
     <sql id="selectFields">
-         username, password, status, create_date, major, identity_card, phone, email, name, header_url, clothing_size, gender, is_score
+         username, password, status, create_date, major, identity_card, phone, email, name, clothing_size, gender, is_score, session
     </sql>
 
     <select id="selectByUsername" resultType="User">
@@ -32,7 +32,7 @@
     
     <insert id="insertUser" parameterType="User">
         insert into user (<include refid="insertFields"></include>)
-        values(#{username}, #{password}, #{status}, #{createDate}, #{major}, #{identityCard}, #{phone}, #{email}, #{name}, #{headerUrl}, #{clothingSize}, #{gender},#{isScore})
+        values(#{username}, #{password}, #{status}, #{createDate}, #{major}, #{identityCard}, #{phone}, #{email}, #{name}, #{clothingSize}, #{gender},#{isScore},#{session})
     </insert>
 
     <update id="updateStatus">
@@ -49,12 +49,6 @@
         update user set password = #{password}
         where username = #{username}
     </update>
-    
-    <select id="selectIsScoreUsers" resultType="String">
-        select username
-        from user
-        where is_score = 1
-    </select>
 
     <select id="selectAllUsers" resultType="User">
         select <include refid="selectFields"></include>

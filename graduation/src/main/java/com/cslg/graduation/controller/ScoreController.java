@@ -41,11 +41,12 @@ public class ScoreController {
         // 返回的所有积分数据
         List<Map<String,Object>> scoreList = new ArrayList<>();
         // 获取所有显示的学号
-        List<String> userList = userService.IsScoreUsers();
+        List<User> userList = userService.getAllUsers();
         // 获取所有周赛时间
         List<Date> allTime = weekService.getAllTime();
         Collections.reverse(allTime);
-        for(String username: userList){
+        for(User u: userList){
+            String username = u.getUsername();
             // 存储该用户的数据
             Map<String,Object> map = new HashMap<>();
             User user = userService.findUserByUsername(username);

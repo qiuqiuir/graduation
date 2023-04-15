@@ -15,6 +15,11 @@ import java.util.*;
 @Service
 public class SpiderService {
 
+    /**
+     * 根据牛客比赛id获取本周周赛情况
+     * @param id
+     * @return  Map<String, Double> 用户id-积分
+     */
     public Map<String, Double> getNowcoderScore(String id) {
         String url = "https://ac.nowcoder.com/acm-heavy/acm/contest/real-time-rank-data?token=&id=" + id + "&limit=0&_=1643019279364";
         JSONObject data = null;
@@ -77,6 +82,11 @@ public class SpiderService {
         return nowcoderData;
     }
 
+    /**
+     * 根据atcoder比赛id获取该场周赛的积分
+     * @param id
+     * @return Map<String, Double> 用户id-积分
+     */
     public Map<String, Double> getAtcoderScore(String id) {
         String url = "https://atcoder.jp/contests/" + id + "/standings/json";
         JSONObject data = null;
@@ -103,6 +113,11 @@ public class SpiderService {
         return rankData;
     }
 
+    /**
+     * 根据用户cf的id统计该用户通过题目的知识点情况
+     * @param id
+     * @return  Map<String,Integer> 知识点-个数
+     */
     public Map<String,Integer> getCfSubmission(String id) {
         String url = "https://codeforces.com/api/user.status?handle=" + id;
         JSONObject data = null;
@@ -190,5 +205,19 @@ public class SpiderService {
             }
             System.out.println();
         }
+    }
+
+    public void getNowcoderRank(String id){
+        String url = "https://ac.nowcoder.com/acm/contest/rating-history?token=&uid="+id+"&_=1681560296783";
+        JSONObject data = null;
+        Map<String, String> cookies = new HashMap<>();
+        cookies.put("cookie","_uab_collina=164008151843874210609052; __snaker__id=NVh8bmBte8HlYvOj; NOWCODERUID=7655DF926F6E4133AA6FFFB120019158; NOWCODERCLINETID=8998D896DEAE7519A9B8DB042B773A82; gr_user_id=09f8cacb-965e-43d8-88c0-2c8c7805f5f2; c196c3667d214851b11233f5c17f99d5_gr_last_sent_cs1=859022021; YD00000586307807%3AWM_NI=hfm%2BS9v%2BgBVHoP14QrapVjt0C93mnZ66lvFVEpzYCedfVeyn6j4%2BNlzSAK8mxPpmrTHKqOEFo4pNSIUoK9OzygVElCSbMSF7qB4hdxfx8Vt4cDXZPlDMecqgyqrSbToqWHQ%3D; YD00000586307807%3AWM_NIKE=9ca17ae2e6ffcda170e2e6eeb8dc7cb4ea898ecf4abb8a8bb2d45e978b8facc86ea3948583e65fab9987b7c22af0fea7c3b92aacbaa3ccd233b6f5a9a3d544ad90ffd5d47aa3b09a8bf73c81e7fd8eed52f6eaa497c55e87b0b6bac26fa8ba9a86fc66f6b6fccccd68ba8d8facbb67bc90c08ef1608c95bfb0c84eadecc0afd24397b185dace72bbb99aa6ef4991be83b4c53db39efc89e774a6a8f8b7f740a19c98bbd3688893ab84f46dbbafbeb4e160adaf99a9d437e2a3; YD00000586307807%3AWM_TID=3Jp48kldYVpEVAEEEFJ%2FoM9iPY3K0Ow9; _clck=lvq5ys|1|fa1|0; isAgreementChecked=true; t=EBD44802565F6446BE8372887652140B; Hm_lvt_a808a1326b6c06c437de769d1b85b870=1680777722,1680854193,1681020415,1681521314; acw_tc=a8dbf6f742068156fb66b088fc455a51ee297d9b02fcf820458fd9cb2dd29494; c196c3667d214851b11233f5c17f99d5_gr_session_id=8b82af1f-7b07-45e3-901c-6cb2004edbef; c196c3667d214851b11233f5c17f99d5_gr_last_sent_sid_with_cs1=8b82af1f-7b07-45e3-901c-6cb2004edbef; c196c3667d214851b11233f5c17f99d5_gr_session_id_8b82af1f-7b07-45e3-901c-6cb2004edbef=true; Hm_lpvt_a808a1326b6c06c437de769d1b85b870=1681560460; c196c3667d214851b11233f5c17f99d5_gr_cs1=859022021");
+        try {
+            data = GetUrlJson.getHttpJson(url,cookies);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        data = data.getJSONObject("msg");
+        data = data.getJSONObject("data");
     }
 }

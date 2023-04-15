@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cslg.graduation.dao.AwardMapper">
+    <sql id="insertFields">
+        username, contest_id, number, type
+    </sql>
+
+    <sql id="selectFields">
+        username, contest_id, number, type
+    </sql>
+
+    <select id="selectAllAward" resultType="Award">
+        select <include refid="selectFields"></include>
+        from award
+    </select>
+
+    <select id="selectAwardByUsername" resultType="Award">
+        select <include refid="selectFields"></include>
+        from award
+        where username = #{username}
+    </select>
+
+    <insert id="insertAward" parameterType="Award" keyProperty="id">
+        insert into award (<include refid="insertFields"></include>)
+        values( #{username}, #{contestId}, #{number}, #{type})
+    </insert>
+
+    <select id="selectAwardById" resultType="Award">
+        select <include refid="selectFields"></include>
+        from award
+        where contest_id = #{id}
+    </select>
+
+    <select id="selectAwardByIdAndType" resultType="Award">
+        select <include refid="selectFields"></include>
+        from award
+        where contest_id = #{id} and type = #{type}
+    </select>
+
+    <select id="selectNumberByIdAndType" resultType="int">
+        select IFNULL(max(number),0)
+        from award
+        where contest_id = #{id} and type = #{type}
+    </select>
+
+    <select id="selectCountAward" resultType="int">
+        select count(id) from award
+    </select>
+
+    <select id="selectCountRenci" resultType="int">
+        select count( DISTINCT username) from award
+    </select>
+
+
+</mapper>
