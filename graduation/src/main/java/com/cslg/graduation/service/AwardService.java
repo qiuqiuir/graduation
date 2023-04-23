@@ -5,10 +5,7 @@ import com.cslg.graduation.entity.Award;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @auther xurou
@@ -23,6 +20,9 @@ public class AwardService {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private ContestService contestService;
 
     /**
      * 获取所有获奖信息
@@ -126,5 +126,16 @@ public class AwardService {
     public List<Award> getAwardByUsername(String username){
         return awardMapper.selectAwardByUsername(username);
     }
+
+    /**
+     * 根据比赛id和第几个获奖number获取获奖人员的学号
+     * @param id
+     * @param number
+     * @return List<String>
+     */
+    public List<String> getAwardsByIdAndNumber(int id, int number){
+        return awardMapper.selectAwardsByIdAndNumber(id, number);
+    }
+
 
 }

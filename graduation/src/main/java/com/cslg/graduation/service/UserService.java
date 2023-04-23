@@ -8,6 +8,7 @@ import com.cslg.graduation.util.GraduationUtil;
 import com.cslg.graduation.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -112,6 +113,14 @@ public class UserService {
 
     public void updateUser(User user) {
         userMapper.updateUser(user);
+    }
+
+    public List<User> getUsersBySession(int session){
+        return userMapper.selectUsersBySession(session);
+    }
+
+    public List<String> getMajorsBySession(int session){
+        return userMapper.selectMajorBySession(session);
     }
 
 

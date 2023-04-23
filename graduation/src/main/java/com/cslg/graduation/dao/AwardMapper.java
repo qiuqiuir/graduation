@@ -27,5 +27,7 @@ public interface AwardMapper {
 
     int selectCountRenci();
 
+    List<String> selectAwardsByIdAndNumber(int id,int number);
+
 
 }

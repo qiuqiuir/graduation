@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cslg.graduation.dao.AcnumberMapper">
+
+    <select id="allCountByUsername" resultType="int">
+        select IFNULL(sum(count),0)
+        from acnumber
+        where username = #{username} and time =(
+        select max(time) from acnumber
+        )
+    </select>
+
+    <select id="allCountByUsernameAndTime" resultType="int">
+        select IFNULL(sum(count),0)
+        from acnumber
+        where username = #{username} and time = #{time}
+    </select>
+
+    <select id="countByUsernameAndPlatform" resultType="int">
+        select IFNULL(sum(count),0)
+        from acnumber
+        where username = #{username} and platform = #{platform} and time =(
+        select max(time) from acnumber
+        )
+    </select>
+
+    <select id="countByUsernameAndPlatformAndTime" resultType="int">
+        select IFNULL(sum(count),0)
+        from acnumber
+        where username = #{username} and platform = #{platform} and time = #{time}
+    </select>
+
+    <insert id="insertAcnumber" parameterType="Acnumber" keyProperty="id">
+        insert into acnumber(username,platform,count,time)
+        values(#{username}, #{platform}, #{count},#{time})
+
+    </insert>
+
+    <update id="updateAcnumber">
+        update acnumber set count = #{count}
+        where username = #{username} and platform = #{platform} and time = #{time}
+    </update>
+
+    <select id="selectAcNumberByUsername" resultType="Acnumber">
+        select count,platform,time
+        from acnumber
+        where username = #{username}
+    </select>
+
+</mapper>

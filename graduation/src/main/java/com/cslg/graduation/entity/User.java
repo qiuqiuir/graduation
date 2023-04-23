@@ -20,7 +20,7 @@ public class User {
     private String phone;
     private String email;
     private String name;
-    private String session;
+    private int session;
     private String clothingSize;
     private String gender;
     private int isScore;
@@ -106,11 +106,11 @@ public class User {
         return this;
     }
 
-    public String getSession() {
+    public int getSession() {
         return session;
     }
 
-    public void setSession(String session) {
+    public void setSession(int session) {
         this.session = session;
     }
 

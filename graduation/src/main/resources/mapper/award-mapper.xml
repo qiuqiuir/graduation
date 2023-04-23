@@ -53,5 +53,12 @@
         select count( DISTINCT username) from award
     </select>
 
+    <select id="selectAwardsByIdAndNumber" resultType="String">
+        select username
+        from award
+        where contest_id = #{id} and number = #{number}
+        order by username
+    </select>
+
 
 </mapper>

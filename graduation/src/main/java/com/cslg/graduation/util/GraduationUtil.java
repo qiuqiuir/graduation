@@ -48,11 +48,12 @@ public class GraduationUtil {
     public static String DateToString(Date time) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(time);
+        String year = calendar.get(Calendar.YEAR)+"";
         String mouth = (1+calendar.get(Calendar.MONTH)) + "";
         if (mouth.length() == 1) mouth = "0" + mouth;
         String day = calendar.get(Calendar.DATE) + "";
         if (day.length() == 1) day = "0" + day;
-        String date = mouth + "-" + day;
+        String date = year + "-" + mouth + "-" + day;
         return date;
     }
 }

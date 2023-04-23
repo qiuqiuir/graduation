@@ -26,5 +26,9 @@ public interface UserMapper {
 
     void updateUser(User user);
 
+    List<User> selectUsersBySession(int session);
+
+    List<String> selectMajorBySession(int session);
+
 
 }

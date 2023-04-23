@@ -4,12 +4,12 @@ import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.entity.Award;
 import com.cslg.graduation.entity.AwardTeam;
 import com.cslg.graduation.entity.Contest;
+import com.cslg.graduation.entity.User;
 import com.cslg.graduation.service.AwardService;
 import com.cslg.graduation.service.ContestService;
-import com.cslg.graduation.util.GraduationUtil;
+import com.cslg.graduation.service.UserService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -21,7 +21,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/award")
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 public class AwardController {
 
     @Autowired
@@ -30,6 +30,8 @@ public class AwardController {
     @Autowired
     private ContestService contestService;
 
+    @Autowired
+    private UserService userService;
     /**
      * 获取所有获奖记录
      *
@@ -173,6 +175,51 @@ public class AwardController {
                 Date time1 = (Date) o1.get("time");
                 Date time2 = (Date) o2.get("time");
                 return time1.compareTo(time2);
+            }
+        });
+        return ResponseService.createBySuccess(list);
+    }
+
+    @RequestMapping("/getAwardTeam")
+    public ResponseService getAwardTeam(){
+        List<Award> awardList = awardService.getAllAward();
+        Map<List<String>, Integer>map = new HashMap<>();
+        for(Award award: awardList){
+            Contest contest = contestService.getContestById(award.getContestId());
+            int people = contest.getNumber();
+            if(people==3) {
+                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                List<String> names = new ArrayList<>();
+                for(String s:usernames){
+                    User user = userService.findUserByUsername(s);
+                    names.add(user.getName());
+                }
+                if (usernames.size() == 3) {
+                    int coefficient = 0;
+                    if (award.getType().equals("一等奖")) coefficient = 3;
+                    if (award.getType().equals("二等奖")) coefficient = 2;
+                    if (award.getType().equals("三等奖")) coefficient = 1;
+                    int score = 0;
+                    if (contest.getLevel().equals("国家级")) coefficient *= 2;
+                    if (contest.getName().contains("邀请赛")) {
+                        score += coefficient * 300;
+                    } else if (contest.getName().contains("CPC")) {
+                        score += coefficient * 500;
+                    } else if (contest.getName().contains("省赛")) {
+                        score += coefficient * 200;
+                    }
+                    if (map.containsKey(names)) {
+                        int last = map.get(names);
+                        map.put(names, last + score);
+                    } else map.put(names, score);
+                }
+            }
+        }
+        List<Map.Entry<List<String>, Integer>> list = new ArrayList<Map.Entry<List<String>, Integer>>(map.entrySet());
+        Collections.sort(list, new Comparator<Map.Entry<List<String>, Integer>>() {
+            @Override
+            public int compare(Map.Entry<List<String>, Integer> o1, Map.Entry<List<String>, Integer> o2) {
+                return o2.getValue().compareTo(o1.getValue());
             }
         });
         return ResponseService.createBySuccess(list);

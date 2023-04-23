@@ -58,6 +58,9 @@ public class DataBaseTest {
     @Autowired
     private AwardService awardService;
 
+    @Autowired
+    private AcnumberService acnumberService;
+
     @Test
     public void testUser() {
 
@@ -117,7 +120,7 @@ public class DataBaseTest {
 
 
 //        System.out.println(scoreService.getNumByTime(new Date(2022-1900,2,19)));
-        System.out.println(scoreService.getDailyScoreByUsernameAndTime("040722109",new Date(2023-1900,1,24)));
+        System.out.println(scoreService.getDailyScoreByUsernameAndTime("040722109", new Date(2023 - 1900, 1, 24)));
     }
 
     @Test
@@ -127,7 +130,7 @@ public class DataBaseTest {
         for (Contest contest : contestList) {
             System.out.println(contest);
             System.out.println(contest.getRemark());
-            System.out.println(contest.getRemark()==null);
+            System.out.println(contest.getRemark() == null);
             System.out.println(StringUtils.isBlank(contest.getRemark()));
         }
 //
@@ -141,11 +144,11 @@ public class DataBaseTest {
     }
 
     @Test
-    public void testWeek(){
+    public void testWeek() {
 //        Week week = new Week().setTime(new Date(2022-1900,2,19));
 //        weekService.addWeek(week);
         List<Week> weekList = weekMapper.selectAllWeek();
-        for(Week week:weekList){
+        for (Week week : weekList) {
             System.out.println(week);
         }
 
@@ -157,7 +160,7 @@ public class DataBaseTest {
 
 
     @Test
-    public void testOj(){
+    public void testOj() {
 //        Oj oj = new Oj()
 //                .setOjId("qiuqiur")
 //                .setUsername("093119134")
@@ -170,22 +173,22 @@ public class DataBaseTest {
 //            System.out.println(s);
 //        }
         List<Oj> list = ojMapper.selectListOj("093119134");
-        for(Oj oj:list){
+        for (Oj oj : list) {
             System.out.println(oj);
         }
 
     }
 
     @Test
-    public void testNews(){
+    public void testNews() {
 //        News news = new News()
 //                .setTime(new Date(2022-1900,10,14))
 //                .setTitle("集训队学子在第47届国际大学生程序设计竞赛亚洲区域赛（西安）获铜奖")
 //                .setUrl("http://acm.cse.cslg.cn/archives/2653");
 //
 //        newsMapper.insertNews(news);
-        List<News> newsList= newsMapper.selectAllNews();
-        for(News news:newsList) {
+        List<News> newsList = newsMapper.selectAllNews();
+        for (News news : newsList) {
             System.out.println(news);
         }
 
@@ -193,22 +196,38 @@ public class DataBaseTest {
 
 
     @Test
-    public void testTraining(){
+    public void testTraining() {
 //        Training training = new Training()
 //                .setPlatform("牛客")
 //                .setTitle("数学")
 //                .setUrl("https://ac.nowcoder.com/courses/cover/live/731");
 //
 //        trainingMapper.insertTraining(training);
-        List<Training> newsList= trainingMapper.selectAllTraining();
-        for(Training news:newsList) {
-            System.out.println(news);
+//        List<Training> newsList= trainingMapper.selectAllTraining();
+//        for(Training news:newsList) {
+//            System.out.println(news);
+//        }
+        List<User> userList = userService.getAllUsers();
+        for (User user : userList) {
+            Acnumber acnumber = new Acnumber()
+                    .setUsername(user.getUsername())
+                    .setCount(0);
+            acnumber.setPlatform("nowcoder");
+            acnumberService.addAcnumber(acnumber);
+            acnumber.setPlatform("codeforces");
+            acnumberService.addAcnumber(acnumber);
+            acnumber.setPlatform("luogu");
+            acnumberService.addAcnumber(acnumber);
+            acnumber.setPlatform("atcoder");
+            acnumberService.addAcnumber(acnumber);
+            acnumber.setPlatform("vjudge");
+            acnumberService.addAcnumber(acnumber);
         }
 
     }
 
     @Test
-    public void award(){
-        awardService.getAwardByIdAndType(120,"三等奖");
+    public void award() {
+        awardService.getAwardByIdAndType(120, "三等奖");
     }
 }

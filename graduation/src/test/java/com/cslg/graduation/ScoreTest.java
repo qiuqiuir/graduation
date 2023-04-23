@@ -31,7 +31,8 @@ public class ScoreTest {
 //                .setPlatform("nowcoder")
 //                .setContestId("53378");
 //        weekService.addWeek(week);
-        System.out.println(GraduationUtil.DateToString(new Date()));
+//        System.out.println(GraduationUtil.DateToString(new Date()));
+
     }
 
 }

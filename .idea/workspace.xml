@@ -4,24 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6072d8ba-9e4e-411f-86e7-c6bc3598e9c5" name="Changes" comment="比赛重构">
+    <list default="true" id="6072d8ba-9e4e-411f-86e7-c6bc3598e9c5" name="Changes" comment="比赛重构为比赛+获奖">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ContestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ContestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ScoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ScoreController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/SpiderController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/TestController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/ContestMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/ContestMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/AwardMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/AwardMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/Contest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/Contest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ContestService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ContestService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ScoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ScoreService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/SpiderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/SpiderService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/contest-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/contest-mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/util/GraduationUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/util/GraduationUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/award-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/award-mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/user-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/user-mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/ScoreTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/ScoreTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/SpiderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/SpiderTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -108,7 +106,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DataBaseTest.award" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DataBaseTest.testTraining" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="graduation" />
       <extension name="coverage">
         <pattern>
@@ -118,13 +116,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.cslg.graduation" />
       <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.DataBaseTest" />
-      <option name="METHOD_NAME" value="award" />
+      <option name="METHOD_NAME" value="testTraining" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DataBaseTest.testContest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ScoreTest.testaddScore" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="graduation" />
       <extension name="coverage">
         <pattern>
@@ -133,14 +131,14 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.cslg.graduation" />
-      <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.DataBaseTest" />
-      <option name="METHOD_NAME" value="testContest" />
+      <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.ScoreTest" />
+      <option name="METHOD_NAME" value="testaddScore" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DataBaseTest.testUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="SpiderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="graduation" />
       <extension name="coverage">
         <pattern>
@@ -149,9 +147,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.cslg.graduation" />
-      <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.DataBaseTest" />
-      <option name="METHOD_NAME" value="testUser" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.SpiderTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -175,10 +172,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.GraduationApplication" />
+        <item itemvalue="JUnit.SpiderTest" />
         <item itemvalue="JUnit.SpiderTest.spider" />
-        <item itemvalue="JUnit.DataBaseTest.award" />
-        <item itemvalue="JUnit.DataBaseTest.testContest" />
-        <item itemvalue="JUnit.DataBaseTest.testUser" />
+        <item itemvalue="JUnit.ScoreTest.testaddScore" />
+        <item itemvalue="JUnit.DataBaseTest.testTraining" />
       </list>
     </recent_temporary>
   </component>
@@ -275,7 +272,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681372924170</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="比赛重构为比赛+获奖">
+      <created>1681570160065</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1681570160065</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -297,14 +301,15 @@
     <MESSAGE value="完成大部分，差图+组队建议" />
     <MESSAGE value="完成大部分，差组队建议" />
     <MESSAGE value="比赛重构" />
-    <option name="LAST_COMMIT_MESSAGE" value="比赛重构" />
+    <MESSAGE value="比赛重构为比赛+获奖" />
+    <option name="LAST_COMMIT_MESSAGE" value="比赛重构为比赛+获奖" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/SpiderService.java</url>
-          <line>156</line>
+          <line>169</line>
           <option name="timeStamp" value="80" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
@@ -318,9 +323,19 @@
           <option name="timeStamp" value="141" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/SpiderService.java</url>
-          <line>220</line>
-          <option name="timeStamp" value="142" />
+          <url>file://$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java</url>
+          <line>215</line>
+          <option name="timeStamp" value="147" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java</url>
+          <line>191</line>
+          <option name="timeStamp" value="160" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AcnumberController.java</url>
+          <line>63</line>
+          <option name="timeStamp" value="173" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -60,6 +60,16 @@
         where username = #{username}
     </update>
 
+    <select id="selectUsersBySession" resultType="User">
+        select <include refid="selectFields"></include>
+        from user
+        where session = #{session}
+    </select>
 
+    <select id="selectMajorBySession" resultType="String">
+        select DISTINCT(major)
+        from user
+        where session = #{session}
+    </select>
 
 </mapper>

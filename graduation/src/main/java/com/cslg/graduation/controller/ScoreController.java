@@ -57,7 +57,7 @@ public class ScoreController {
                 double dailyScore = scoreService.getDailyScoreByUsernameAndTime(username,time);
                 ScoreAll.put("score",dailyScore);
                 ScoreAll.put("rank",scoreService.getRankByUsernameAndTime(username,time));
-                ScoreAll.put("time", GraduationUtil.DateToString(time));
+                ScoreAll.put("time", GraduationUtil.DateToString(time).substring(5));
                 allDailyScore.add(ScoreAll);
             }
             map.put("total",totalScore);
