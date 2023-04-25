@@ -52,6 +52,11 @@ public class UserController {
     @Autowired
     private ContestService contestService;
 
+    /**
+     * 登录,传入User,包含用户名username和密码password
+     * @param loginVO
+     * @return
+     */
     @PostMapping(value = "/login")
     public ResponseService test(@RequestBody User loginVO) {
         User user = userService.login(loginVO);
@@ -67,12 +72,22 @@ public class UserController {
         return ResponseService.createBySuccess(mp);
     }
 
+    /**
+     * 注册,传入User,包含用户名username和密码password和姓名name
+     * @param user
+     * @return
+     */
     @PostMapping("/register")
     public ResponseService register(@RequestBody User user) {
         userService.register(user);
         return ResponseService.createBySuccess();
     }
 
+    /**
+     * 通过传入的User里的username信息查找用户
+     * @param user
+     * @return
+     */
     @PostMapping("/getUser")
     public ResponseService getUserByUsername(@RequestBody User user) {
         User u = userService.findUserByUsername(user.getUsername());
@@ -82,6 +97,11 @@ public class UserController {
         return ResponseService.createBySuccess(u);
     }
 
+    /**
+     * 更新user用户信息
+     * @param user
+     * @return
+     */
     @PostMapping("/update")
     public ResponseService updateUser(@RequestBody User user) {
         userService.updateUser(user);
@@ -93,6 +113,7 @@ public class UserController {
         List<User> userList = userService.getAllUsers();
         return ResponseService.createBySuccess(userList);
     }
+
 
     @GetMapping("/getAllUserMessage")
     public ResponseService getAllUserMessage() {
@@ -145,6 +166,11 @@ public class UserController {
         return ResponseService.createBySuccess(fan);
     }
 
+    /**
+     * 获取第session届所有队员的情况，并计分后降序返回
+     * @param session
+     * @return
+     */
     @GetMapping("/getPeople/{session}")
     public ResponseService getPeopleBySession(@PathVariable("session") int session) {
         List<Map<String, Object>> result = new ArrayList<>();

@@ -4,23 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6072d8ba-9e4e-411f-86e7-c6bc3598e9c5" name="Changes" comment="比赛重构为比赛+获奖">
+    <list default="true" id="6072d8ba-9e4e-411f-86e7-c6bc3598e9c5" name="Changes" comment="完成大部分功能">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ScoreController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ScoreController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ContestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/ContestController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/AwardMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/AwardMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/AwardTeam.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/entity/AwardTeam.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/SpiderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/SpiderService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/util/GraduationUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/util/GraduationUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/award-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/award-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/user-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/user-mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/ScoreTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/ScoreTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/SpiderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/SpiderTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -279,7 +271,14 @@
       <option name="project" value="LOCAL" />
       <updated>1681570160065</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="完成大部分功能">
+      <created>1682233495956</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1682233495956</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -302,7 +301,8 @@
     <MESSAGE value="完成大部分，差组队建议" />
     <MESSAGE value="比赛重构" />
     <MESSAGE value="比赛重构为比赛+获奖" />
-    <option name="LAST_COMMIT_MESSAGE" value="比赛重构为比赛+获奖" />
+    <MESSAGE value="完成大部分功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="完成大部分功能" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -329,13 +329,23 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java</url>
-          <line>191</line>
+          <line>217</line>
           <option name="timeStamp" value="160" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AcnumberController.java</url>
-          <line>63</line>
-          <option name="timeStamp" value="173" />
+          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java</url>
+          <line>195</line>
+          <option name="timeStamp" value="187" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java</url>
+          <line>56</line>
+          <option name="timeStamp" value="192" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java</url>
+          <line>70</line>
+          <option name="timeStamp" value="193" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -2,6 +2,8 @@ package com.cslg.graduation.service;
 
 import com.cslg.graduation.dao.AwardMapper;
 import com.cslg.graduation.entity.Award;
+import com.cslg.graduation.entity.Contest;
+import com.cslg.graduation.entity.FirstAward;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +28,7 @@ public class AwardService {
 
     /**
      * 获取所有获奖信息
+     *
      * @return
      */
     public List<Award> getAllAward() {
@@ -34,6 +37,7 @@ public class AwardService {
 
     /**
      * 根据比赛id获取所有获奖信息
+     *
      * @param id
      * @return
      */
@@ -43,6 +47,7 @@ public class AwardService {
 
     /**
      * 根据比赛id和比赛类型type获取获奖人员姓名
+     *
      * @param id
      * @param type
      * @return
@@ -63,22 +68,21 @@ public class AwardService {
         String winner = "";
         boolean isFirst = true;
         for (int i = 0; i < awardList.size(); i++) {
-            if(i!=awardList.size()-1&&awardList.get(i).getNumber() == awardList.get(i+1).getNumber()){
-                if(isFirst) winner += "【";
-                winner+=awardList.get(i).getUsername();
-                winner+="、";
-                isFirst=false;
-            }
-            else if(i>0&&awardList.get(i).getNumber() == awardList.get(i-1).getNumber()){
-                winner+=awardList.get(i).getUsername();
-                winner+="】";
-                isFirst=true;
-                if(i!=awardList.size()-1) winner+="、";
-            }else if(i!=awardList.size()-1){
-                winner+=awardList.get(i).getUsername();
-                winner+="、";
-            }else{
-                winner+=awardList.get(i).getUsername();
+            if (i != awardList.size() - 1 && awardList.get(i).getNumber() == awardList.get(i + 1).getNumber()) {
+                if (isFirst) winner += "【";
+                winner += awardList.get(i).getUsername();
+                winner += "、";
+                isFirst = false;
+            } else if (i > 0 && awardList.get(i).getNumber() == awardList.get(i - 1).getNumber()) {
+                winner += awardList.get(i).getUsername();
+                winner += "】";
+                isFirst = true;
+                if (i != awardList.size() - 1) winner += "、";
+            } else if (i != awardList.size() - 1) {
+                winner += awardList.get(i).getUsername();
+                winner += "、";
+            } else {
+                winner += awardList.get(i).getUsername();
             }
         }
         return winner;
@@ -86,55 +90,149 @@ public class AwardService {
 
     /**
      * 根据比赛id和比赛类型查找该比赛已经有几个人获奖
+     *
      * @param id
      * @param type
      * @return
      */
-    public int getNumberByIdAndType(int id,String type){
+    public int getNumberByIdAndType(int id, String type) {
         return awardMapper.selectNumberByIdAndType(id, type);
     }
 
     /**
      * 插入一条获奖记录
+     *
      * @param award
      */
-    public void insertAward(Award award){
+    public void insertAward(Award award) {
         awardMapper.insertAward(award);
     }
 
     /**
      * 获取比赛总获奖次数
+     *
      * @return
      */
-    public int getCountAward(){
+    public int getCountAward() {
         return awardMapper.selectCountAward();
     }
 
     /**
      * 获得比赛获奖人次
+     *
      * @return
      */
-    public int getCountPersonTimes(){
+    public int getCountPersonTimes() {
         return awardMapper.selectCountRenci();
     }
 
     /**
      * 根据学号username获取该用户所有获奖记录
+     *
      * @param username
      * @return
      */
-    public List<Award> getAwardByUsername(String username){
+    public List<Award> getAwardByUsername(String username) {
         return awardMapper.selectAwardByUsername(username);
     }
 
     /**
      * 根据比赛id和第几个获奖number获取获奖人员的学号
+     *
      * @param id
      * @param number
      * @return List<String>
      */
-    public List<String> getAwardsByIdAndNumber(int id, int number){
+    public List<String> getAwardsByIdAndNumber(int id, int number) {
         return awardMapper.selectAwardsByIdAndNumber(id, number);
+    }
+
+    /**
+     * 根据比赛名查找该奖项第一次获奖情况
+     *
+     * @param name
+     * @param contestList
+     * @return
+     */
+    public Map<String, List<FirstAward>> getFirstAwardByName(String name, List<Contest> contestList) {
+        if(name.equals("天梯赛")){
+            return getFirstAwardByNameCCCC(contestList);
+        }
+        Map<String, List<FirstAward>> map = new HashMap<>();
+        for (Contest contest : contestList) {
+            String contestName = contest.getName();
+            if (contestName.contains(name) && contestName.indexOf(name) + name.length() == contestName.length()) {
+                List<Award> awardList = getAwardById(contest.getId());
+                Map<String, List<FirstAward>> huojiang = new HashMap<>();
+                huojiang.put("省级一等奖", new ArrayList<>());
+                huojiang.put("省级二等奖", new ArrayList<>());
+                huojiang.put("省级三等奖", new ArrayList<>());
+                huojiang.put("国家级一等奖", new ArrayList<>());
+                huojiang.put("国家级二等奖", new ArrayList<>());
+                huojiang.put("国家级三等奖", new ArrayList<>());
+                for (Award award : awardList) {
+                    String awardLevel = contest.getLevel() + award.getType();
+                    boolean is = map.containsKey(awardLevel);
+                    if (!is) {
+                        FirstAward people = new FirstAward()
+                                .setUsername(award.getUsername())
+                                .setTime(contest.getTime());
+                        String peopleName = userService.findUserByUsername(people.getUsername()).getName();
+                        people = people.setName(peopleName);
+                        huojiang.get(awardLevel).add(people);
+                    }
+                }
+                for (Map.Entry<String, List<FirstAward>> entry : huojiang.entrySet()) {
+                    if (entry.getValue().size() > 0) {
+                        map.put(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
+    public Map<String, List<FirstAward>> getFirstAwardByNameCCCC(List<Contest> contestList) {
+        Map<String, List<FirstAward>> map = new HashMap<>();
+        String name = "天梯赛";
+        for (Contest contest : contestList) {
+            String contestName = contest.getName();
+            if (contestName.contains(name) && contestName.indexOf(name) + name.length() == contestName.length()) {
+                List<Award> awardList = getAwardById(contest.getId());
+                Map<String, List<FirstAward>> huojiang = new HashMap<>();
+                List<String> prefix = new ArrayList<>();
+                prefix.add("高校");
+                prefix.add("团队");
+                prefix.add("个人");
+                for(String s : prefix){
+                    huojiang.put(s+"省级一等奖", new ArrayList<>());
+                    huojiang.put(s+"省级二等奖", new ArrayList<>());
+                    huojiang.put(s+"省级三等奖", new ArrayList<>());
+                    huojiang.put(s+"国家级一等奖", new ArrayList<>());
+                    huojiang.put(s+"国家级二等奖", new ArrayList<>());
+                    huojiang.put(s+"国家级三等奖", new ArrayList<>());
+                }
+
+                for (Award award : awardList) {
+                    String awardLevel = contest.getRemark() + contest.getLevel() + award.getType();
+                    boolean is = map.containsKey(awardLevel);
+                    if (!is) {
+                        FirstAward people = new FirstAward()
+                                .setUsername(award.getUsername())
+                                .setTime(contest.getTime());
+                        String peopleName = userService.findUserByUsername(people.getUsername()).getName();
+                        people = people.setName(peopleName);
+                        huojiang.get(awardLevel).add(people);
+                    }
+                }
+                for (Map.Entry<String, List<FirstAward>> entry : huojiang.entrySet()) {
+                    if (entry.getValue().size() > 0) {
+                        map.put(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        }
+        return map;
     }
 
 

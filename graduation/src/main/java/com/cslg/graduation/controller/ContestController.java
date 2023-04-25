@@ -60,17 +60,17 @@ public class ContestController {
         return ResponseService.createBySuccess(count);
     }
 
-    @RequestMapping("/getTeam")
-    public ResponseService getTeam(){
-        List<Contest> contestList = contestService.getAllContest();
-        List<Contest> team = new ArrayList<>();
-        for(Contest contest : contestList){
-            if(contest.getNumber() == 3){
-                team.add(contest);
-            }
-        }
-        return ResponseService.createBySuccess(team);
-    }
+//    @RequestMapping("/getTeam")
+//    public ResponseService getTeam(){
+//        List<Contest> contestList = contestService.getAllContest();
+//        List<Contest> team = new ArrayList<>();
+//        for(Contest contest : contestList){
+//            if(contest.getNumber() == 3){
+//                team.add(contest);
+//            }
+//        }
+//        return ResponseService.createBySuccess(team);
+//    }
 
 
 

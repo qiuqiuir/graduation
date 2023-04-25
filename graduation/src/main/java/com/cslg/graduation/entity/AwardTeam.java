@@ -15,24 +15,27 @@ public class AwardTeam {
         return team;
     }
 
-    public void setTeam(List<String> team) {
+    public AwardTeam setTeam(List<String> team) {
         this.team = team;
+        return this;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public AwardTeam setId(int id) {
         this.id = id;
+        return this;
     }
 
     public String getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public AwardTeam setType(String type) {
         this.type = type;
+        return this;
     }
 
     @Override

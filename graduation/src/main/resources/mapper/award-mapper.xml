@@ -40,7 +40,7 @@
     </select>
 
     <select id="selectNumberByIdAndType" resultType="int">
-        select IFNULL(max(number),0)
+        select IFNULL(count(DISTINCT number),0)
         from award
         where contest_id = #{id} and type = #{type}
     </select>
