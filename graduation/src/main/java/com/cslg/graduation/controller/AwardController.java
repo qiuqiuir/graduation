@@ -37,7 +37,7 @@ public class AwardController {
      * @return
      */
     @RequestMapping("/getAllAward")
-    public ResponseService getAll() {
+    public ResponseService getAllAward() {
         List<Contest> contestList = contestService.getAllContest();
         // 时间从近到远排序
         Collections.sort(contestList, new Comparator<Contest>() {
@@ -68,6 +68,7 @@ public class AwardController {
                 if (award.getType().equals("二等奖")) two = true;
                 if (award.getType().equals("三等奖")) three = true;
             }
+            // 该比赛的一等奖
             if (one) {
                 Map<String, Object> firstPrize = new HashMap<>();
                 int number = awardService.getNumberByIdAndType(contest.getId(), "一等奖");
@@ -82,6 +83,7 @@ public class AwardController {
                 firstPrize.put("children", winnerList);
                 childrens.add(firstPrize);
             }
+            // 该比赛的二等奖
             if (two) {
                 Map<String, Object> firstPrize = new HashMap<>();
                 int number = awardService.getNumberByIdAndType(contest.getId(), "二等奖");
@@ -96,6 +98,7 @@ public class AwardController {
                 firstPrize.put("children", winnerList);
                 childrens.add(firstPrize);
             }
+            // 该比赛的三等奖
             if (three) {
                 Map<String, Object> firstPrize = new HashMap<>();
                 int number = awardService.getNumberByIdAndType(contest.getId(), "三等奖");

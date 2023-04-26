@@ -49,9 +49,7 @@ public class SpiderService {
         int acceptedFirstCount = rankData.getJSONObject(0).getInteger("acceptedCount");
         // 实际过题人数
         int peopleCount = 0;
-
         Map<String, Double> nowcoderData = new HashMap<>();
-
         // 第一次遍历获取实际过题人数
         for (int i = 1; i <= pageCount; i++) {
             String nowUrl = "https://ac.nowcoder.com/acm-heavy/acm/contest/real-time-rank-data?token=&id=" + id + "&page=" + i + "&limit=0&_=1643019279364";

@@ -45,6 +45,7 @@ public class ScoreService {
 
     /**
      * 新增username在某天的分数
+     *
      * @param score
      */
     public void addScore(Score score) {
@@ -76,7 +77,7 @@ public class ScoreService {
     }
 
     /**
-     * 根据周赛信息计算所有需要计算积分的人的积分
+     * 根据周赛信息计算所有队员的积分
      *
      * @param week
      */
@@ -95,7 +96,6 @@ public class ScoreService {
         System.out.println("All data crawling completed");
         for (User user : usernameList) {
             String username = user.getUsername();
-//            System.out.print("username:" + username + ",platform:atcoder,score:");
             // 该用户的积分
             double scorevalue = 0.0;
             // 该用户在该平台的所有id
@@ -108,7 +108,6 @@ public class ScoreService {
                     }
                 }
             }
-//            System.out.println(score);
             // 添加积分到list
             double totalScore = getTotalScoreByUsername(username);
             Score score = new Score()
@@ -121,18 +120,17 @@ public class ScoreService {
         Collections.sort(scoreList, new Comparator<Score>() {
             @Override
             public int compare(Score o1, Score o2) {
-                return Double.compare(o2.getTotalScore(),o1.getTotalScore());
+                return Double.compare(o2.getTotalScore(), o1.getTotalScore());
             }
         });
-
-        int last=1;
-        for(int i=0;i<scoreList.size();i++){
+        int last = 1;
+        for (int i = 0; i < scoreList.size(); i++) {
             Score nowScore = scoreList.get(i);
-            if(i!=0&&nowScore.getTotalScore()==scoreList.get(i-1).getTotalScore()){
+            if (i != 0 && nowScore.getTotalScore() == scoreList.get(i - 1).getTotalScore()) {
                 nowScore = nowScore.setRank(last);
-            }else {
+            } else {
                 nowScore = nowScore.setRank(i + 1);
-                last=i+1;
+                last = i + 1;
             }
             addScore(nowScore);
         }

@@ -37,53 +37,49 @@ public class ScoreController {
 
     @RequestMapping("/getAllScore")
     @ResponseBody
-    public ResponseService getScore(){
+    public ResponseService getScore() {
         // 返回的所有积分数据
-        List<Map<String,Object>> scoreList = new ArrayList<>();
+        List<Map<String, Object>> scoreList = new ArrayList<>();
         // 获取所有显示的学号
         List<User> userList = userService.getAllUsers();
         // 获取所有周赛时间
         List<Date> allTime = weekService.getAllTime();
         Collections.reverse(allTime);
-        for(User u: userList){
-            String username = u.getUsername();
+        for (User user : userList) {
             // 存储该用户的数据
-            Map<String,Object> map = new HashMap<>();
-            User user = userService.findUserByUsername(username);
+            Map<String, Object> map = new HashMap<>();
+            String username = user.getUsername();
+            // 积分总分
             double totalScore = scoreService.getTotalScoreByUsername(username);
-            List<Map<String ,Object>> allDailyScore = new ArrayList<>();
-            for(Date time : allTime){
-                Map<String ,Object> ScoreAll = new HashMap<>();
-                double dailyScore = scoreService.getDailyScoreByUsernameAndTime(username,time);
-                ScoreAll.put("score",dailyScore);
-                ScoreAll.put("rank",scoreService.getRankByUsernameAndTime(username,time));
+            // 每周积分合集
+            List<Map<String, Object>> allDailyScore = new ArrayList<>();
+            for (Date time : allTime) {
+                Map<String, Object> ScoreAll = new HashMap<>();
+                double dailyScore = scoreService.getDailyScoreByUsernameAndTime(username, time);
+                ScoreAll.put("score", dailyScore);
+                ScoreAll.put("rank", scoreService.getRankByUsernameAndTime(username, time));
                 ScoreAll.put("time", GraduationUtil.DateToString(time).substring(5));
                 allDailyScore.add(ScoreAll);
             }
-            map.put("total",totalScore);
-            map.put("name",user.getName());
-            map.put("username",user.getUsername());
-            map.put("week",allDailyScore);
+            map.put("total", totalScore);
+            map.put("name", user.getName());
+            map.put("username", user.getUsername());
+            map.put("week", allDailyScore);
             scoreList.add(map);
         }
-
+        // 按照积分总分降序排序
         Collections.sort(scoreList, new Comparator<Map<String, Object>>() {
             @Override
             public int compare(Map<String, Object> o1, Map<String, Object> o2) {
                 double a = (double) o1.get("total");
                 double b = (double) o2.get("total");
-                return -Double.compare(a,b);
+                return -Double.compare(a, b);
             }
         });
-
-        for(int i=0;i<scoreList.size();i++){
-            scoreList.get(i).put("rank",i+1);
+        // 排序后计算排名
+        for (int i = 0; i < scoreList.size(); i++) {
+            scoreList.get(i).put("rank", i + 1);
         }
-
-
         return ResponseService.createBySuccess(scoreList);
     }
-
-
-
 }
