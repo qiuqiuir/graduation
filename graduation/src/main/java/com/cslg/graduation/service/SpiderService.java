@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONObject;
 import com.cslg.graduation.entity.Acnumber;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.util.GetUrlJson;
-import com.cslg.graduation.util.GraduationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,6 +69,7 @@ public class SpiderService {
 
         // 第二次遍历获取userId的排名和过题数计算分数
         for (int i = 1; i <= pageCount; i++) {
+            // 爬虫网页
             String nowUrl = "https://ac.nowcoder.com/acm-heavy/acm/contest/real-time-rank-data?token=&id=" + id + "&page=" + i + "&limit=0&_=1643019279364";
             JSONObject nowData = null;
             try {
@@ -79,14 +79,17 @@ public class SpiderService {
             }
             nowData = nowData.getJSONObject("msg");
             nowData = nowData.getJSONObject("data");
+            // 排行榜数据
             JSONArray nowRank = nowData.getJSONArray("rankData");
             for (int j = 0; j < nowRank.size(); j++) {
+                // 用户通过题数
                 int userAcCount = nowRank.getJSONObject(j).getInteger("acceptedCount");
+                // 用户排名
                 int ranking = nowRank.getJSONObject(j).getInteger("ranking");
+                // 计算积分
                 double score = 100.0 * (userAcCount * 1.0 / acceptedFirstCount) * (2 * peopleCount - 2) / (peopleCount + ranking - 2);
                 nowcoderData.put(nowRank.getJSONObject(j).getString("uid"), score);
             }
-
         }
         return nowcoderData;
     }
@@ -101,7 +104,7 @@ public class SpiderService {
         String url = "https://atcoder.jp/contests/" + id + "/standings/json";
         JSONObject data = null;
         Map<String, String> cookies = new HashMap<>();
-        cookies.put("Cookie", "REVEL_SESSION=eb5fd7b3f3f78632feff17e291e23eeed583a894-%00Rating%3A1513%00%00_TS%3A1696669167%00%00UserScreenName%3Acslg093119134%00%00csrf_token%3A3NacyQTQR%2BQSIlCHzwKfZ73PMsbQBhGa6MrkuiMQcWM%3D%00%00SessionKey%3A7b174f93ca8c5f5df748448db7b689f6bdfccd6e8765439f020542ce6b50802fd1f1aa117c6824-241a3d88027318a4d15f5ca45d0c6309b0e1f1e78592695e4e2e9301340e2ac2%00%00UserName%3Acslg093119134%00%00a%3Afalse%00%00w%3Afalse%00; Path=/; Expires=Sat, 07 Oct 2023 08:59:27 GMT; Max-Age=15552000; HttpOnly; Secure");
+        cookies.put("Cookie", "__pp_uid=vdqR1VkSU6uJg6zkMhQwpihMkBcWkMx9; language=en; _ga=GA1.2.1995201393.1572173694; timeDelta=-1238; _gid=GA1.2.336295427.1682778439; REVEL_FLASH=; REVEL_SESSION=03a566f83538bb6d102deacfbb1bad5898254df4-%00SessionKey%3A02b0da9b11f81cb57ce7b46d445ea80c258518ddd5da9b33f1c1888ffdc1204d9352dc64f62b33-afc046088e869e19750e81ad308264b43f7dbd18a057973be1876990a34a7da4%00%00UserName%3Acslg093119134%00%00UserScreenName%3Acslg093119134%00%00csrf_token%3A3NacyQTQR%2BQSIlCHzwKfZ73PMsbQBhGa6MrkuiMQcWM%3D%00%00w%3Afalse%00%00Rating%3A1513%00%00a%3Afalse%00%00_TS%3A1698330456%00");
         cookies.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36 Edg/111.0.1661.54");
         try {
             data = GetUrlJson.getHttpJson(url, cookies);
@@ -237,8 +240,11 @@ public class SpiderService {
         data = data.getJSONObject("data");
     }
 
+    /**
+     * 爬取队员每日过题数
+     */
     public void updateUserAcNumber() {
-        for (int j = 1;j <= 18; j++) {
+        for (int j = 1; j <= 18; j++) {
             String now = j + "";
             if (now.length() == 1) now = "0" + now;
             String time = "2023-04-" + now;
@@ -257,7 +263,7 @@ public class SpiderService {
             List<User> userList = userService.getAllUsers();
             for (int i = 0; i < records.size(); i++) {
                 String username = records.getJSONObject(i).getString("username");
-                if(userService.findUserByUsername(username)==null) continue;
+                if (userService.findUserByUsername(username) == null) continue;
                 Acnumber acnumber = new Acnumber()
                         .setUsername(username)
                         .setTime(date);

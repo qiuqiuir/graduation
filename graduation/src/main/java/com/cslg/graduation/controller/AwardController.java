@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -30,6 +31,8 @@ public class AwardController {
 
     @Autowired
     private UserService userService;
+
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
     /**
      * 获取所有获奖记录
@@ -278,13 +281,13 @@ public class AwardController {
                     User user = userService.findUserByUsername(s);
                     names.add(user.getName());
                 }
-                if(map.containsKey(names)) continue;
-                map.put(names,1);
+                if (map.containsKey(names)) continue;
+                map.put(names, 1);
                 if (usernames.size() == 3) {
                     String contestName = contest.getLevel() + ":" + contest.getName();
                     if (contest.getRemark().length() > 0) contestName += "(" + contest.getRemark() + ")";
-                    if(names.get(0).equals("徐柔")&&names.get(1).equals("张雷")&&names.get(2).equals("詹智航")){
-                        contestName+=",国家级:第7届CCPC(威海),省级:第6届江苏省赛";
+                    if (names.get(0).equals("徐柔") && names.get(1).equals("张雷") && names.get(2).equals("詹智航")) {
+                        contestName += ",国家级:第7届CCPC(威海),省级:第6届江苏省赛";
                     }
                     AwardTeam awardTeam = new AwardTeam()
                             .setTeam(names)
@@ -294,11 +297,11 @@ public class AwardController {
             }
         }
         List<User> userList = userService.getAllUsers();
-        for(int j=0;j<19;j++) {
+        for (int j = 0; j < 19; j++) {
             List<String> usernames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 int idx = new Random().nextInt(userList.size());
-                while(!usernames.isEmpty()&&userList.get(idx).getUsername().equals(usernames.get(usernames.size()-1))){
+                while (!usernames.isEmpty() && userList.get(idx).getUsername().equals(usernames.get(usernames.size() - 1))) {
                     idx = new Random().nextInt(userList.size());
                 }
                 usernames.add(userList.get(idx).getUsername());
@@ -321,7 +324,7 @@ public class AwardController {
         Collections.sort(awardTeams, new Comparator<AwardTeam>() {
             @Override
             public int compare(AwardTeam o1, AwardTeam o2) {
-                return Math.random()<0.5?1:-1;
+                return Math.random() < 0.5 ? 1 : -1;
             }
         });
 
@@ -333,7 +336,7 @@ public class AwardController {
      *
      * @return
      */
-    @RequestMapping("/AwardFist")
+    @RequestMapping("/AwardFirst")
     public ResponseService getAwardFirst() {
         Map<String, Object> result = new HashMap<>();
         List<Contest> contestList = contestService.getAllContest();
@@ -360,5 +363,320 @@ public class AwardController {
         return ResponseService.createBySuccess(result);
     }
 
+    @RequestMapping("/getAwardCCPC")
+    public ResponseService getAwardCCPC() {
+        List<Award> awardList = awardService.getAllAward();
+        List<Map<String, Object>> result = new ArrayList<>();
+        Set<String> exists = new HashSet<>();
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            int idx = contest.getName().indexOf("CCPC");
+            if (idx + 4 == contest.getName().length()) {
+                Map<String, Object> map = new HashMap<>();
+                String name = contest.getName();
+                if (!StringUtils.isBlank(contest.getRemark())) {
+                    name = name + "(" + contest.getRemark() + ")";
+                }
+                String nowNumber = award.getContestId() + " " + award.getNumber();
+                if (exists.contains(nowNumber)) continue;
+                exists.add(nowNumber);
+                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                String awardName = userService.findUserByUsername(usernames.get(0)).getName();
+                for (int i = 1; i < usernames.size(); i++) {
+                    awardName += ",";
+                    String s = userService.findUserByUsername(usernames.get(i)).getName();
+                    awardName += s;
+                }
+                map.put("name", name);
+                String s = sdf.format(contest.getTime());
+                map.put("time", sdf.format(contest.getTime()));
+                if (award.getType().equals("一等奖")) {
+                    map.put("type", "金奖");
+                }
+                if (award.getType().equals("二等奖")) {
+                    map.put("type", "银奖");
+                }
+                if (award.getType().equals("三等奖")) {
+                    map.put("type", "铜奖");
+                }
+                map.put("people", awardName);
+                result.add(map);
+            }
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                String time1 = (String) o1.get("time");
+                String time2 = (String) o2.get("time");
+                return time2.compareTo(time1);
+            }
+        });
+        return ResponseService.createBySuccess(result);
+    }
+
+    @RequestMapping("/getAwardICPC")
+    public ResponseService getAwardICPC() {
+        List<Award> awardList = awardService.getAllAward();
+        List<Map<String, Object>> result = new ArrayList<>();
+        Set<String> exists = new HashSet<>();
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            int idx = contest.getName().indexOf("ICPC");
+            if (idx + 4 == contest.getName().length()) {
+                Map<String, Object> map = new HashMap<>();
+                String name = contest.getName();
+                if (!StringUtils.isBlank(contest.getRemark())) {
+                    name = name + "(" + contest.getRemark() + ")";
+                }
+                String nowNumber = award.getContestId() + " " + award.getNumber();
+                if (exists.contains(nowNumber)) continue;
+                exists.add(nowNumber);
+                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                String awardName = userService.findUserByUsername(usernames.get(0)).getName();
+                for (int i = 1; i < usernames.size(); i++) {
+                    awardName += ",";
+                    String s = userService.findUserByUsername(usernames.get(i)).getName();
+                    awardName += s;
+                }
+                map.put("name", name);
+                String s = sdf.format(contest.getTime());
+                map.put("time", sdf.format(contest.getTime()));
+                if (award.getType().equals("一等奖")) {
+                    map.put("type", "金奖");
+                }
+                if (award.getType().equals("二等奖")) {
+                    map.put("type", "银奖");
+                }
+                if (award.getType().equals("三等奖")) {
+                    map.put("type", "铜奖");
+                }
+                map.put("people", awardName);
+                result.add(map);
+            }
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                String time1 = (String) o1.get("time");
+                String time2 = (String) o2.get("time");
+                return time2.compareTo(time1);
+            }
+        });
+        return ResponseService.createBySuccess(result);
+    }
+
+    @RequestMapping("/getAwardProvincial")
+    public ResponseService getAwardProvincial() {
+        List<Award> awardList = awardService.getAllAward();
+        List<Map<String, Object>> result = new ArrayList<>();
+        Set<String> exists = new HashSet<>();
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            if (contest.getName().contains("江苏省赛")) {
+                Map<String, Object> map = new HashMap<>();
+                String name = contest.getName();
+                if (!StringUtils.isBlank(contest.getRemark())) {
+                    name = name + "(" + contest.getRemark() + ")";
+                }
+                String nowNumber = award.getContestId() + " " + award.getNumber();
+                if (exists.contains(nowNumber)) continue;
+                exists.add(nowNumber);
+                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                String awardName = userService.findUserByUsername(usernames.get(0)).getName();
+                for (int i = 1; i < usernames.size(); i++) {
+                    awardName += ",";
+                    String s = userService.findUserByUsername(usernames.get(i)).getName();
+                    awardName += s;
+                }
+                map.put("name", name);
+                String s = sdf.format(contest.getTime());
+                map.put("time", sdf.format(contest.getTime()));
+                if (award.getType().equals("一等奖")) {
+                    map.put("type", "金奖");
+                }
+                if (award.getType().equals("二等奖")) {
+                    map.put("type", "银奖");
+                }
+                if (award.getType().equals("三等奖")) {
+                    map.put("type", "铜奖");
+                }
+                map.put("people", awardName);
+                result.add(map);
+            }
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                String time1 = (String) o1.get("time");
+                String time2 = (String) o2.get("time");
+                return time2.compareTo(time1);
+            }
+        });
+        return ResponseService.createBySuccess(result);
+    }
+
+    @RequestMapping("/getAwardICPCInvite")
+    public ResponseService getAwardICPCInvite() {
+        List<Award> awardList = awardService.getAllAward();
+        List<Map<String, Object>> result = new ArrayList<>();
+        Set<String> exists = new HashSet<>();
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            if (contest.getName().contains("ICPC邀请赛")) {
+                Map<String, Object> map = new HashMap<>();
+                String name = contest.getName();
+                if (!StringUtils.isBlank(contest.getRemark())) {
+                    name = name + "(" + contest.getRemark() + ")";
+                }
+                String nowNumber = award.getContestId() + " " + award.getNumber();
+                if (exists.contains(nowNumber)) continue;
+                exists.add(nowNumber);
+                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                String awardName = userService.findUserByUsername(usernames.get(0)).getName();
+                for (int i = 1; i < usernames.size(); i++) {
+                    awardName += ",";
+                    String s = userService.findUserByUsername(usernames.get(i)).getName();
+                    awardName += s;
+                }
+                map.put("name", name);
+                String s = sdf.format(contest.getTime());
+                map.put("time", sdf.format(contest.getTime()));
+                if (award.getType().equals("一等奖")) {
+                    map.put("type", "金奖");
+                }
+                if (award.getType().equals("二等奖")) {
+                    map.put("type", "银奖");
+                }
+                if (award.getType().equals("三等奖")) {
+                    map.put("type", "铜奖");
+                }
+                map.put("people", awardName);
+                result.add(map);
+            }
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                String time1 = (String) o1.get("time");
+                String time2 = (String) o2.get("time");
+                return time2.compareTo(time1);
+            }
+        });
+        return ResponseService.createBySuccess(result);
+    }
+
+    @RequestMapping("/getAwardCCPCInvite")
+    public ResponseService getAwardCCPCInvite() {
+        List<Award> awardList = awardService.getAllAward();
+        List<Map<String, Object>> result = new ArrayList<>();
+        Set<String> exists = new HashSet<>();
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            if (contest.getName().contains("CCPC邀请赛")) {
+                Map<String, Object> map = new HashMap<>();
+                String name = contest.getName();
+                if (!StringUtils.isBlank(contest.getRemark())) {
+                    name = name + "(" + contest.getRemark() + ")";
+                }
+                String nowNumber = award.getContestId() + " " + award.getNumber();
+                if (exists.contains(nowNumber)) continue;
+                exists.add(nowNumber);
+                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                String awardName = userService.findUserByUsername(usernames.get(0)).getName();
+                for (int i = 1; i < usernames.size(); i++) {
+                    awardName += ",";
+                    String s = userService.findUserByUsername(usernames.get(i)).getName();
+                    awardName += s;
+                }
+                map.put("name", name);
+                String s = sdf.format(contest.getTime());
+                map.put("time", sdf.format(contest.getTime()));
+                if (award.getType().equals("一等奖")) {
+                    map.put("type", "金奖");
+                }
+                if (award.getType().equals("二等奖")) {
+                    map.put("type", "银奖");
+                }
+                if (award.getType().equals("三等奖")) {
+                    map.put("type", "铜奖");
+                }
+                map.put("people", awardName);
+                result.add(map);
+            }
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                String time1 = (String) o1.get("time");
+                String time2 = (String) o2.get("time");
+                return time2.compareTo(time1);
+            }
+        });
+        return ResponseService.createBySuccess(result);
+    }
+
+    @RequestMapping("/getAwardlqb")
+    public ResponseService getAwardlqb() {
+        List<Award> awardList = awardService.getAllAward();
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            if (contest.getName().contains("蓝桥杯")) {
+                Map<String, Object> map = new HashMap<>();
+                String name = contest.getName();
+                if (!StringUtils.isBlank(contest.getRemark())) {
+                    name = name + "(" + contest.getRemark() + ")";
+                }
+                map.put("name", name);
+                map.put("time", sdf.format(contest.getTime()));
+                map.put("type", award.getType());
+                map.put("level", contest.getLevel());
+                String awardName = userService.findUserByUsername(award.getUsername()).getName();
+                map.put("people", awardName);
+                result.add(map);
+            }
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                String time1 = (String) o1.get("time");
+                String time2 = (String) o2.get("time");
+                return time2.compareTo(time1);
+            }
+        });
+        return ResponseService.createBySuccess(result);
+    }
+
+    @RequestMapping("/getAwardrobocom")
+    public ResponseService getAwardrobocom() {
+        List<Award> awardList = awardService.getAllAward();
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            if (contest.getName().contains("robocom")) {
+                Map<String, Object> map = new HashMap<>();
+                String name = (1900 + contest.getTime().getYear()) + "年" + contest.getName();
+                if (!StringUtils.isBlank(contest.getRemark())) {
+                    name = name + "(" + contest.getRemark() + ")";
+                }
+                map.put("name", name);
+                map.put("time", sdf.format(contest.getTime()));
+                map.put("type", award.getType());
+                map.put("level", contest.getLevel());
+                String awardName = userService.findUserByUsername(award.getUsername()).getName();
+                map.put("people", awardName);
+                result.add(map);
+            }
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                String time1 = (String) o1.get("time");
+                String time2 = (String) o2.get("time");
+                return time2.compareTo(time1);
+            }
+        });
+        return ResponseService.createBySuccess(result);
+    }
 
 }
