@@ -112,6 +112,7 @@ public class UserService {
     }
 
     public void updateUser(User user) {
+        user = user.setPassword(GraduationUtil.md5(user.getPassword()));
         userMapper.updateUser(user);
     }
 
