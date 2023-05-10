@@ -355,7 +355,7 @@ public class AwardController {
         contestName.add("江苏省赛");
         contestName.add("robocom");
         contestName.add("天梯赛");
-
+        contestName.add("CCPC女生赛");
         for (String name : contestName) {
             Map<String, List<FirstAward>> map = awardService.getFirstAwardByName(name, contestList);
             result.put(name, map);

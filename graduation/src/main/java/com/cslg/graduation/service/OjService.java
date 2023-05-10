@@ -19,37 +19,49 @@ public class OjService {
 
     /**
      * 新增一条oj记录
+     *
      * @param oj
      */
-    public void addOj(Oj oj){
+    public void addOj(Oj oj) {
         ojMapper.insertOj(oj);
     }
 
     /**
      * 根据学号和平台获取该用户的所有第三方id
+     *
      * @param username
      * @param platform
      * @return
      */
-    public List<String> getAllOjId(String username,String platform){
+    public List<String> getAllOjId(String username, String platform) {
         return ojMapper.selectListOjId(username, platform);
     }
 
     /**
      * 获取所有oj信息
+     *
      * @return
      */
-    public List<Oj> getAllOj(){
+    public List<Oj> getAllOj() {
         return ojMapper.selectAllOj();
     }
 
     /**
      * 获取某个学号所有的第三方id
+     *
      * @param username
      * @return
      */
-    public List<Oj> getAllOjId(String username){
+    public List<Oj> getAllOjId(String username) {
         return ojMapper.selectListOj(username);
+    }
+
+    public void deleteOjByUsername(String username, String platform) {
+        ojMapper.deleteOjByUsernameAndPlatform(username, platform);
+    }
+
+    public void deleteOjByUsername(String username) {
+        ojMapper.deleteOjByUsername(username);
     }
 
 }

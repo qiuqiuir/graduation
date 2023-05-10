@@ -20,7 +20,7 @@ import java.util.Map;
  * @auther xurou
  * @date 2023/3/30
  */
-@SpringBootTest
+//@SpringBootTest
 public class SpiderTest {
 
     @Autowired

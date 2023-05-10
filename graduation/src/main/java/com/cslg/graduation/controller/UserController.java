@@ -108,6 +108,17 @@ public class UserController {
         return ResponseService.createBySuccess();
     }
 
+    /**
+     * 更新user权限
+     * @param username
+     * @return
+     */
+    @GetMapping("/updateUserStatus")
+    public ResponseService updateUserStatus(@RequestParam String username) {
+        userService.updateStatus(username);
+        return ResponseService.createBySuccess();
+    }
+
     @GetMapping("/getAllUser")
     public ResponseService getAllUser() {
         List<User> userList = userService.getAllUsers();

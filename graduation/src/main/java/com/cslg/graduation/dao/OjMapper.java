@@ -21,5 +21,9 @@ public interface OjMapper {
 
     public List<Oj> selectListOj(String username);
 
+    public void deleteOjByUsernameAndPlatform(String username, String platform);
+
+    public void deleteOjByUsername(String username);
+
 
 }

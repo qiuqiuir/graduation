@@ -34,7 +34,15 @@
         where username = #{username}
     </select>
 
+    <delete id="deleteOjByUsername">
+        delete from oj
+        where username = #{username}
+    </delete>
 
+    <delete id="deleteOjByUsernameAndPlatform">
+        delete from oj
+        where username = #{username} and platform = #{platform}
+    </delete>
 
 
 

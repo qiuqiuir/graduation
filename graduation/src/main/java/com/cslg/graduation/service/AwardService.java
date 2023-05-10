@@ -154,14 +154,18 @@ public class AwardService {
      * @param contestList
      * @return
      */
-    public Map<String, List<FirstAward>> getFirstAwardByName(String name, List<Contest> contestList) {
+    public Map<String, List<FirstAward>>  getFirstAwardByName(String name, List<Contest> contestList) {
         if(name.equals("天梯赛")){
             return getFirstAwardByNameCCCC(contestList);
+        }
+        if(name.equals("CCPC女生赛")){
+            return getFirstAwardByNameCCPCGirls(contestList);
         }
         Map<String, List<FirstAward>> map = new HashMap<>();
         for (Contest contest : contestList) {
             String contestName = contest.getName();
             if (contestName.contains(name) && contestName.indexOf(name) + name.length() == contestName.length()) {
+                if(contestName.contains("CCPC")&&contest.getRemark().equals("女生赛")) continue;
                 List<Award> awardList = getAwardById(contest.getId());
                 Map<String, List<FirstAward>> huojiang = new HashMap<>();
                 huojiang.put("省级一等奖", new ArrayList<>());
@@ -215,6 +219,39 @@ public class AwardService {
 
                 for (Award award : awardList) {
                     String awardLevel = contest.getRemark() + contest.getLevel() + award.getType();
+                    boolean is = map.containsKey(awardLevel);
+                    if (!is) {
+                        FirstAward people = new FirstAward()
+                                .setUsername(award.getUsername())
+                                .setTime(contest.getTime());
+                        String peopleName = userService.findUserByUsername(people.getUsername()).getName();
+                        people = people.setName(peopleName);
+                        huojiang.get(awardLevel).add(people);
+                    }
+                }
+                for (Map.Entry<String, List<FirstAward>> entry : huojiang.entrySet()) {
+                    if (entry.getValue().size() > 0) {
+                        map.put(entry.getKey(), entry.getValue());
+                    }
+                }
+            }
+        }
+        return map;
+    }
+
+    public Map<String, List<FirstAward>>  getFirstAwardByNameCCPCGirls(List<Contest> contestList) {
+        String name = "CCPC";
+        Map<String, List<FirstAward>> map = new HashMap<>();
+        for (Contest contest : contestList) {
+            String contestName = contest.getName();
+            if (contestName.contains(name) && contestName.indexOf(name) + name.length() == contestName.length()&&contest.getRemark().equals("女生赛")) {
+                List<Award> awardList = getAwardById(contest.getId());
+                Map<String, List<FirstAward>> huojiang = new HashMap<>();
+                huojiang.put("国家级一等奖", new ArrayList<>());
+                huojiang.put("国家级二等奖", new ArrayList<>());
+                huojiang.put("国家级三等奖", new ArrayList<>());
+                for (Award award : awardList) {
+                    String awardLevel = contest.getLevel() + award.getType();
                     boolean is = map.containsKey(awardLevel);
                     if (!is) {
                         FirstAward people = new FirstAward()

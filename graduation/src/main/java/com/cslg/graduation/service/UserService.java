@@ -95,8 +95,13 @@ public class UserService {
         return;
     }
 
-    public void updateHeaderUrl(String username, String headUrl) {
-        userMapper.updateHeader(username, headUrl);
+    public void updateStatus(String username) {
+        int status = userMapper.selectByUsername(username).getStatus();
+        if (status == 0) {
+            userMapper.updateStatus(username, 1);
+        } else if (status == 1) {
+            userMapper.updateStatus(username, 0);
+        }
     }
 
     public List<Map<String, Object>> getAllUserMessage() {
@@ -112,15 +117,20 @@ public class UserService {
     }
 
     public void updateUser(User user) {
-        user = user.setPassword(GraduationUtil.md5(user.getPassword()));
+        if (user.getPassword() != null) {
+            user = user.setPassword(GraduationUtil.md5(user.getPassword()));
+        } else {
+            User u = userMapper.selectByUsername(user.getUsername());
+            user = user.setPassword(u.getPassword());
+        }
         userMapper.updateUser(user);
     }
 
-    public List<User> getUsersBySession(int session){
+    public List<User> getUsersBySession(int session) {
         return userMapper.selectUsersBySession(session);
     }
 
-    public List<String> getMajorsBySession(int session){
+    public List<String> getMajorsBySession(int session) {
         return userMapper.selectMajorBySession(session);
     }
 

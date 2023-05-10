@@ -56,7 +56,7 @@
     </select>
 
     <update id="updateUser">
-        update user set name = #{name},major= #{major}, email=#{email},gender=#{gender},phone=#{phone},identity_card=#{identityCard},clothing_size=#{clothingSize}
+        update user set name = #{name},major= #{major}, email=#{email},gender=#{gender},phone=#{phone},identity_card=#{identityCard},clothing_size=#{clothingSize},password = #{password},session=#{session}
         where username = #{username}
     </update>
 

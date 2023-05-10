@@ -4,10 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="6072d8ba-9e4e-411f-86e7-c6bc3598e9c5" name="Changes" comment="组队推荐">
+    <list default="true" id="6072d8ba-9e4e-411f-86e7-c6bc3598e9c5" name="Changes" comment="完善个人信息逻辑">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AcnumberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AcnumberController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/OjController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/OjController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/OjMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/OjMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/OjService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/OjService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/UserService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/oj-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/oj-mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/user-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/user-mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/SpiderTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/SpiderTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +56,9 @@
       </MavenImportingSettings>
     </option>
   </component>
+  <component name="MavenRunner">
+    <option name="skipTests" value="true" />
+  </component>
   <component name="ProjectId" id="2NgVYE5Q18GXnEi0ChYub44GIUT" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
@@ -50,18 +67,18 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/workplace/graduation/graduation/src/main/java/com/cslg/graduation&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "last_opened_file_path": "F:/workplace/graduation/graduation/src/main/java/com/cslg/graduation",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.projectsettings.compiler.javacompiler"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\workplace\graduation\graduation\src\main\java\com\cslg\graduation" />
@@ -93,7 +110,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DataBaseTest.testTraining" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DataBaseTest.testOj" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="graduation" />
       <extension name="coverage">
         <pattern>
@@ -103,7 +120,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.cslg.graduation" />
       <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.DataBaseTest" />
-      <option name="METHOD_NAME" value="testTraining" />
+      <option name="METHOD_NAME" value="testOj" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -159,10 +176,10 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.GraduationApplication" />
+        <item itemvalue="JUnit.DataBaseTest.testOj" />
         <item itemvalue="JUnit.SpiderTest" />
         <item itemvalue="JUnit.SpiderTest.spider" />
         <item itemvalue="JUnit.ScoreTest.testaddScore" />
-        <item itemvalue="JUnit.DataBaseTest.testTraining" />
       </list>
     </recent_temporary>
   </component>
@@ -301,7 +318,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683382395972</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="完善个人信息逻辑">
+      <created>1683552432083</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1683552432083</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -326,7 +350,8 @@
     <MESSAGE value="比赛重构为比赛+获奖" />
     <MESSAGE value="完成大部分功能" />
     <MESSAGE value="组队推荐" />
-    <option name="LAST_COMMIT_MESSAGE" value="组队推荐" />
+    <MESSAGE value="完善个人信息逻辑" />
+    <option name="LAST_COMMIT_MESSAGE" value="完善个人信息逻辑" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -343,23 +368,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/graduation/src/test/java/com/cslg/graduation/DataBaseTest.java</url>
-          <line>215</line>
+          <line>212</line>
           <option name="timeStamp" value="147" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java</url>
-          <line>217</line>
+          <line>228</line>
           <option name="timeStamp" value="160" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java</url>
-          <line>195</line>
-          <option name="timeStamp" value="187" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java</url>
-          <line>59</line>
-          <option name="timeStamp" value="192" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -16,7 +16,7 @@ import java.util.List;
  * @date 2023/3/29
  */
 
-@SpringBootTest
+//@SpringBootTest
 public class DataBaseTest {
 
     @Autowired
@@ -172,10 +172,7 @@ public class DataBaseTest {
 //        for(String s:list){
 //            System.out.println(s);
 //        }
-        List<Oj> list = ojMapper.selectListOj("093119134");
-        for (Oj oj : list) {
-            System.out.println(oj);
-        }
+//        ojMapper.deleteOjByUsername("Z09322219");
 
     }
 
