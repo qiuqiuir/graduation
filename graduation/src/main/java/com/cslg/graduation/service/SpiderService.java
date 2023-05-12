@@ -244,12 +244,12 @@ public class SpiderService {
      * 爬取队员每日过题数
      */
     public void updateUserAcNumber() {
-        for (int j = 1; j <= 18; j++) {
+        for (int j = 1; j <= 12; j++) {
             String now = j + "";
             if (now.length() == 1) now = "0" + now;
-            String time = "2023-04-" + now;
+            String time = "2023-05-" + now;
 
-            Date date = new Date(2023 - 1900, 3, j);
+            Date date = new Date(2023 - 1900, 4, j);
             String url = "http://47.94.81.95:8081/rank/list?page=1&size=100&keyword=&date=" + time;
             JSONObject data = null;
             try {

@@ -2,6 +2,7 @@ package com.cslg.graduation.controller;
 
 import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.entity.Award;
+import com.cslg.graduation.entity.AwardTeam;
 import com.cslg.graduation.entity.Contest;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.expection.MallException;
@@ -233,5 +234,76 @@ public class UserController {
             }
         });
         return ResponseService.createBySuccess(result);
+    }
+
+    @GetMapping("/getTeam")
+    public ResponseService getTeam() {
+        List<Map<String, Object>> result = new ArrayList<>();
+        List<User> userList = userService.getAllUsers();
+        for (User user : userList) {
+            if(user.getSession()<=19) continue;
+            Map<String, Object> map = new HashMap<>();
+            map.put("username", user.getUsername());
+            map.put("name", user.getName());
+            List<Award> awardList = awardService.getAwardByUsername(user.getUsername());
+            int awardNumber = awardList.size();
+            map.put("awardNumber", awardNumber);
+            int acNumber = acnumberService.getAllCount(user.getUsername());
+            map.put("acNumber", acNumber);
+            int score = acNumber;
+            score += scoreService.getTotalScoreByUsername(user.getUsername())/5;
+            for (Award award : awardList) {
+                int coefficient = 0;
+                if (award.getType().equals("一等奖")) coefficient = 3;
+                if (award.getType().equals("二等奖")) coefficient = 2;
+                if (award.getType().equals("三等奖")) coefficient = 1;
+                Contest contest = contestService.getContestById(award.getContestId());
+                if (contest.getLevel().equals("国家级")) coefficient *= 2;
+                if (contest.getName().contains("邀请赛")) {
+                    score += coefficient * 300;
+                } else if (contest.getName().contains("CPC")) {
+                    score += coefficient * 500;
+                } else if (contest.getName().contains("蓝桥杯")) {
+                    score += coefficient * 50;
+                } else if (contest.getName().contains("天梯赛")) {
+                    score += coefficient * 100;
+                } else if (contest.getName().contains("省赛")) {
+                    score += coefficient * 200;
+                } else if (contest.getName().contains("robocom")) {
+                    score += coefficient * 50;
+                }
+            }
+            map.put("score", score);
+            result.add(map);
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                Integer y = (Integer) o2.get("score");
+                if (y == null) {
+                    int df = 5;
+                }
+                Integer x = (Integer) o1.get("score");
+                return y.compareTo(x);
+            }
+        });
+        List<AwardTeam> awardTeams = new ArrayList<>();
+        for(int i=0;i<result.size()/3*3;i+=3){
+            List<String> names = new ArrayList<>();
+            int awardNumber = 0;
+            int acnumberNumber = 0;
+            for(int j=i;j<i+3;j++){
+                names.add((String) result.get(j).get("name"));
+                String username = (String) result.get(j).get("username");
+                awardNumber += awardService.getAwardByUsername(username).size();
+                acnumberNumber += acnumberService.getAllCount(username);
+            }
+            AwardTeam awardTeam = new AwardTeam()
+                    .setTeam(names)
+                    .setType("共计获奖"+awardNumber+"次,总过题数"+acnumberNumber+"道");
+            awardTeams.add(awardTeam);
+        }
+
+        return ResponseService.createBySuccess(awardTeams);
     }
 }

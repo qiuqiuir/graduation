@@ -261,6 +261,7 @@ public class AwardController {
      */
     @RequestMapping("/getAwardTeam")
     public ResponseService getAwardTeam() {
+        Random random = new Random(20010409);
         List<Award> awardList = awardService.getAllAward();
         List<AwardTeam> awardTeams = new ArrayList<>();
         Map<List<String>, Integer> map = new HashMap<>();
@@ -300,9 +301,9 @@ public class AwardController {
         for (int j = 0; j < 19; j++) {
             List<String> usernames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
-                int idx = new Random().nextInt(userList.size());
+                int idx = random.nextInt(userList.size());
                 while (!usernames.isEmpty() && userList.get(idx).getUsername().equals(usernames.get(usernames.size() - 1))) {
-                    idx = new Random().nextInt(userList.size());
+                    idx = random.nextInt(userList.size());
                 }
                 usernames.add(userList.get(idx).getUsername());
             }
@@ -324,7 +325,7 @@ public class AwardController {
         Collections.sort(awardTeams, new Comparator<AwardTeam>() {
             @Override
             public int compare(AwardTeam o1, AwardTeam o2) {
-                return Math.random() < 0.5 ? 1 : -1;
+                return random.nextDouble() < 0.5 ? 1 : -1;
             }
         });
 
