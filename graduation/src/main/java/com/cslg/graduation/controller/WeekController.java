@@ -29,11 +29,11 @@ public class WeekController {
      */
     @PostMapping("/addWeek")
     public ResponseService addWeek(@RequestBody Week week){
-        System.out.println("1");
+        System.out.println("开始新增周赛");
         Date time = GraduationUtil.changeTime(week.getTime());
         week.setTime(time);
         weekService.addWeek(week);
-        System.out.println("end");
+        System.out.println("周赛数据统计完毕");
         return ResponseService.createBySuccess();
     }
 

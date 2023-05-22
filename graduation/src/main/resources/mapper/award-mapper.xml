@@ -45,6 +45,12 @@
         where contest_id = #{id} and type = #{type}
     </select>
 
+    <select id="selectNumberById" resultType="int">
+        select IFNULL(count(DISTINCT number),0)
+        from award
+        where contest_id = #{id}
+    </select>
+
     <select id="selectCountAward" resultType="int">
         select count(id) from award
     </select>
@@ -56,7 +62,7 @@
     <select id="selectAwardsByIdAndNumber" resultType="String">
         select username
         from award
-        where contest_id = #{id} and number = #{number}
+        where contest_id = #{id} and number = #{number} and type = #{type}
         order by username
     </select>
 

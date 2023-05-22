@@ -91,9 +91,9 @@ public class ScoreService {
         } else if (week.getPlatform().equals("atcoder")) {
             rankData = spiderService.getAtcoderScore(week.getContestId());
         }
+        System.out.println("本场周赛所有数据计算完毕");
         // 所有用户本周总积分，用于计算排名
         List<Score> scoreList = new ArrayList<>();
-        System.out.println("All data crawling completed");
         for (User user : usernameList) {
             String username = user.getUsername();
             // 该用户的积分

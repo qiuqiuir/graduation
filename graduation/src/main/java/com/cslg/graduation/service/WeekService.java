@@ -31,9 +31,10 @@ public class WeekService {
     public void addWeek(Week week) {
         // 插入新周赛
         weekMapper.insertWeek(week);
+        System.out.println(week.getTime()+"周赛已添加完成，正在计算积分");
         // 对于每位同学计算积分
         scoreService.addWeekScore(week);
-
+        System.out.println("积分已计算完成，正在更新周赛数据");
         // 更新周赛数据
         updateNumSumAvgByTime(week.getTime());
 

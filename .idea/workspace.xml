@@ -7,8 +7,12 @@
     <list default="true" id="6072d8ba-9e4e-411f-86e7-c6bc3598e9c5" name="Changes" comment="完善代码逻辑">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/SpiderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/SpiderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/WeekController.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/WeekController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/AwardMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/dao/AwardMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/AwardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ScoreService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/ScoreService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/WeekService.java" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/service/WeekService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/graduation/src/main/resources/mapper/award-mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/graduation/src/main/resources/mapper/award-mapper.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +101,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DataBaseTest.testOj" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="DataBaseTest.testUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="graduation" />
       <extension name="coverage">
         <pattern>
@@ -107,13 +111,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.cslg.graduation" />
       <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.DataBaseTest" />
-      <option name="METHOD_NAME" value="testOj" />
+      <option name="METHOD_NAME" value="testUser" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="ScoreTest.testaddScore" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="GraduationApplicationTests.contextLoads" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="graduation" />
       <extension name="coverage">
         <pattern>
@@ -122,24 +126,9 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="com.cslg.graduation" />
-      <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.ScoreTest" />
-      <option name="METHOD_NAME" value="testaddScore" />
+      <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.GraduationApplicationTests" />
+      <option name="METHOD_NAME" value="contextLoads" />
       <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SpiderTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="graduation" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.cslg.graduation.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.cslg.graduation" />
-      <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.SpiderTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -160,13 +149,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="SpiderTest.test1" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="graduation" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.cslg.graduation.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.cslg.graduation" />
+      <option name="MAIN_CLASS_NAME" value="com.cslg.graduation.SpiderTest" />
+      <option name="METHOD_NAME" value="test1" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.GraduationApplication" />
         <item itemvalue="JUnit.SpiderTest.spider" />
-        <item itemvalue="JUnit.DataBaseTest.testOj" />
-        <item itemvalue="JUnit.SpiderTest" />
-        <item itemvalue="JUnit.ScoreTest.testaddScore" />
+        <item itemvalue="JUnit.SpiderTest.test1" />
+        <item itemvalue="JUnit.GraduationApplicationTests.contextLoads" />
+        <item itemvalue="JUnit.DataBaseTest.testUser" />
       </list>
     </recent_temporary>
   </component>
@@ -319,7 +324,14 @@
       <option name="project" value="LOCAL" />
       <updated>1683730969048</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="完善代码逻辑">
+      <created>1683910596434</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1683910596434</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -371,6 +383,11 @@
           <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/UserController.java</url>
           <line>229</line>
           <option name="timeStamp" value="160" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/graduation/src/main/java/com/cslg/graduation/controller/AwardController.java</url>
+          <line>697</line>
+          <option name="timeStamp" value="164" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

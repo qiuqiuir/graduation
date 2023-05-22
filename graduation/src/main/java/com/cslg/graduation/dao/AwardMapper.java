@@ -19,7 +19,9 @@ public interface AwardMapper {
 
     List<Award> selectAwardById(int id);
 
-    List<Award> selectAwardByIdAndType(int id,String type);
+    List<Award> selectAwardByIdAndType(int id, String type);
+
+    int selectNumberById(int id);
 
     int selectNumberByIdAndType(int id,String type);
 
@@ -27,7 +29,7 @@ public interface AwardMapper {
 
     int selectCountRenci();
 
-    List<String> selectAwardsByIdAndNumber(int id,int number);
+    List<String> selectAwardsByIdAndNumber(int id, int number, String type);
 
 
 }

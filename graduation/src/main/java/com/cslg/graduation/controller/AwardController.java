@@ -74,7 +74,7 @@ public class AwardController {
             // 该比赛的一等奖
             if (one) {
                 Map<String, Object> firstPrize = new HashMap<>();
-                int number = awardService.getNumberByIdAndType(contest.getId(), "一等奖");
+                int number = awardService.getNumberById(contest.getId(), "一等奖");
                 if (contest.getName().contains("ICPC") || contest.getName().contains("CCPC") || contest.getName().contains("江苏省赛")) {
                     firstPrize.put("label", "金奖(" + number + ")");
                 } else firstPrize.put("label", "一等奖(" + number + ")");
@@ -89,7 +89,7 @@ public class AwardController {
             // 该比赛的二等奖
             if (two) {
                 Map<String, Object> firstPrize = new HashMap<>();
-                int number = awardService.getNumberByIdAndType(contest.getId(), "二等奖");
+                int number = awardService.getNumberById(contest.getId(), "二等奖");
                 if (contest.getName().contains("ICPC") || contest.getName().contains("CCPC") || contest.getName().contains("江苏省赛")) {
                     firstPrize.put("label", "银奖(" + number + ")");
                 } else firstPrize.put("label", "二等奖(" + number + ")");
@@ -104,7 +104,7 @@ public class AwardController {
             // 该比赛的三等奖
             if (three) {
                 Map<String, Object> firstPrize = new HashMap<>();
-                int number = awardService.getNumberByIdAndType(contest.getId(), "三等奖");
+                int number = awardService.getNumberById(contest.getId(), "三等奖");
                 if (contest.getName().contains("ICPC") || contest.getName().contains("CCPC") || contest.getName().contains("江苏省赛")) {
                     firstPrize.put("label", "铜奖(" + number + ")");
                 } else firstPrize.put("label", "三等奖(" + number + ")");
@@ -135,7 +135,7 @@ public class AwardController {
      */
     @PostMapping("/addAward")
     public ResponseService addContest(@RequestBody AwardTeam awardTeam) {
-        int number = awardService.getNumberByIdAndType(awardTeam.getId(), awardTeam.getType());
+        int number = awardService.getNumberById(awardTeam.getId());
         Award award = new Award()
                 .setContestId(awardTeam.getId())
                 .setType(awardTeam.getType())
@@ -217,7 +217,7 @@ public class AwardController {
             Contest contest = contestService.getContestById(award.getContestId());
             int people = contest.getNumber();
             if (people == 3) {
-                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                List<String> usernames = awardService.getAwardsByIdAndNumberAndtype(award.getContestId(), award.getNumber(), award.getType());
                 List<String> names = new ArrayList<>();
                 for (String s : usernames) {
                     User user = userService.findUserByUsername(s);
@@ -270,7 +270,7 @@ public class AwardController {
             Contest contest = contestService.getContestById(award.getContestId());
             int people = contest.getNumber();
             if (people == 3) {
-                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                List<String> usernames = awardService.getAwardsByIdAndNumberAndtype(award.getContestId(), award.getNumber(), award.getType());
                 Collections.sort(usernames, new Comparator<String>() {
                     @Override
                     public int compare(String o1, String o2) {
@@ -381,7 +381,7 @@ public class AwardController {
                 String nowNumber = award.getContestId() + " " + award.getNumber();
                 if (exists.contains(nowNumber)) continue;
                 exists.add(nowNumber);
-                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                List<String> usernames = awardService.getAwardsByIdAndNumberAndtype(award.getContestId(), award.getNumber(),award.getType());
                 String awardName = userService.findUserByUsername(usernames.get(0)).getName();
                 for (int i = 1; i < usernames.size(); i++) {
                     awardName += ",";
@@ -432,7 +432,7 @@ public class AwardController {
                 String nowNumber = award.getContestId() + " " + award.getNumber();
                 if (exists.contains(nowNumber)) continue;
                 exists.add(nowNumber);
-                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                List<String> usernames = awardService.getAwardsByIdAndNumberAndtype(award.getContestId(), award.getNumber(),award.getType());
                 String awardName = userService.findUserByUsername(usernames.get(0)).getName();
                 for (int i = 1; i < usernames.size(); i++) {
                     awardName += ",";
@@ -482,7 +482,7 @@ public class AwardController {
                 String nowNumber = award.getContestId() + " " + award.getNumber();
                 if (exists.contains(nowNumber)) continue;
                 exists.add(nowNumber);
-                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                List<String> usernames = awardService.getAwardsByIdAndNumberAndtype(award.getContestId(), award.getNumber(),award.getType());
                 String awardName = userService.findUserByUsername(usernames.get(0)).getName();
                 for (int i = 1; i < usernames.size(); i++) {
                     awardName += ",";
@@ -532,7 +532,7 @@ public class AwardController {
                 String nowNumber = award.getContestId() + " " + award.getNumber();
                 if (exists.contains(nowNumber)) continue;
                 exists.add(nowNumber);
-                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                List<String> usernames = awardService.getAwardsByIdAndNumberAndtype(award.getContestId(), award.getNumber(),award.getType());
                 String awardName = userService.findUserByUsername(usernames.get(0)).getName();
                 for (int i = 1; i < usernames.size(); i++) {
                     awardName += ",";
@@ -582,7 +582,7 @@ public class AwardController {
                 String nowNumber = award.getContestId() + " " + award.getNumber();
                 if (exists.contains(nowNumber)) continue;
                 exists.add(nowNumber);
-                List<String> usernames = awardService.getAwardsByIdAndNumber(award.getContestId(), award.getNumber());
+                List<String> usernames = awardService.getAwardsByIdAndNumberAndtype(award.getContestId(), award.getNumber(),award.getType());
                 String awardName = userService.findUserByUsername(usernames.get(0)).getName();
                 for (int i = 1; i < usernames.size(); i++) {
                     awardName += ",";
@@ -666,6 +666,51 @@ public class AwardController {
                 map.put("level", contest.getLevel());
                 String awardName = userService.findUserByUsername(award.getUsername()).getName();
                 map.put("people", awardName);
+                result.add(map);
+            }
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                String time1 = (String) o1.get("time");
+                String time2 = (String) o2.get("time");
+                return time2.compareTo(time1);
+            }
+        });
+        return ResponseService.createBySuccess(result);
+    }
+
+    @RequestMapping("/getAwardgplt")
+    public ResponseService getAwardgplt() {
+        List<Award> awardList = awardService.getAllAward();
+        List<Map<String, Object>> result = new ArrayList<>();
+        Set<String> exists = new HashSet<>();
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            if (contest.getName().contains("天梯赛")) {
+                Map<String, Object> map = new HashMap<>();
+                String name = (1900 + contest.getTime().getYear()) + "年" + contest.getName();
+                if (!StringUtils.isBlank(contest.getRemark())) {
+                    name = name + "(" + contest.getRemark() + ")";
+                }
+                String nowNumber = award.getContestId() + " " + award.getNumber();
+                if(contest.getName().equals("第7届天梯赛")&&contest.getRemark().equals("个人")){
+                    int fddf=9;
+                }
+                if (exists.contains(nowNumber)) continue;
+                exists.add(nowNumber);
+                List<String> usernames = awardService.getAwardsByIdAndNumberAndtype(award.getContestId(), award.getNumber(),award.getType());
+                String awardName = userService.findUserByUsername(usernames.get(0)).getName();
+                for (int i = 1; i < usernames.size(); i++) {
+                    awardName += ",";
+                    String s = userService.findUserByUsername(usernames.get(i)).getName();
+                    awardName += s;
+                }
+                map.put("people", awardName);
+                map.put("name", name);
+                map.put("time", sdf.format(contest.getTime()));
+                map.put("type", award.getType());
+                map.put("level", contest.getLevel());
                 result.add(map);
             }
         }

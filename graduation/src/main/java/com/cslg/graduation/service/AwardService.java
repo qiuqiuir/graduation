@@ -92,11 +92,15 @@ public class AwardService {
      * 根据比赛id和比赛类型查找该比赛已经有几个人获奖
      *
      * @param id
-     * @param type
+
      * @return
      */
-    public int getNumberByIdAndType(int id, String type) {
-        return awardMapper.selectNumberByIdAndType(id, type);
+    public int getNumberById(int id) {
+        return awardMapper.selectNumberById(id);
+    }
+
+    public int getNumberById(int id,String type) {
+        return awardMapper.selectNumberByIdAndType(id,type);
     }
 
     /**
@@ -143,8 +147,8 @@ public class AwardService {
      * @param number
      * @return List<String>
      */
-    public List<String> getAwardsByIdAndNumber(int id, int number) {
-        return awardMapper.selectAwardsByIdAndNumber(id, number);
+    public List<String> getAwardsByIdAndNumberAndtype(int id, int number, String type) {
+        return awardMapper.selectAwardsByIdAndNumber(id, number, type);
     }
 
     /**
