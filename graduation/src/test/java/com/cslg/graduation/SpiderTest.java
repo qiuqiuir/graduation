@@ -1,6 +1,8 @@
 package com.cslg.graduation;
 
 import com.alibaba.fastjson.JSONObject;
+import com.cslg.graduation.common.ResponseService;
+import com.cslg.graduation.entity.Oj;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.entity.Week;
 import com.cslg.graduation.service.*;
@@ -9,18 +11,17 @@ import com.cslg.graduation.util.GraduationUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 //import org.js
 
 /**
  * @auther xurou
  * @date 2023/3/30
  */
-//@SpringBootTest
+@SpringBootTest
 public class SpiderTest {
 
     @Autowired
@@ -39,8 +40,13 @@ public class SpiderTest {
     private OjService ojService;
 
     @Test
-    public void spider() {
+    public void test1() {
+        Map<String,Integer>map = spiderService.getCfRating("qiuqiur");
+        System.out.println(map);
+    }
 
-        spiderService.updateUserAcNumber();
+    @Test
+    public void spider() throws InterruptedException {
+
     }
 }

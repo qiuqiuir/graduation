@@ -25,5 +25,9 @@ public interface OjMapper {
 
     public void deleteOjByUsername(String username);
 
+    public void updateNowRating(String username, String platform, String ojId, int nowRating);
+
+    public void updateHistoryRating(String username, String platform, String ojId, int historyRating);
+
 
 }

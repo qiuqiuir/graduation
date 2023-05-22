@@ -3,10 +3,13 @@ package com.cslg.graduation.controller;
 import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.entity.Oj;
 import com.cslg.graduation.service.OjService;
+import com.cslg.graduation.service.SpiderService;
 import com.cslg.graduation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +29,9 @@ public class OjController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private SpiderService spiderService;
+
     @PostMapping("/addOj")
     public ResponseService addOj(@RequestBody Oj oj) {
         ojService.addOj(oj);
@@ -39,8 +45,8 @@ public class OjController {
         return ResponseService.createBySuccess(ojList);
     }
 
-    public void updateOjByPlatform(String username,String platform,List<String> ojList){
-        ojService.deleteOjByUsername(username,platform);
+    public void updateOjByPlatform(String username, String platform, List<String> ojList) {
+        ojService.deleteOjByUsername(username, platform);
         Oj oj = new Oj()
                 .setUsername(username)
                 .setPlatform(platform);
@@ -49,14 +55,15 @@ public class OjController {
             ojService.addOj(oj);
         }
     }
+
     @PostMapping("/updateOj/all/{username}")
-    public ResponseService updateAllOj(@PathVariable("username") String username, @RequestBody Map<String,List<String>> ojList) {
+    public ResponseService updateAllOj(@PathVariable("username") String username, @RequestBody Map<String, List<String>> ojList) {
         ojService.deleteOjByUsername(username);
-        for(Map.Entry<String,List<String>> entry : ojList.entrySet()){
+        for (Map.Entry<String, List<String>> entry : ojList.entrySet()) {
             Oj oj = new Oj()
                     .setUsername(username)
                     .setPlatform(entry.getKey());
-            for(String ojId : entry.getValue()){
+            for (String ojId : entry.getValue()) {
                 oj = oj.setOjId(ojId);
                 ojService.addOj(oj);
             }
@@ -66,38 +73,44 @@ public class OjController {
 
     @PostMapping("/updateOj/atcoder/{username}")
     public ResponseService updateAtcoderOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
-        updateOjByPlatform(username,"atcoder",ojList);
+        updateOjByPlatform(username, "atcoder", ojList);
         return ResponseService.createBySuccess();
     }
 
     @PostMapping("/updateOj/nowcoder/{username}")
     public ResponseService updateNowcoderOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
-        updateOjByPlatform(username,"nowcoder",ojList);
+        updateOjByPlatform(username, "nowcoder", ojList);
         return ResponseService.createBySuccess();
     }
 
     @PostMapping("/updateOj/codeforces/{username}")
     public ResponseService updateCodeforcesOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
-        updateOjByPlatform(username,"codeforces",ojList);
+        updateOjByPlatform(username, "codeforces", ojList);
         return ResponseService.createBySuccess();
     }
 
     @PostMapping("/updateOj/hdu/{username}")
     public ResponseService updateHduOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
-        updateOjByPlatform(username,"hdu",ojList);
+        updateOjByPlatform(username, "hdu", ojList);
         return ResponseService.createBySuccess();
     }
 
     @PostMapping("/updateOj/acwing/{username}")
     public ResponseService updateAcwingOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
-        updateOjByPlatform(username,"acwing",ojList);
+        updateOjByPlatform(username, "acwing", ojList);
         return ResponseService.createBySuccess();
     }
 
     @PostMapping("/updateOj/luogu/{username}")
     public ResponseService updateLuoguOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
-        updateOjByPlatform(username,"luogu",ojList);
+        updateOjByPlatform(username, "luogu", ojList);
         return ResponseService.createBySuccess();
     }
+
+//    @PostMapping("/rating/{username}")
+//    public ResponseService getRating(@PathVariable("username") String username){
+//
+//        Map<String,Integer> nowcoder = spiderService.getNowcoderRank()
+//    }
 
 }

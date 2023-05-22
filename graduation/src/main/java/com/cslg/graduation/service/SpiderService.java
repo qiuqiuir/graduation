@@ -3,9 +3,12 @@ package com.cslg.graduation.service;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cslg.graduation.entity.Acnumber;
+import com.cslg.graduation.entity.Oj;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.util.GetUrlJson;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -23,6 +26,9 @@ public class SpiderService {
 
     @Autowired
     private AcnumberService acnumberService;
+
+    @Autowired
+    private OjService ojService;
 
     /**
      * 根据牛客比赛id获取本周周赛情况
@@ -226,7 +232,13 @@ public class SpiderService {
         }
     }
 
-    public void getNowcoderRank(String id) {
+    /**
+     * 根据队员牛客的id统计当前rating和历史最高rating
+     *
+     * @param id
+     * @return
+     */
+    public Map<String, Integer> getNowcoderRating(String id) {
         String url = "https://ac.nowcoder.com/acm/contest/rating-history?token=&uid=" + id + "&_=1681560296783";
         JSONObject data = null;
         Map<String, String> cookies = new HashMap<>();
@@ -237,57 +249,164 @@ public class SpiderService {
             throw new RuntimeException(e);
         }
         data = data.getJSONObject("msg");
-        data = data.getJSONObject("data");
+        JSONArray ratingList = data.getJSONArray("data");
+        int maxn = 0, now = 0;
+        for (int i = 0; i < ratingList.size(); i++) {
+            int rating = ratingList.getJSONObject(i).getInteger("rating");
+            maxn = Math.max(maxn, rating);
+            now = rating;
+        }
+        Map<String, Integer> map = new HashMap<>();
+        map.put("history", maxn);
+        map.put("current", now);
+        return map;
+    }
+
+    /**
+     * 根据队员codeforces的id统计当前rating和历史最高rating
+     *
+     * @param id
+     * @return
+     */
+    public Map<String, Integer> getCfRating(String id) {
+        String url = "https://codeforces.com/api/user.rating?handle=" + id;
+        JSONObject data = null;
+        Map<String, String> cookies = new HashMap<>();
+        cookies.put("cookie","lastOnlineTimeUpdaterInvocation=1684750619351; RCPC=a13d3b3eb51e1dd7351319891dd47e85; cf_clearance=1tZkaQ8xlK74htH..ZXT0cDc4KasHYxk0uZDJq5Z744-1681899994-0-250; __utmc=71512449; JSESSIONID=BA89611685C90E7902FF50DDD4FE961C-n1; 39ce7=CFRTkGJR; evercookie_png=bqnkpag5zed5okjp4s; evercookie_etag=bqnkpag5zed5okjp4s; evercookie_cache=bqnkpag5zed5okjp4s; 70a7c28f3de=bqnkpag5zed5okjp4s; X-User=; X-User-Sha1=6bd8dcb81b0b63bc355e224e6e71e0a5fcf213e1; lastOnlineTimeUpdaterInvocation=1684736999346; __utmz=71512449.1684741376.47.8.utmcsr=localhost:5173|utmccn=(referral)|utmcmd=referral|utmcct=/; __utma=71512449.1482994933.1679837284.1684741376.1684748672.48");
+        cookies.put("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50");
+        try {
+            data = GetUrlJson.getHttpJson(url, cookies);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        if(data == null){
+            Map<String, Integer> map = new HashMap<>();
+            map.put("history", 0);
+            map.put("current", 0);
+            return map;
+        }
+        data = data.getJSONObject("msg");
+        // 获取所有提交结果
+        JSONArray ratingList = data.getJSONArray("result");
+        int maxn = 0, now = 0;
+        for (int i = 0; i < ratingList.size(); i++) {
+            int rating = ratingList.getJSONObject(i).getInteger("newRating");
+            maxn = Math.max(maxn, rating);
+            now = rating;
+        }
+        Map<String, Integer> map = new HashMap<>();
+        map.put("history", maxn);
+        map.put("current", now);
+        return map;
+    }
+
+    /**
+     * 根据队员atcoder的id统计当前rating和历史最高rating
+     *
+     * @param id
+     * @return
+     */
+    public Map<String, Integer> getAtcoderRating(String id) {
+        String url = "https://atcoder.jp/users/" + id + "/history/json";
+        JSONObject data = null;
+        Map<String, String> cookies = new HashMap<>();
+        try {
+            data = GetUrlJson.getHttpJson(url, cookies);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        JSONArray ratingList = data.getJSONArray("msg");
+        int maxn = 0, now = 0;
+        for (int i = 0; i < ratingList.size(); i++) {
+            int rating = ratingList.getJSONObject(i).getInteger("NewRating");
+            maxn = Math.max(maxn, rating);
+            now = rating;
+        }
+        Map<String, Integer> map = new HashMap<>();
+        map.put("history", maxn);
+        map.put("current", now);
+        return map;
     }
 
     /**
      * 爬取队员每日过题数
      */
+    @Scheduled(cron = "0 0 8 * * *")
     public void updateUserAcNumber() {
-        for (int j = 1; j <= 12; j++) {
-            String now = j + "";
-            if (now.length() == 1) now = "0" + now;
-            String time = "2023-05-" + now;
+        Calendar now = Calendar.getInstance();
+        String year = String.valueOf(now.get(Calendar.YEAR));
+        String mouth = String.valueOf(now.get(Calendar.MONTH) + 1);
+        if (mouth.length() == 1) mouth = "0" + mouth;
+        String day = String.valueOf(now.get(Calendar.DAY_OF_MONTH));
+        if (day.length() == 1) day = "0" + day;
+        String time = year + "-" + mouth + "-" + day;
+        System.out.println("开始计算" + time + "的过题数");
+        Date date = new Date();
+        String url = "http://47.94.81.95:8081/rank/list?page=1&size=100&keyword=&date=" + time;
+        JSONObject data = null;
+        try {
+            data = GetUrlJson.getHttpJson(url);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        data = data.getJSONObject("msg");
+        data = data.getJSONObject("data");
+        JSONArray records = data.getJSONArray("records");
+        List<User> userList = userService.getAllUsers();
+        for (int i = 0; i < records.size(); i++) {
+            String username = records.getJSONObject(i).getString("username");
+            if (userService.findUserByUsername(username) == null) continue;
+            Acnumber acnumber = new Acnumber()
+                    .setUsername(username)
+                    .setTime(date);
+            int atcoder = records.getJSONObject(i).getInteger("atcoder");
+            acnumber = acnumber.setPlatform("atcoder").setCount(atcoder);
+            acnumberService.insert(acnumber);
 
-            Date date = new Date(2023 - 1900, 4, j);
-            String url = "http://47.94.81.95:8081/rank/list?page=1&size=100&keyword=&date=" + time;
-            JSONObject data = null;
-            try {
-                data = GetUrlJson.getHttpJson(url);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
+            int nowcoder = records.getJSONObject(i).getInteger("niuke");
+            acnumber = acnumber.setPlatform("nowcoder").setCount(nowcoder);
+            acnumberService.insert(acnumber);
+
+            int cf = records.getJSONObject(i).getInteger("codeforces");
+            acnumber = acnumber.setPlatform("codeforces").setCount(cf);
+            acnumberService.insert(acnumber);
+
+            int vjudge = records.getJSONObject(i).getInteger("vjudge");
+            acnumber = acnumber.setPlatform("vjudge").setCount(vjudge);
+            acnumberService.insert(acnumber);
+
+            int luogu = records.getJSONObject(i).getInteger("luogu");
+            acnumber = acnumber.setPlatform("luogu").setCount(luogu);
+            acnumberService.insert(acnumber);
+
+        }
+        System.out.println(time + "过题数计算已完成，已保存至数据库");
+    }
+
+    @Scheduled(cron = "0 0 2 * * *")
+    public void updateUserRating() throws InterruptedException {
+        List<Oj> ojList = ojService.getAllOj();
+        for (Oj oj : ojList) {
+            Thread.sleep(1000);
+            String platform = oj.getPlatform();
+            String username = oj.getUsername();
+            String id = oj.getOjId();
+            System.out.println(username + "   " + platform + "   " + id);
+            if (platform.equals("nowcoder")) {
+                Map<String, Integer> rating = getNowcoderRating(id);
+                ojService.updateNowRating(username, platform, id, rating.get("current"));
+                ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+            } else if (platform.equals("codeforces")) {
+                Map<String, Integer> rating = getCfRating(id);
+                ojService.updateNowRating(username, platform, id, rating.get("current"));
+                ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+            } else if (platform.equals("atcoder")) {
+                Map<String, Integer> rating = getAtcoderRating(id);
+                ojService.updateNowRating(username, platform, id, rating.get("current"));
+                ojService.updateHistoryRating(username, platform, id, rating.get("history"));
             }
-            data = data.getJSONObject("msg");
-            data = data.getJSONObject("data");
-            JSONArray records = data.getJSONArray("records");
-            List<User> userList = userService.getAllUsers();
-            for (int i = 0; i < records.size(); i++) {
-                String username = records.getJSONObject(i).getString("username");
-                if (userService.findUserByUsername(username) == null) continue;
-                Acnumber acnumber = new Acnumber()
-                        .setUsername(username)
-                        .setTime(date);
-                int atcoder = records.getJSONObject(i).getInteger("atcoder");
-                acnumber = acnumber.setPlatform("atcoder").setCount(atcoder);
-                acnumberService.insert(acnumber);
-
-                int nowcoder = records.getJSONObject(i).getInteger("niuke");
-                acnumber = acnumber.setPlatform("nowcoder").setCount(nowcoder);
-                acnumberService.insert(acnumber);
-
-                int cf = records.getJSONObject(i).getInteger("codeforces");
-                acnumber = acnumber.setPlatform("codeforces").setCount(cf);
-                acnumberService.insert(acnumber);
-
-                int vjudge = records.getJSONObject(i).getInteger("vjudge");
-                acnumber = acnumber.setPlatform("vjudge").setCount(vjudge);
-                acnumberService.insert(acnumber);
-
-                int luogu = records.getJSONObject(i).getInteger("luogu");
-                acnumber = acnumber.setPlatform("luogu").setCount(luogu);
-                acnumberService.insert(acnumber);
-
-            }
+            System.out.println("over");
         }
     }
+
 }

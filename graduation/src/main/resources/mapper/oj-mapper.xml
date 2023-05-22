@@ -4,17 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cslg.graduation.dao.OjMapper">
     <sql id="insertFields">
-        platform,oj_id,username
+        platform,oj_id,username,history_rating,now_rating
     </sql>
 
     <sql id="selectFields">
-        platform,oj_id,username
+        platform,oj_id,username,history_rating,now_rating
     </sql>
 
 
     <insert id="insertOj" parameterType="Oj" keyProperty="id">
         insert into oj (<include refid="insertFields"></include>)
-        values(#{platform}, #{ojId}, #{username})
+        values(#{platform}, #{ojId}, #{username},#{history_rating},#{now_rating})
     </insert>
 
     <select id="selectListOjId" resultType="String">
@@ -29,7 +29,7 @@
     </select>
 
     <select id="selectListOj" resultType="Oj">
-        select oj_id,platform
+        select <include refid="selectFields"></include>
         from oj
         where username = #{username}
     </select>
@@ -43,6 +43,18 @@
         delete from oj
         where username = #{username} and platform = #{platform}
     </delete>
+
+    <update id="updateNowRating">
+        update oj
+        set now_rating = #{nowRating}
+        where username = #{username} and platform = #{platform} and oj_id = #{ojId}
+    </update>
+
+    <update id="updateHistoryRating">
+        update oj
+        set history_rating = #{historyRating}
+        where username = #{username} and platform = #{platform} and oj_id = #{ojId}
+    </update>
 
 
 

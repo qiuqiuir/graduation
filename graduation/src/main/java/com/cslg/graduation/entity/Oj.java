@@ -11,6 +11,10 @@ public class Oj {
     private String ojId;
     private String username;
 
+    private int historyRating;
+
+    private int nowRating;
+
     public int getId() {
         return id;
     }
@@ -47,6 +51,22 @@ public class Oj {
         return this;
     }
 
+    public int getHistoryRating() {
+        return historyRating;
+    }
+
+    public void setHistoryRating(int historyRating) {
+        this.historyRating = historyRating;
+    }
+
+    public int getNowRating() {
+        return nowRating;
+    }
+
+    public void setNowRating(int nowRating) {
+        this.nowRating = nowRating;
+    }
+
     @Override
     public String toString() {
         return "Oj{" +
@@ -54,6 +74,8 @@ public class Oj {
                 ", platform='" + platform + '\'' +
                 ", ojId='" + ojId + '\'' +
                 ", username='" + username + '\'' +
+                ", historyRating=" + historyRating +
+                ", nowRating=" + nowRating +
                 '}';
     }
 }

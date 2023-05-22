@@ -64,4 +64,12 @@ public class OjService {
         ojMapper.deleteOjByUsername(username);
     }
 
+    public void updateNowRating(String username, String platform, String ojId, int nowRating) {
+        ojMapper.updateNowRating(username, platform, ojId, nowRating);
+    }
+
+    public void updateHistoryRating(String username, String platform, String ojId, int historyRating) {
+        ojMapper.updateHistoryRating(username, platform, ojId, historyRating);
+    }
+
 }
