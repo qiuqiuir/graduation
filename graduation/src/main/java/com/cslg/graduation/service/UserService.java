@@ -95,6 +95,10 @@ public class UserService {
         return;
     }
 
+    /**
+     * 根据学号更新用户信息
+     * @param username
+     */
     public void updateStatus(String username) {
         int status = userMapper.selectByUsername(username).getStatus();
         if (status == 0) {
@@ -104,6 +108,10 @@ public class UserService {
         }
     }
 
+    /**
+     * 获取所有用户信息
+     * @return
+     */
     public List<Map<String, Object>> getAllUserMessage() {
         List<User> userList = userMapper.selectAllUsers();
         List<Map<String, Object>> shuju = new ArrayList<>();
@@ -116,6 +124,10 @@ public class UserService {
         return shuju;
     }
 
+    /**
+     * 根据User更新用户
+     * @param user
+     */
     public void updateUser(User user) {
         if (user.getPassword() != null) {
             user = user.setPassword(GraduationUtil.md5(user.getPassword()));
@@ -126,10 +138,20 @@ public class UserService {
         userMapper.updateUser(user);
     }
 
+    /**
+     * 根据第session届获取该届所有用户
+     * @param session
+     * @return
+     */
     public List<User> getUsersBySession(int session) {
         return userMapper.selectUsersBySession(session);
     }
 
+    /**
+     * 获取第session届所有专业
+     * @param session
+     * @return
+     */
     public List<String> getMajorsBySession(int session) {
         return userMapper.selectMajorBySession(session);
     }

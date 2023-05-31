@@ -9,6 +9,7 @@ import com.cslg.graduation.service.UserService;
 import com.cslg.graduation.util.GraduationUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -47,6 +48,7 @@ public class ContestController {
      * 传入一场比赛，添加
      * @param contest
      */
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/addContest")
     public ResponseService addContest(@RequestBody Contest contest){
         contest.setTime(GraduationUtil.changeTime(contest.getTime()));

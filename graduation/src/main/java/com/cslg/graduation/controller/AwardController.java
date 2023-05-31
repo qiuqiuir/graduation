@@ -8,6 +8,7 @@ import com.cslg.graduation.service.UserService;
 import io.swagger.models.auth.In;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
@@ -127,12 +128,14 @@ public class AwardController {
         return ResponseService.createBySuccess(result);
     }
 
+
     /**
      * 新增一场获奖信息
      *
      * @param awardTeam
      * @return
      */
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/addAward")
     public ResponseService addContest(@RequestBody AwardTeam awardTeam) {
         int number = awardService.getNumberById(awardTeam.getId());
@@ -694,9 +697,6 @@ public class AwardController {
                     name = name + "(" + contest.getRemark() + ")";
                 }
                 String nowNumber = award.getContestId() + " " + award.getNumber();
-                if(contest.getName().equals("第7届天梯赛")&&contest.getRemark().equals("个人")){
-                    int fddf=9;
-                }
                 if (exists.contains(nowNumber)) continue;
                 exists.add(nowNumber);
                 List<String> usernames = awardService.getAwardsByIdAndNumberAndtype(award.getContestId(), award.getNumber(),award.getType());

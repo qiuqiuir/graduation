@@ -45,6 +45,12 @@
         ORDER BY time asc
     </select>
 
+    <select id="selectWeekByTime" resultType="Week">
+        select <include refid="selectFields"></include>
+        from week
+        where time = #{time}
+    </select>
+
 
 
 </mapper>

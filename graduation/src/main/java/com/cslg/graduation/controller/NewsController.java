@@ -6,6 +6,7 @@ import com.cslg.graduation.entity.Week;
 import com.cslg.graduation.service.NewsService;
 import com.cslg.graduation.util.GraduationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +33,7 @@ public class NewsController {
         return ResponseService.createBySuccess(newsList);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @RequestMapping("/addNews")
     public ResponseService addNews(@RequestBody News news){
         Date time = news.getTime();

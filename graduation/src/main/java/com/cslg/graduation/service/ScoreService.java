@@ -156,13 +156,27 @@ public class ScoreService {
         return scoreMapper.selectSumByTime(time);
     }
 
+    /**
+     * 获取学号为username的队员在time的积分
+     * @param username
+     * @param time
+     * @return
+     */
     public double getDailyScoreByUsernameAndTime(String username, Date time) {
         return scoreMapper.findDailyScoreByUsername(username, time);
     }
 
+    /**
+     * 获取学号为username的队员在time的排名
+     * @param username
+     * @param time
+     * @return
+     */
     public int getRankByUsernameAndTime(String username, Date time) {
         return scoreMapper.findRankByUsername(username, time);
     }
+
+
 
 
 }

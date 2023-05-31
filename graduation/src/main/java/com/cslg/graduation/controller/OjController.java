@@ -6,6 +6,7 @@ import com.cslg.graduation.service.OjService;
 import com.cslg.graduation.service.SpiderService;
 import com.cslg.graduation.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class OjController {
     @Autowired
     private SpiderService spiderService;
 
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/addOj")
     public ResponseService addOj(@RequestBody Oj oj) {
         ojService.addOj(oj);
@@ -56,6 +58,7 @@ public class OjController {
         }
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/updateOj/all/{username}")
     public ResponseService updateAllOj(@PathVariable("username") String username, @RequestBody Map<String, List<String>> ojList) {
         ojService.deleteOjByUsername(username);
@@ -71,36 +74,42 @@ public class OjController {
         return ResponseService.createBySuccess();
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/updateOj/atcoder/{username}")
     public ResponseService updateAtcoderOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
         updateOjByPlatform(username, "atcoder", ojList);
         return ResponseService.createBySuccess();
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/updateOj/nowcoder/{username}")
     public ResponseService updateNowcoderOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
         updateOjByPlatform(username, "nowcoder", ojList);
         return ResponseService.createBySuccess();
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/updateOj/codeforces/{username}")
     public ResponseService updateCodeforcesOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
         updateOjByPlatform(username, "codeforces", ojList);
         return ResponseService.createBySuccess();
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/updateOj/hdu/{username}")
     public ResponseService updateHduOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
         updateOjByPlatform(username, "hdu", ojList);
         return ResponseService.createBySuccess();
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/updateOj/acwing/{username}")
     public ResponseService updateAcwingOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
         updateOjByPlatform(username, "acwing", ojList);
         return ResponseService.createBySuccess();
     }
 
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/updateOj/luogu/{username}")
     public ResponseService updateLuoguOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
         updateOjByPlatform(username, "luogu", ojList);

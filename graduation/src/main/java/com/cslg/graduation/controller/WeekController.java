@@ -5,6 +5,7 @@ import com.cslg.graduation.entity.Week;
 import com.cslg.graduation.service.WeekService;
 import com.cslg.graduation.util.GraduationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -27,6 +28,7 @@ public class WeekController {
      * 新增一场周赛
      * @param week
      */
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/addWeek")
     public ResponseService addWeek(@RequestBody Week week){
         System.out.println("开始新增周赛");

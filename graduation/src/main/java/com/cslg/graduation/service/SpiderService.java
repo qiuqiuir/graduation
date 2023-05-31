@@ -272,14 +272,14 @@ public class SpiderService {
         String url = "https://codeforces.com/api/user.rating?handle=" + id;
         JSONObject data = null;
         Map<String, String> cookies = new HashMap<>();
-        cookies.put("cookie","lastOnlineTimeUpdaterInvocation=1684750619351; RCPC=a13d3b3eb51e1dd7351319891dd47e85; cf_clearance=1tZkaQ8xlK74htH..ZXT0cDc4KasHYxk0uZDJq5Z744-1681899994-0-250; __utmc=71512449; JSESSIONID=BA89611685C90E7902FF50DDD4FE961C-n1; 39ce7=CFRTkGJR; evercookie_png=bqnkpag5zed5okjp4s; evercookie_etag=bqnkpag5zed5okjp4s; evercookie_cache=bqnkpag5zed5okjp4s; 70a7c28f3de=bqnkpag5zed5okjp4s; X-User=; X-User-Sha1=6bd8dcb81b0b63bc355e224e6e71e0a5fcf213e1; lastOnlineTimeUpdaterInvocation=1684736999346; __utmz=71512449.1684741376.47.8.utmcsr=localhost:5173|utmccn=(referral)|utmcmd=referral|utmcct=/; __utma=71512449.1482994933.1679837284.1684741376.1684748672.48");
-        cookies.put("user-agent","Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50");
+        cookies.put("cookie", "lastOnlineTimeUpdaterInvocation=1684750619351; RCPC=a13d3b3eb51e1dd7351319891dd47e85; cf_clearance=1tZkaQ8xlK74htH..ZXT0cDc4KasHYxk0uZDJq5Z744-1681899994-0-250; __utmc=71512449; JSESSIONID=BA89611685C90E7902FF50DDD4FE961C-n1; 39ce7=CFRTkGJR; evercookie_png=bqnkpag5zed5okjp4s; evercookie_etag=bqnkpag5zed5okjp4s; evercookie_cache=bqnkpag5zed5okjp4s; 70a7c28f3de=bqnkpag5zed5okjp4s; X-User=; X-User-Sha1=6bd8dcb81b0b63bc355e224e6e71e0a5fcf213e1; lastOnlineTimeUpdaterInvocation=1684736999346; __utmz=71512449.1684741376.47.8.utmcsr=localhost:5173|utmccn=(referral)|utmcmd=referral|utmcct=/; __utma=71512449.1482994933.1679837284.1684741376.1684748672.48");
+        cookies.put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36 Edg/113.0.1774.50");
         try {
             data = GetUrlJson.getHttpJson(url, cookies);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        if(data == null){
+        if (data == null) {
             Map<String, Integer> map = new HashMap<>();
             map.put("history", 0);
             map.put("current", 0);
@@ -329,9 +329,9 @@ public class SpiderService {
     }
 
     /**
-     * 爬取队员每日过题数
+     * 定时组件，每天8点爬取队员每日过题数
      */
-    @Scheduled(cron = "0 0 8 * * *")
+    @Scheduled(cron = "0 0 8 * * ?")
     public void updateUserAcNumber() {
         Calendar now = Calendar.getInstance();
         String year = String.valueOf(now.get(Calendar.YEAR));
@@ -340,8 +340,9 @@ public class SpiderService {
         String day = String.valueOf(now.get(Calendar.DAY_OF_MONTH));
         if (day.length() == 1) day = "0" + day;
         String time = year + "-" + mouth + "-" + day;
-        System.out.println("开始计算" + time + "的过题数");
         Date date = new Date();
+        System.out.println("当前时间:" + date);
+        System.out.println("开始计算" + time + "的过题数");
         String url = "http://47.94.81.95:8081/rank/list?page=1&size=100&keyword=&date=" + time;
         JSONObject data = null;
         try {
@@ -380,11 +381,21 @@ public class SpiderService {
             acnumberService.insert(acnumber);
 
         }
+        date = new Date();
+        System.out.println("当前时间:" + date);
         System.out.println(time + "过题数计算已完成，已保存至数据库");
     }
 
-    @Scheduled(cron = "0 0 2 * * *")
+    /**
+     * 定时组件，每天2点爬取队员rating
+     *
+     * @throws InterruptedException
+     */
+    @Scheduled(cron = "0 0 2 * * ?")
     public void updateUserRating() throws InterruptedException {
+        Date date = new Date();
+        System.out.println("当前时间:" + date);
+        System.out.println("开始爬取队员各大oj上的rating");
         List<Oj> ojList = ojService.getAllOj();
         for (Oj oj : ojList) {
             Thread.sleep(1000);
@@ -407,6 +418,9 @@ public class SpiderService {
             }
             System.out.println("over");
         }
+        date = new Date();
+        System.out.println("当前时间:" + date);
+        System.out.println("rating统计已完成");
     }
 
 }

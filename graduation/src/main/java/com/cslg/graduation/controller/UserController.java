@@ -12,6 +12,7 @@ import com.cslg.graduation.util.JwtTokenUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -55,13 +56,19 @@ public class UserController {
 
     /**
      * 登录,传入User,包含用户名username和密码password
+     *
      * @param loginVO
      * @return
      */
     @PostMapping(value = "/login")
     public ResponseService test(@RequestBody User loginVO) {
         User user = userService.login(loginVO);
-        String token = JwtTokenUtils.createToken(loginVO.getUsername(), "user", true);
+        String token = null;
+        if (user.getStatus() == 0) {
+            token = JwtTokenUtils.createToken(loginVO.getUsername(), "user", true);
+        } else if (user.getStatus() == 1) {
+            token = JwtTokenUtils.createToken(loginVO.getUsername(), "admin,user", true);
+        }
         Map<String, String> mp = new HashMap<>();
         if (user == null) {
             return ResponseService.createByError();
@@ -75,6 +82,7 @@ public class UserController {
 
     /**
      * 注册,传入User,包含用户名username和密码password和姓名name
+     *
      * @param user
      * @return
      */
@@ -86,6 +94,7 @@ public class UserController {
 
     /**
      * 通过传入的User里的username信息查找用户
+     *
      * @param user
      * @return
      */
@@ -100,9 +109,12 @@ public class UserController {
 
     /**
      * 更新user用户信息
+     *
      * @param user
      * @return
      */
+
+    @PreAuthorize("hasAuthority('user')")
     @PostMapping("/update")
     public ResponseService updateUser(@RequestBody User user) {
         userService.updateUser(user);
@@ -111,9 +123,11 @@ public class UserController {
 
     /**
      * 更新user权限
+     *
      * @param username
      * @return
      */
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/updateUserStatus")
     public ResponseService updateUserStatus(@RequestParam String username) {
         userService.updateStatus(username);
@@ -180,6 +194,7 @@ public class UserController {
 
     /**
      * 获取第session届所有队员的情况，并计分后降序返回
+     *
      * @param session
      * @return
      */
@@ -197,7 +212,7 @@ public class UserController {
             int acNumber = acnumberService.getAllCount(user.getUsername());
             map.put("acNumber", acNumber);
             int score = acNumber;
-            score += scoreService.getTotalScoreByUsername(user.getUsername())/5;
+            score += scoreService.getTotalScoreByUsername(user.getUsername()) / 5;
             for (Award award : awardList) {
                 int coefficient = 0;
                 if (award.getType().equals("一等奖")) coefficient = 3;
@@ -241,7 +256,7 @@ public class UserController {
         List<Map<String, Object>> result = new ArrayList<>();
         List<User> userList = userService.getAllUsers();
         for (User user : userList) {
-            if(user.getSession()<=19) continue;
+            if (user.getSession() <= 19) continue;
             Map<String, Object> map = new HashMap<>();
             map.put("username", user.getUsername());
             map.put("name", user.getName());
@@ -251,7 +266,7 @@ public class UserController {
             int acNumber = acnumberService.getAllCount(user.getUsername());
             map.put("acNumber", acNumber);
             int score = acNumber;
-            score += scoreService.getTotalScoreByUsername(user.getUsername())/5;
+            score += scoreService.getTotalScoreByUsername(user.getUsername()) / 5;
             for (Award award : awardList) {
                 int coefficient = 0;
                 if (award.getType().equals("一等奖")) coefficient = 3;
@@ -288,11 +303,11 @@ public class UserController {
             }
         });
         List<AwardTeam> awardTeams = new ArrayList<>();
-        for(int i=0;i<result.size()/3*3;i+=3){
+        for (int i = 0; i < result.size() / 3 * 3; i += 3) {
             List<String> names = new ArrayList<>();
             int awardNumber = 0;
             int acnumberNumber = 0;
-            for(int j=i;j<i+3;j++){
+            for (int j = i; j < i + 3; j++) {
                 names.add((String) result.get(j).get("name"));
                 String username = (String) result.get(j).get("username");
                 awardNumber += awardService.getAwardByUsername(username).size();
@@ -300,7 +315,7 @@ public class UserController {
             }
             AwardTeam awardTeam = new AwardTeam()
                     .setTeam(names)
-                    .setType("共计获奖"+awardNumber+"次,总过题数"+acnumberNumber+"道");
+                    .setType("共计获奖" + awardNumber + "次,总过题数" + acnumberNumber + "道");
             awardTeams.add(awardTeam);
         }
 

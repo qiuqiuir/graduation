@@ -81,4 +81,13 @@ public class WeekService {
     public List<Week> getAllWeek(){
         return weekMapper.selectAllWeek();
     }
+
+    /**
+     * 根据time时间获取那场周赛信息
+     * @param time
+     * @return
+     */
+    public Week getWeekByTime(Date time){
+        return weekMapper.selectWeekByTime(time);
+    }
 }

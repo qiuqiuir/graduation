@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/**").authenticated()
 //                .antMatchers("/admin/**").hasAuthority("admin")
-//                .antMatchers("/user/**").hasAuthority("user")
+//                .antMatchers("/update/**").hasAuthority("user")
                 .anyRequest().permitAll()
                 .and()
 //                .addFilter(new JWTAuthenticationFilter(authenticationManager()))

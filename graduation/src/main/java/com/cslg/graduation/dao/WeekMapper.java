@@ -27,4 +27,6 @@ public interface WeekMapper {
     // 获取所有周赛信息
     List<Week> selectAllWeek();
 
+    Week selectWeekByTime(Date time);
+
 }

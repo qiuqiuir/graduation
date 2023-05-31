@@ -4,6 +4,7 @@ import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.entity.Training;
 import com.cslg.graduation.service.TrainingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class TrainingController {
         return ResponseService.createBySuccess(trainingList);
     }
 
+    @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/addTraining")
     public ResponseService addTraining(@RequestBody Training training){
         trainingService.addTraining(training);
