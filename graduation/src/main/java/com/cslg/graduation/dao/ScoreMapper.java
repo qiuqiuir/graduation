@@ -31,7 +31,7 @@ public interface ScoreMapper {
     public void updateDailyScore(String username, Date time, double dailyScore);
 
     // 更新用户某日总积分
-    public void updateTotalScore(String username, Date time, double addScore);
+    public void updateTotalScore(String username, Date time, double totalScore);
 
     // 统计某天多少人参加比赛
     public int selectCountByTime(Date time);
@@ -39,4 +39,9 @@ public interface ScoreMapper {
     // 计算某天所有人积分和
     public double selectSumByTime(Date time);
 
+    public Score selectScoreByUsernameAndTime(String username, Date time);
+
+    public void updateRank(String username,Date time,int rank);
+
+    public List<Score> selectScoresByTime(Date time);
 }

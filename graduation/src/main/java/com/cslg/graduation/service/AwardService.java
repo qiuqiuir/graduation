@@ -92,15 +92,14 @@ public class AwardService {
      * 根据比赛id和比赛类型查找该比赛已经有几个人获奖
      *
      * @param id
-
      * @return
      */
     public int getNumberById(int id) {
         return awardMapper.selectNumberById(id);
     }
 
-    public int getNumberById(int id,String type) {
-        return awardMapper.selectNumberByIdAndType(id,type);
+    public int getNumberById(int id, String type) {
+        return awardMapper.selectNumberByIdAndType(id, type);
     }
 
     /**
@@ -118,7 +117,19 @@ public class AwardService {
      * @return
      */
     public int getCountAward() {
-        return awardMapper.selectCountAward();
+        List<Award> awardList = getAllAward();
+        Set<String> set = new HashSet<>();
+        int count = 0;
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            if (contest.getNumber() == 1) {
+                count++;
+                continue;
+            }
+            String name = award.getContestId() + " " + award.getNumber();
+            set.add(name);
+        }
+        return count + set.size();
     }
 
     /**
@@ -158,18 +169,18 @@ public class AwardService {
      * @param contestList
      * @return
      */
-    public Map<String, List<FirstAward>>  getFirstAwardByName(String name, List<Contest> contestList) {
-        if(name.equals("天梯赛")){
+    public Map<String, List<FirstAward>> getFirstAwardByName(String name, List<Contest> contestList) {
+        if (name.equals("天梯赛")) {
             return getFirstAwardByNameCCCC(contestList);
         }
-        if(name.equals("CCPC女生赛")){
+        if (name.equals("CCPC女生赛")) {
             return getFirstAwardByNameCCPCGirls(contestList);
         }
         Map<String, List<FirstAward>> map = new HashMap<>();
         for (Contest contest : contestList) {
             String contestName = contest.getName();
             if (contestName.contains(name) && contestName.indexOf(name) + name.length() == contestName.length()) {
-                if(contestName.contains("CCPC")&&contest.getRemark().equals("女生赛")) continue;
+                if (contestName.contains("CCPC") && contest.getRemark().equals("女生赛")) continue;
                 List<Award> awardList = getAwardById(contest.getId());
                 Map<String, List<FirstAward>> huojiang = new HashMap<>();
                 huojiang.put("省级一等奖", new ArrayList<>());
@@ -212,13 +223,13 @@ public class AwardService {
                 prefix.add("高校");
                 prefix.add("团队");
                 prefix.add("个人");
-                for(String s : prefix){
-                    huojiang.put(s+"省级一等奖", new ArrayList<>());
-                    huojiang.put(s+"省级二等奖", new ArrayList<>());
-                    huojiang.put(s+"省级三等奖", new ArrayList<>());
-                    huojiang.put(s+"国家级一等奖", new ArrayList<>());
-                    huojiang.put(s+"国家级二等奖", new ArrayList<>());
-                    huojiang.put(s+"国家级三等奖", new ArrayList<>());
+                for (String s : prefix) {
+                    huojiang.put(s + "省级一等奖", new ArrayList<>());
+                    huojiang.put(s + "省级二等奖", new ArrayList<>());
+                    huojiang.put(s + "省级三等奖", new ArrayList<>());
+                    huojiang.put(s + "国家级一等奖", new ArrayList<>());
+                    huojiang.put(s + "国家级二等奖", new ArrayList<>());
+                    huojiang.put(s + "国家级三等奖", new ArrayList<>());
                 }
 
                 for (Award award : awardList) {
@@ -243,12 +254,18 @@ public class AwardService {
         return map;
     }
 
-    public Map<String, List<FirstAward>>  getFirstAwardByNameCCPCGirls(List<Contest> contestList) {
+    /**
+     * 根据传入的比赛信息获取CCPC女生赛第一个获奖的
+     *
+     * @param contestList
+     * @return
+     */
+    public Map<String, List<FirstAward>> getFirstAwardByNameCCPCGirls(List<Contest> contestList) {
         String name = "CCPC";
         Map<String, List<FirstAward>> map = new HashMap<>();
         for (Contest contest : contestList) {
             String contestName = contest.getName();
-            if (contestName.contains(name) && contestName.indexOf(name) + name.length() == contestName.length()&&contest.getRemark().equals("女生赛")) {
+            if (contestName.contains(name) && contestName.indexOf(name) + name.length() == contestName.length() && contest.getRemark().equals("女生赛")) {
                 List<Award> awardList = getAwardById(contest.getId());
                 Map<String, List<FirstAward>> huojiang = new HashMap<>();
                 huojiang.put("国家级一等奖", new ArrayList<>());
@@ -274,6 +291,10 @@ public class AwardService {
             }
         }
         return map;
+    }
+
+    public List<String> getAllTeacher() {
+        return awardMapper.selectAllTeacher();
     }
 
 

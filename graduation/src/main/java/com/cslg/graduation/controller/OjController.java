@@ -5,10 +5,13 @@ import com.cslg.graduation.entity.Oj;
 import com.cslg.graduation.service.OjService;
 import com.cslg.graduation.service.SpiderService;
 import com.cslg.graduation.service.UserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +24,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/oj")
+
+//@Api(tags = {"测试接口"})
 //@CrossOrigin(origins = "http://localhost:5173")
 public class OjController {
 
@@ -35,6 +40,7 @@ public class OjController {
 
     @PreAuthorize("hasAuthority('user')")
     @PostMapping("/addOj")
+
     public ResponseService addOj(@RequestBody Oj oj) {
         ojService.addOj(oj);
         return ResponseService.createBySuccess();
@@ -42,6 +48,7 @@ public class OjController {
 
     //    @ResponseBody
     @RequestMapping("/getAll/{username}")
+//    @ApiOperation(value = "测试swagger get")
     public ResponseService getAllOj(@PathVariable("username") String username) {
         List<Oj> ojList = ojService.getAllOjId(username);
         return ResponseService.createBySuccess(ojList);
@@ -51,7 +58,9 @@ public class OjController {
         ojService.deleteOjByUsername(username, platform);
         Oj oj = new Oj()
                 .setUsername(username)
-                .setPlatform(platform);
+                .setPlatform(platform)
+                .setHistoryRating(0)
+                .setNowRating(0);
         for (String ojId : ojList) {
             oj = oj.setOjId(ojId);
             ojService.addOj(oj);
@@ -65,7 +74,9 @@ public class OjController {
         for (Map.Entry<String, List<String>> entry : ojList.entrySet()) {
             Oj oj = new Oj()
                     .setUsername(username)
-                    .setPlatform(entry.getKey());
+                    .setPlatform(entry.getKey())
+                    .setHistoryRating(0)
+                    .setNowRating(0);
             for (String ojId : entry.getValue()) {
                 oj = oj.setOjId(ojId);
                 ojService.addOj(oj);
@@ -114,6 +125,12 @@ public class OjController {
     public ResponseService updateLuoguOj(@PathVariable("username") String username, @RequestBody List<String> ojList) {
         updateOjByPlatform(username, "luogu", ojList);
         return ResponseService.createBySuccess();
+    }
+
+    @GetMapping("/test")
+    public String test(HttpServletRequest request){
+        return request.getSession().getServletContext().getRealPath("");
+
     }
 
 //    @PostMapping("/rating/{username}")

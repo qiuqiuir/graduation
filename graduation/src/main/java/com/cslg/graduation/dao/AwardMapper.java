@@ -31,5 +31,7 @@ public interface AwardMapper {
 
     List<String> selectAwardsByIdAndNumber(int id, int number, String type);
 
+    List<String> selectAllTeacher();
+
 
 }

@@ -39,10 +39,22 @@ public class WeekController {
         return ResponseService.createBySuccess();
     }
 
-    @ResponseBody
     @RequestMapping("/getAllWeek")
     public ResponseService getAllWeek(){
         List<Week> weekList = weekService.getAllWeek();
         return ResponseService.createBySuccess(weekList);
+    }
+
+    @RequestMapping("/getLegalWeek")
+    public ResponseService getLegalWeek(){
+        List<Week> weekList = weekService.getLegalAllWeek();
+        return ResponseService.createBySuccess(weekList);
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @RequestMapping("/updateLegalWeek")
+    public ResponseService updateLegalWeek(){
+        weekService.updateLegalWeek();
+        return ResponseService.createBySuccess();
     }
 }

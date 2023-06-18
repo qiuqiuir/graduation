@@ -97,6 +97,7 @@ public class UserService {
 
     /**
      * 根据学号更新用户信息
+     *
      * @param username
      */
     public void updateStatus(String username) {
@@ -109,23 +110,28 @@ public class UserService {
     }
 
     /**
-     * 获取所有用户信息
+     * 获取所有在役用户信息
+     *
      * @return
      */
     public List<Map<String, Object>> getAllUserMessage() {
         List<User> userList = userMapper.selectAllUsers();
         List<Map<String, Object>> shuju = new ArrayList<>();
+        int year = GraduationUtil.getNowYear();
         for (User user : userList) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("username", user.getUsername());
-            map.put("name", user.getName());
-            shuju.add(map);
+            if (user.getSession() >= year % 100-4) {
+                Map<String, Object> map = new HashMap<>();
+                map.put("username", user.getUsername());
+                map.put("name", user.getName());
+                shuju.add(map);
+            }
         }
         return shuju;
     }
 
     /**
      * 根据User更新用户
+     *
      * @param user
      */
     public void updateUser(User user) {
@@ -140,6 +146,7 @@ public class UserService {
 
     /**
      * 根据第session届获取该届所有用户
+     *
      * @param session
      * @return
      */
@@ -149,6 +156,7 @@ public class UserService {
 
     /**
      * 获取第session届所有专业
+     *
      * @param session
      * @return
      */

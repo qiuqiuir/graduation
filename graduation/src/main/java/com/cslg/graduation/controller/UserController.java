@@ -7,21 +7,11 @@ import com.cslg.graduation.entity.Contest;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.expection.MallException;
 import com.cslg.graduation.service.*;
-import com.cslg.graduation.util.GraduationUtil;
 import com.cslg.graduation.util.JwtTokenUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -30,17 +20,10 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/user")
-//@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @Value("${server.servlet.context-path}")
-    private String contextPath;
-
-    @Value("${graduation.path.upload}")
-    private String uploadPath;
 
     @Autowired
     private AwardService awardService;
@@ -61,7 +44,7 @@ public class UserController {
      * @return
      */
     @PostMapping(value = "/login")
-    public ResponseService test(@RequestBody User loginVO) {
+    public ResponseService login(@RequestBody User loginVO) {
         User user = userService.login(loginVO);
         String token = null;
         if (user.getStatus() == 0) {
@@ -127,19 +110,22 @@ public class UserController {
      * @param username
      * @return
      */
-    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/updateUserStatus")
     public ResponseService updateUserStatus(@RequestParam String username) {
         userService.updateStatus(username);
         return ResponseService.createBySuccess();
     }
 
+
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/getAllUser")
     public ResponseService getAllUser() {
         List<User> userList = userService.getAllUsers();
+        for(User user:userList){
+            user.setPassword("*");
+        }
         return ResponseService.createBySuccess(userList);
     }
-
 
     @GetMapping("/getAllUserMessage")
     public ResponseService getAllUserMessage() {
@@ -255,8 +241,10 @@ public class UserController {
     public ResponseService getTeam() {
         List<Map<String, Object>> result = new ArrayList<>();
         List<User> userList = userService.getAllUsers();
+        Calendar date = Calendar.getInstance();
+        int year =date.get(Calendar.YEAR)%100-4;
         for (User user : userList) {
-            if (user.getSession() <= 19) continue;
+            if (user.getSession() <= year) continue;
             Map<String, Object> map = new HashMap<>();
             map.put("username", user.getUsername());
             map.put("name", user.getName());

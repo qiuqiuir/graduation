@@ -14,7 +14,7 @@
 
     <insert id="insertOj" parameterType="Oj" keyProperty="id">
         insert into oj (<include refid="insertFields"></include>)
-        values(#{platform}, #{ojId}, #{username},#{history_rating},#{now_rating})
+        values(#{platform}, #{ojId}, #{username},#{historyRating},#{nowRating})
     </insert>
 
     <select id="selectListOjId" resultType="String">

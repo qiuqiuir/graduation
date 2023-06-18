@@ -5,16 +5,16 @@
 <mapper namespace="com.cslg.graduation.dao.WeekMapper">
 
     <sql id="insertFields">
-        time, contest_id, platform, count, sum, avg
+        time, contest_id, platform, count, sum, avg, is_show
     </sql>
 
     <sql id="selectFields">
-        time, contest_id, platform, count, sum, avg
+        time, contest_id, platform, count, sum, avg, is_show
     </sql>
 
     <insert id="insertWeek" parameterType="Week">
         insert into week (<include refid="insertFields"></include>)
-        values(#{time}, #{contestId}, #{platform}, #{count}, #{sum} ,#{avg})
+        values(#{time}, #{contestId}, #{platform}, #{count}, #{sum} ,#{avg}, #{isShow})
     </insert>
     
     <update id="updateCount">
@@ -32,12 +32,19 @@
         where time = #{time}
     </update>
 
-    <select id="selectAllTime" resultType="Date">
-        select distinct time
+    <update id="updateIsShow">
+        update week set is_show = #{val}
+        where time = #{time}
+    </update>
+
+    <select id="selectLegalWeek" resultType="Week">
+        select <include refid="selectFields"></include>
         from week
-        where time >= #{time}
+        where time >= #{time} and is_show = 1
         ORDER BY time asc
     </select>
+
+
 
     <select id="selectAllWeek" resultType="Week">
         select <include refid="selectFields"></include>

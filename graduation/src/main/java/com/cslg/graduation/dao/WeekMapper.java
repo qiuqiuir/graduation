@@ -21,12 +21,15 @@ public interface WeekMapper {
 
     public void updateAvg(Date time);
 
-    // 获取所有周赛时间
-    List<Date> selectAllTime(Date time);
+    void updateIsShow(Date time, int val);
+
+    // 获取本学期周赛信息
+    List<Week> selectLegalWeek(Date time);
 
     // 获取所有周赛信息
     List<Week> selectAllWeek();
 
     Week selectWeekByTime(Date time);
+
 
 }

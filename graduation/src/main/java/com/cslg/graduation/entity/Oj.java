@@ -55,16 +55,18 @@ public class Oj {
         return historyRating;
     }
 
-    public void setHistoryRating(int historyRating) {
+    public Oj setHistoryRating(int historyRating) {
         this.historyRating = historyRating;
+        return this;
     }
 
     public int getNowRating() {
         return nowRating;
     }
 
-    public void setNowRating(int nowRating) {
+    public Oj setNowRating(int nowRating) {
         this.nowRating = nowRating;
+        return this;
     }
 
     @Override

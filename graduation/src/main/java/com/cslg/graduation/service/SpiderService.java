@@ -6,6 +6,7 @@ import com.cslg.graduation.entity.Acnumber;
 import com.cslg.graduation.entity.Oj;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.util.GetUrlJson;
+import com.cslg.graduation.util.GraduationUtil;
 import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -422,5 +423,6 @@ public class SpiderService {
         System.out.println("当前时间:" + date);
         System.out.println("rating统计已完成");
     }
+
 
 }

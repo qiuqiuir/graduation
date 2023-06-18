@@ -18,6 +18,7 @@ public class Week {
     private int count;
     private double sum;
     private double avg;
+    private int isShow;
 
     public int getId() {
         return id;
@@ -82,16 +83,26 @@ public class Week {
         return this;
     }
 
+    public int getIsShow() {
+        return isShow;
+    }
+
+    public Week setIsShow(int isShow) {
+        this.isShow = isShow;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Week{" +
                 "id=" + id +
                 ", time=" + time +
                 ", platform='" + platform + '\'' +
-                ", contestId=" + contestId +
+                ", contestId='" + contestId + '\'' +
                 ", count=" + count +
                 ", sum=" + sum +
                 ", avg=" + avg +
+                ", isShow=" + isShow +
                 '}';
     }
 }

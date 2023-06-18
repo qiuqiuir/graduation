@@ -3,6 +3,7 @@ package com.cslg.graduation.controller;
 import com.cslg.graduation.common.ResponseService;
 import com.cslg.graduation.dao.ScoreMapper;
 import com.cslg.graduation.entity.User;
+import com.cslg.graduation.entity.Week;
 import com.cslg.graduation.service.AcnumberService;
 import com.cslg.graduation.service.ScoreService;
 import com.cslg.graduation.service.UserService;
@@ -49,7 +50,11 @@ public class ScoreController {
         // 获取所有显示的学号
         List<User> userList = userService.getAllUsers();
         // 获取所有周赛时间
-        List<Date> allTime = weekService.getAllTime();
+        List<Week> allWeek = weekService.getLegalAllWeek();
+        List<Date> allTime = new ArrayList<>();
+        for(Week week:allWeek){
+            allTime.add(week.getTime());
+        }
         Collections.reverse(allTime);
         for (User user : userList) {
             // 存储该用户的数据

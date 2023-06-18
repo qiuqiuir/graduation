@@ -66,11 +66,16 @@ public class ScoreService {
         // 更新当天积分
         scoreMapper.updateDailyScore(username, time, dailyScore);
         // 查找time之后的比赛日
-        List<Date> timeList = weekService.getAllTime(time);
+        List<Week> allWeek = weekService.getLegalWeek(time);
+        List<Date> timeList = new ArrayList<>();
+        for (Week week : allWeek) {
+            timeList.add(week.getTime());
+        }
         // 更新所有比赛日
         for (Date date : timeList) {
+            double totalScore = getScore(username, date).getTotalScore() + difference;
             // 更新该用户的总积分
-            scoreMapper.updateTotalScore(username, time, difference);
+            scoreMapper.updateTotalScore(username, date, totalScore);
             // 更新该周积分情况
             weekService.updateNumSumAvgByTime(date);
         }
@@ -115,25 +120,9 @@ public class ScoreService {
                     .setTime(week.getTime())
                     .setDailyScore(scorevalue)
                     .setTotalScore(scorevalue + totalScore);
-            scoreList.add(score);
+            addScore(score);
         }
-        Collections.sort(scoreList, new Comparator<Score>() {
-            @Override
-            public int compare(Score o1, Score o2) {
-                return Double.compare(o2.getTotalScore(), o1.getTotalScore());
-            }
-        });
-        int last = 1;
-        for (int i = 0; i < scoreList.size(); i++) {
-            Score nowScore = scoreList.get(i);
-            if (i != 0 && nowScore.getTotalScore() == scoreList.get(i - 1).getTotalScore()) {
-                nowScore = nowScore.setRank(last);
-            } else {
-                nowScore = nowScore.setRank(i + 1);
-                last = i + 1;
-            }
-            addScore(nowScore);
-        }
+
     }
 
     /**
@@ -158,25 +147,58 @@ public class ScoreService {
 
     /**
      * 获取学号为username的队员在time的积分
+     *
      * @param username
      * @param time
      * @return
      */
     public double getDailyScoreByUsernameAndTime(String username, Date time) {
-        return scoreMapper.findDailyScoreByUsername(username, time);
+        return getScore(username, time).getDailyScore();
     }
 
     /**
      * 获取学号为username的队员在time的排名
+     *
      * @param username
      * @param time
      * @return
      */
     public int getRankByUsernameAndTime(String username, Date time) {
-        return scoreMapper.findRankByUsername(username, time);
+        return getScore(username, time).getRank();
     }
 
+    public Score getScore(String username, Date time) {
+        return scoreMapper.selectScoreByUsernameAndTime(username, time);
+    }
 
+    public void updateRank(String username, Date time, int rank){
+        scoreMapper.updateRank(username, time, rank);
+    }
+    public List<Score> getScoresByTime(Date time){
+        return scoreMapper.selectScoresByTime(time);
+    }
+
+    public void updateWeekRank(Date time) {
+        List<Score> scoreList = getScoresByTime(time);
+        Collections.sort(scoreList, new Comparator<Score>() {
+            @Override
+            public int compare(Score o1, Score o2) {
+                return Double.compare(o2.getTotalScore(), o1.getTotalScore());
+            }
+        });
+        int last = 1;
+        for (int i = 0; i < scoreList.size(); i++) {
+            Score nowScore = scoreList.get(i);
+            if (i != 0 && nowScore.getTotalScore() == scoreList.get(i - 1).getTotalScore()) {
+                updateRank(nowScore.getUsername(),time,last);
+                //nowScore = nowScore.setRank(last);
+            } else {
+                updateRank(nowScore.getUsername(),time,i+1);
+                last = i + 1;
+            }
+           // addScore(nowScore);
+        }
+    }
 
 
 }

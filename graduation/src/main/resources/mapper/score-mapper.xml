@@ -12,8 +12,8 @@
     </sql>
 
     <select id="findTotalScoreByUsername" resultType="double">
-        SELECT IFNULL(max(total_score),0.0) from score
-        where username = #{username}
+        SELECT IFNULL(max(total_score),0.0) from score,week
+        where username = #{username} and score.time = week.time and week.is_show =1
     </select>
 
     <select id="findDailyScoreByUsername" resultType="double">
@@ -41,7 +41,7 @@
     </update>
 
     <update id="updateTotalScore">
-        update score set total_score = total_score + #{addScore}
+        update score set total_score =  #{totalScore}
         where username = #{username} and time = #{time}
     </update>
 
@@ -55,6 +55,23 @@
         select sum(daily_score)
         from score
         where time = #{time} and daily_score > 0
+    </select>
+
+    <select id="selectScoreByUsernameAndTime" resultType="Score">
+        select <include refid="selectFields"></include>
+        from score
+        where username = #{username} and time = #{time}
+    </select>
+
+    <update id="updateRank">
+        update score set `rank` =  #{rank}
+        where username = #{username} and time = #{time}
+    </update>
+
+    <select id="selectScoresByTime" resultType="Score">
+        select <include refid="selectFields"></include>
+        from score
+        where time = #{time}
     </select>
 
 

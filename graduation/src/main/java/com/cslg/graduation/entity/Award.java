@@ -11,6 +11,10 @@ public class Award {
     private int number;
     private String type;
 
+    private String teacher;
+
+    private String url;
+
     public int getId() {
         return id;
     }
@@ -51,6 +55,30 @@ public class Award {
         return type;
     }
 
+    public String getTeacher() {
+        return teacher;
+    }
+
+    public Award setTeacher(String teacher) {
+        this.teacher = teacher;
+        return this;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Award setUrl(String url) {
+        this.url = url;
+        return this;
+    }
+
+
+    public Award setType(String type) {
+        this.type = type;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "Award{" +
@@ -59,13 +87,8 @@ public class Award {
                 ", contestId=" + contestId +
                 ", number=" + number +
                 ", type='" + type + '\'' +
+                ", teacher='" + teacher + '\'' +
+                ", url='" + url + '\'' +
                 '}';
-    }
-
-    public Award setType(String type) {
-        this.type = type;
-        return this;
-
-
     }
 }

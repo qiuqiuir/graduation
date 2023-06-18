@@ -4,11 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.cslg.graduation.dao.AwardMapper">
     <sql id="insertFields">
-        username, contest_id, number, type
+        username, contest_id, number, type, teacher, url
     </sql>
 
     <sql id="selectFields">
-        username, contest_id, number, type
+        username, contest_id, number, type, teacher, url
     </sql>
 
     <select id="selectAllAward" resultType="Award">
@@ -24,7 +24,7 @@
 
     <insert id="insertAward" parameterType="Award" keyProperty="id">
         insert into award (<include refid="insertFields"></include>)
-        values( #{username}, #{contestId}, #{number}, #{type})
+        values( #{username}, #{contestId}, #{number}, #{type}, #{teacher}, #{url})
     </insert>
 
     <select id="selectAwardById" resultType="Award">
@@ -64,6 +64,11 @@
         from award
         where contest_id = #{id} and number = #{number} and type = #{type}
         order by username
+    </select>
+
+    <select id="selectAllTeacher" resultType="String">
+        select DISTINCT(teacher) from award
+        where teacher is not null
     </select>
 
 

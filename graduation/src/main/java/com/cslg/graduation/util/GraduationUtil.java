@@ -45,6 +45,7 @@ public class GraduationUtil {
         return calendar.getTime();
     }
 
+    // 日期转String,例如"2020-11-15"
     public static String DateToString(Date time) {
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(time);
@@ -55,5 +56,12 @@ public class GraduationUtil {
         if (day.length() == 1) day = "0" + day;
         String date = year + "-" + mouth + "-" + day;
         return date;
+    }
+
+    //获取当前年份
+    public static int getNowYear(){
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date());
+        return calendar.get(Calendar.YEAR);
     }
 }
