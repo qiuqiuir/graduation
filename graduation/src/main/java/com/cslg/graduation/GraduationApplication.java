@@ -13,7 +13,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @EnableScheduling
 @EnableOpenApi
-//@EnableSwagger2
 public class GraduationApplication {
 
 	public static void main(String[] args) {
