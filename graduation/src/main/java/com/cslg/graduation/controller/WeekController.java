@@ -57,4 +57,11 @@ public class WeekController {
         weekService.updateLegalWeek();
         return ResponseService.createBySuccess();
     }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @RequestMapping("/reloadScore")
+    public ResponseService deleteLegalWeek(){
+        weekService.reloadScore();
+        return ResponseService.createBySuccess();
+    }
 }

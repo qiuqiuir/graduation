@@ -56,6 +56,16 @@
         where username = #{username} and platform = #{platform} and oj_id = #{ojId}
     </update>
 
+    <select id="selectOjByPlatform" resultType="Oj">
+        select a.platform,a.oj_id,a.username,a.history_rating,a.now_rating
+        from oj a
+        where platform = #{platform} and
+        not EXISTS(
+        select 1 from oj where username = a.username and now_rating > a.now_rating and  platform = #{platform}
+        )
+        order by now_rating desc
+    </select>
+
 
 
 </mapper>

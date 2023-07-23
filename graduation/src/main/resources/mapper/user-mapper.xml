@@ -40,6 +40,11 @@
         where username = #{username}
     </update>
 
+    <update id="updateIsScore">
+        update user set is_score = #{isScore}
+        where username = #{username}
+    </update>
+
     <update id="updateHeader">
         update user set header_url = #{headerUrl}
         where username = #{username}
@@ -63,13 +68,19 @@
     <select id="selectUsersBySession" resultType="User">
         select <include refid="selectFields"></include>
         from user
-        where session = #{session}
+        where session = #{session} and is_score = 1
     </select>
 
     <select id="selectMajorBySession" resultType="String">
         select DISTINCT(major)
         from user
-        where session = #{session}
+        where session = #{session} and is_score = 1
+    </select>
+
+    <select id="selectIsScoreUsers" resultType="User">
+        select <include refid="selectFields"></include>
+        from user
+        where is_score = 1
     </select>
 
 </mapper>

@@ -270,7 +270,7 @@ public class SpiderService {
      * @return
      */
     public Map<String, Integer> getCfRating(String id) {
-        String url = "https://codeforces.com/api/user.rating?handle=" + id;
+        String url = "https://codeforces.com/api/user.info?handles=" + id;
         JSONObject data = null;
         Map<String, String> cookies = new HashMap<>();
         cookies.put("cookie", "lastOnlineTimeUpdaterInvocation=1684750619351; RCPC=a13d3b3eb51e1dd7351319891dd47e85; cf_clearance=1tZkaQ8xlK74htH..ZXT0cDc4KasHYxk0uZDJq5Z744-1681899994-0-250; __utmc=71512449; JSESSIONID=BA89611685C90E7902FF50DDD4FE961C-n1; 39ce7=CFRTkGJR; evercookie_png=bqnkpag5zed5okjp4s; evercookie_etag=bqnkpag5zed5okjp4s; evercookie_cache=bqnkpag5zed5okjp4s; 70a7c28f3de=bqnkpag5zed5okjp4s; X-User=; X-User-Sha1=6bd8dcb81b0b63bc355e224e6e71e0a5fcf213e1; lastOnlineTimeUpdaterInvocation=1684736999346; __utmz=71512449.1684741376.47.8.utmcsr=localhost:5173|utmccn=(referral)|utmcmd=referral|utmcct=/; __utma=71512449.1482994933.1679837284.1684741376.1684748672.48");
@@ -280,24 +280,19 @@ public class SpiderService {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+        Map<String, Integer> map = new HashMap<>();
         if (data == null) {
-            Map<String, Integer> map = new HashMap<>();
             map.put("history", 0);
             map.put("current", 0);
             return map;
         }
         data = data.getJSONObject("msg");
-        // 获取所有提交结果
-        JSONArray ratingList = data.getJSONArray("result");
-        int maxn = 0, now = 0;
-        for (int i = 0; i < ratingList.size(); i++) {
-            int rating = ratingList.getJSONObject(i).getInteger("newRating");
-            maxn = Math.max(maxn, rating);
-            now = rating;
-        }
-        Map<String, Integer> map = new HashMap<>();
-        map.put("history", maxn);
-        map.put("current", now);
+        data = data.getJSONArray("result").getJSONObject(0);
+        // 获取历史最高分和当前分数
+        Integer maxn = data.getInteger("maxRating");
+        Integer now = data.getInteger("rating");
+        map.put("history",maxn);
+        map.put("current",now);
         return map;
     }
 
@@ -354,7 +349,7 @@ public class SpiderService {
         data = data.getJSONObject("msg");
         data = data.getJSONObject("data");
         JSONArray records = data.getJSONArray("records");
-        List<User> userList = userService.getAllUsers();
+        List<User> userList = userService.getACMer();
         for (int i = 0; i < records.size(); i++) {
             String username = records.getJSONObject(i).getString("username");
             if (userService.findUserByUsername(username) == null) continue;
@@ -392,30 +387,42 @@ public class SpiderService {
      *
      * @throws InterruptedException
      */
-    @Scheduled(cron = "0 0 2 * * ?")
+    @Scheduled(cron = "0 0 2,12 * * ?")
     public void updateUserRating() throws InterruptedException {
         Date date = new Date();
         System.out.println("当前时间:" + date);
         System.out.println("开始爬取队员各大oj上的rating");
         List<Oj> ojList = ojService.getAllOj();
         for (Oj oj : ojList) {
-            Thread.sleep(1000);
+//            Thread.sleep(1000);
             String platform = oj.getPlatform();
             String username = oj.getUsername();
             String id = oj.getOjId();
             System.out.println(username + "   " + platform + "   " + id);
             if (platform.equals("nowcoder")) {
                 Map<String, Integer> rating = getNowcoderRating(id);
-                ojService.updateNowRating(username, platform, id, rating.get("current"));
-                ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                if(rating.get("current")!=null) {
+                    ojService.updateNowRating(username, platform, id, rating.get("current"));
+                }
+                if(rating.get("history")!=null) {
+                    ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                }
             } else if (platform.equals("codeforces")) {
                 Map<String, Integer> rating = getCfRating(id);
-                ojService.updateNowRating(username, platform, id, rating.get("current"));
-                ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                if(rating.get("current")!=null) {
+                    ojService.updateNowRating(username, platform, id, rating.get("current"));
+                }
+                if(rating.get("history")!=null) {
+                    ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                }
             } else if (platform.equals("atcoder")) {
                 Map<String, Integer> rating = getAtcoderRating(id);
-                ojService.updateNowRating(username, platform, id, rating.get("current"));
-                ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                if(rating.get("current")!=null) {
+                    ojService.updateNowRating(username, platform, id, rating.get("current"));
+                }
+                if(rating.get("history")!=null) {
+                    ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                }
             }
             System.out.println("over");
         }

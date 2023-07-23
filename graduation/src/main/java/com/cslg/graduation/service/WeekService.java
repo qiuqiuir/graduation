@@ -113,4 +113,22 @@ public class WeekService {
             updateIsShow(week.getTime());
         }
     }
+
+    /**
+     * 删除本学期所有积分
+     */
+    public void deleteLegalWeek(){
+        weekMapper.deleteLegalWeek();
+    }
+
+    /**
+     * 重跑本学期积分
+     */
+    public void reloadScore(){
+        List<Week> weekList = getLegalAllWeek();
+        deleteLegalWeek();
+        for(Week week:weekList){
+            addWeek(week);
+        }
+    }
 }

@@ -31,5 +31,7 @@ public interface WeekMapper {
 
     Week selectWeekByTime(Date time);
 
+    void deleteLegalWeek();
+
 
 }

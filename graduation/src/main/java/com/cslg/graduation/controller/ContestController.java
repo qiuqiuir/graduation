@@ -32,6 +32,10 @@ public class ContestController {
     @Autowired
     private AwardService awardService;
 
+    /**
+     * 获取所有比赛
+     * @return
+     */
     @RequestMapping("/getAllContest")
     public ResponseService getAllContest(){
         List<Contest> contestList = contestService.getAllContest();
@@ -42,6 +46,28 @@ public class ContestController {
             }
         });
         return ResponseService.createBySuccess(contestList);
+    }
+
+    @RequestMapping("/getNearlyYearContest")
+    public ResponseService getNearlyYearContest(){
+        List<Contest> contestList = contestService.getAllContest();
+        List<Contest> result = new ArrayList<>();
+        Date date = new Date();
+        for(Contest contest:contestList){
+            Date contestData = contest.getTime();
+            long millisecond = date.getTime() - contestData.getTime();
+            double day = millisecond/(1000*60*60*24);
+            if(day<180){
+                result.add(contest);
+            }
+        }
+        Collections.sort(result, new Comparator<Contest>() {
+            @Override
+            public int compare(Contest o1, Contest o2) {
+                return o2.getTime().compareTo(o1.getTime());
+            }
+        });
+        return ResponseService.createBySuccess(result);
     }
 
     /**
@@ -56,6 +82,10 @@ public class ContestController {
         return ResponseService.createBySuccess();
     }
 
+    /**
+     * 获得参加比赛次数
+     * @return
+     */
     @RequestMapping("/getCount")
     public ResponseService getCount(){
         int count = contestService.getCountContest();

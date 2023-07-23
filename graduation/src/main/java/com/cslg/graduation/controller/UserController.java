@@ -110,9 +110,22 @@ public class UserController {
      * @param username
      * @return
      */
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/updateUserStatus")
     public ResponseService updateUserStatus(@RequestParam String username) {
         userService.updateStatus(username);
+        return ResponseService.createBySuccess();
+    }
+
+    /**
+     * 更新user打星
+     * @param username
+     * @return
+     */
+    @PreAuthorize("hasAuthority('admin')")
+    @GetMapping("/updateUserIsScore")
+    public ResponseService updateUserIsScore(@RequestParam String username) {
+        userService.updateIsScore(username);
         return ResponseService.createBySuccess();
     }
 
@@ -121,12 +134,16 @@ public class UserController {
     @GetMapping("/getAllUser")
     public ResponseService getAllUser() {
         List<User> userList = userService.getAllUsers();
-        for(User user:userList){
+        for (User user : userList) {
             user.setPassword("*");
         }
         return ResponseService.createBySuccess(userList);
     }
 
+    /**
+     * 获取所有在役队员信息
+     * @return
+     */
     @GetMapping("/getAllUserMessage")
     public ResponseService getAllUserMessage() {
         List<Map<String, Object>> userList = userService.getAllUserMessage();
@@ -240,9 +257,9 @@ public class UserController {
     @GetMapping("/getTeam")
     public ResponseService getTeam() {
         List<Map<String, Object>> result = new ArrayList<>();
-        List<User> userList = userService.getAllUsers();
+        List<User> userList = userService.getACMer();
         Calendar date = Calendar.getInstance();
-        int year =date.get(Calendar.YEAR)%100-4;
+        int year = date.get(Calendar.YEAR) % 100 - 4;
         for (User user : userList) {
             if (user.getSession() <= year) continue;
             Map<String, Object> map = new HashMap<>();

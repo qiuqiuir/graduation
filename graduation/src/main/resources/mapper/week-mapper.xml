@@ -58,6 +58,12 @@
         where time = #{time}
     </select>
 
+    <delete id="deleteLegalWeek">
+        delete
+        from week
+        where is_show = 1
+    </delete>
+
 
 
 </mapper>

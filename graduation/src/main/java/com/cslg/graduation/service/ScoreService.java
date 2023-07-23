@@ -60,7 +60,6 @@ public class ScoreService {
      * @param dailyScore
      */
     public void updateScore(String username, Date time, double dailyScore) {
-
         //计算差值
         double difference = dailyScore - scoreMapper.findDailyScoreByUsername(username, time);
         // 更新当天积分
@@ -153,7 +152,9 @@ public class ScoreService {
      * @return
      */
     public double getDailyScoreByUsernameAndTime(String username, Date time) {
-        return getScore(username, time).getDailyScore();
+        Score score = getScore(username, time);
+        if (score == null) return 0;
+        return score.getDailyScore();
     }
 
     /**
@@ -164,20 +165,43 @@ public class ScoreService {
      * @return
      */
     public int getRankByUsernameAndTime(String username, Date time) {
-        return getScore(username, time).getRank();
+        Score score = getScore(username, time);
+        return score.getRank();
     }
 
+    /**
+     * 根据学号和时间获取某个人某场周赛情况
+     * @param username
+     * @param time
+     * @return
+     */
     public Score getScore(String username, Date time) {
         return scoreMapper.selectScoreByUsernameAndTime(username, time);
     }
 
-    public void updateRank(String username, Date time, int rank){
+    /**
+     * 更新周赛排名
+     * @param username
+     * @param time
+     * @param rank
+     */
+    public void updateRank(String username, Date time, int rank) {
         scoreMapper.updateRank(username, time, rank);
     }
-    public List<Score> getScoresByTime(Date time){
+
+    /**
+     * 获取某个时间所有积分
+     * @param time
+     * @return
+     */
+    public List<Score> getScoresByTime(Date time) {
         return scoreMapper.selectScoresByTime(time);
     }
 
+    /**
+     * 根据时间更新周赛排名
+     * @param time
+     */
     public void updateWeekRank(Date time) {
         List<Score> scoreList = getScoresByTime(time);
         Collections.sort(scoreList, new Comparator<Score>() {
@@ -190,15 +214,17 @@ public class ScoreService {
         for (int i = 0; i < scoreList.size(); i++) {
             Score nowScore = scoreList.get(i);
             if (i != 0 && nowScore.getTotalScore() == scoreList.get(i - 1).getTotalScore()) {
-                updateRank(nowScore.getUsername(),time,last);
+                updateRank(nowScore.getUsername(), time, last);
                 //nowScore = nowScore.setRank(last);
             } else {
-                updateRank(nowScore.getUsername(),time,i+1);
+                updateRank(nowScore.getUsername(), time, i + 1);
                 last = i + 1;
             }
-           // addScore(nowScore);
+            // addScore(nowScore);
         }
     }
+
+
 
 
 }

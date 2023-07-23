@@ -49,7 +49,7 @@ public class UserService {
     }
 
     /**
-     * 返回所有在积分表显示的同学
+     * 返回数据库所有用户
      */
     public List<User> getAllUsers() {
         return userMapper.selectAllUsers();
@@ -87,7 +87,7 @@ public class UserService {
         }
         user.setPassword(GraduationUtil.md5(user.getPassword()));
         user.setStatus(0);
-        user.setIsScore(1);
+        user.setIsScore(0);
 //        String nowDate = "";
 //        GraduationUtil.DateToString(new Date());
         user.setCreateDate(new Date());
@@ -96,7 +96,7 @@ public class UserService {
     }
 
     /**
-     * 根据学号更新用户信息
+     * 根据学号更新管理信息
      *
      * @param username
      */
@@ -110,16 +110,29 @@ public class UserService {
     }
 
     /**
+     * 根据学号更新是否集训队队员
+     * @param username
+     */
+    public void updateIsScore(String username) {
+        int isScore = userMapper.selectByUsername(username).getIsScore();
+        if (isScore == 0) {
+            userMapper.updateIsScore(username, 1);
+        } else {
+            userMapper.updateIsScore(username, 0);
+        }
+    }
+
+    /**
      * 获取所有在役用户信息
      *
      * @return
      */
     public List<Map<String, Object>> getAllUserMessage() {
-        List<User> userList = userMapper.selectAllUsers();
+        List<User> userList = getACMer();
         List<Map<String, Object>> shuju = new ArrayList<>();
         int year = GraduationUtil.getNowYear();
         for (User user : userList) {
-            if (user.getSession() >= year % 100-4) {
+            if (user.getSession() >= year % 100 - 4) {
                 Map<String, Object> map = new HashMap<>();
                 map.put("username", user.getUsername());
                 map.put("name", user.getName());
@@ -162,6 +175,15 @@ public class UserService {
      */
     public List<String> getMajorsBySession(int session) {
         return userMapper.selectMajorBySession(session);
+    }
+
+    /**
+     * 获取所有集训队队员
+     *
+     * @return
+     */
+    public List<User> getACMer() {
+        return userMapper.selectIsScoreUsers();
     }
 
 

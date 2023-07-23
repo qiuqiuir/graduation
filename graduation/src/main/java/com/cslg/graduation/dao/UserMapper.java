@@ -17,8 +17,7 @@ public interface UserMapper {
     int insertUser(User user);
 
     void updateStatus(String username, int status);
-
-    void updateHeader(String username, String headerUrl);
+    void updateIsScore(String username, int isScore);
 
     void updatePassword(String username, String password);
 
@@ -29,6 +28,8 @@ public interface UserMapper {
     List<User> selectUsersBySession(int session);
 
     List<String> selectMajorBySession(int session);
+
+    List<User> selectIsScoreUsers();
 
 
 }

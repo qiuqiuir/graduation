@@ -346,7 +346,7 @@ public class AwardController {
                 }
             }
         }
-        List<User> userList = userService.getAllUsers();
+        List<User> userList = userService.getACMer();
         for (int j = 0; j < 19; j++) {
             List<String> usernames = new ArrayList<>();
             for (int i = 0; i < 3; i++) {

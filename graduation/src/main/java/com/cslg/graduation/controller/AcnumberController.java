@@ -29,7 +29,7 @@ public class AcnumberController {
     @RequestMapping("/getAll")
     public ResponseService getAll(@RequestParam(value = "date",required = true)String time) throws ParseException {
         List<Map<String,Object>> result = new ArrayList<>();
-        List<User> userList = userService.getAllUsers();
+        List<User> userList = userService.getACMer();
         SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
         Date date = ft.parse(time);
         for(User user:userList){
