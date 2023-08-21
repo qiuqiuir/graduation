@@ -153,12 +153,14 @@ public class OjService {
             int rating = oj.getNowRating();
             if (map.containsKey(username)) {
                 map.get(username).setAtcoder(rating);
+                map.get(username).setAtcoderUrl("https://atcoder.jp/users/"+oj.getOjId());
             } else {
                 String name = userService.findUserByUsername(username).getName();
                 Rating now = new Rating()
                         .setUsername(username)
                         .setName(name)
-                        .setAtcoder(rating);
+                        .setAtcoder(rating)
+                        .setAtcoderUrl("https://atcoder.jp/users/"+oj.getOjId());
                 map.put(username, now);
             }
         }
@@ -167,12 +169,14 @@ public class OjService {
             int rating = oj.getNowRating();
             if (map.containsKey(username)) {
                 map.get(username).setNowcoder(rating);
+                map.get(username).setNowcoderUrl("https://ac.nowcoder.com/acm/contest/profile/"+oj.getOjId());
             } else {
                 String name = userService.findUserByUsername(username).getName();
                 Rating now = new Rating()
                         .setUsername(username)
                         .setName(name)
-                        .setNowcoder(rating);
+                        .setNowcoder(rating)
+                        .setNowcoderUrl("https://ac.nowcoder.com/acm/contest/profile/"+oj.getOjId());
                 map.put(username, now);
             }
         }
@@ -180,14 +184,19 @@ public class OjService {
         for (Oj oj : codeforces) {
             String username = oj.getUsername();
             int rating = oj.getNowRating();
+            if(username.equals("093119134")){
+                int fdf=7;
+            }
             if (map.containsKey(username)) {
                 map.get(username).setCodeforces(rating);
+                map.get(username).setCodeforcesUrl("https://codeforces.com/profile/"+oj.getOjId());
             } else {
                 String name = userService.findUserByUsername(username).getName();
                 Rating now = new Rating()
                         .setUsername(username)
                         .setName(name)
-                        .setCodeforces(rating);
+                        .setCodeforces(rating)
+                        .setCodeforcesUrl("https://codeforces.com/profile/"+oj.getOjId());
                 map.put(username, now);
             }
         }

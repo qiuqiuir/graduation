@@ -4,7 +4,9 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.cslg.graduation.common.KnowledgeEnum;
 import com.cslg.graduation.entity.Acnumber;
+import com.cslg.graduation.entity.Score;
 import com.cslg.graduation.entity.User;
+import com.cslg.graduation.entity.Week;
 import com.cslg.graduation.service.*;
 import com.cslg.graduation.util.GetUrlJson;
 import org.junit.jupiter.api.Test;
@@ -12,10 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.scheduling.annotation.Scheduled;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SpringBootTest
 class GraduationApplicationTests {
@@ -34,6 +33,9 @@ class GraduationApplicationTests {
 
 	@Autowired
 	private OjService ojService;
+
+	@Autowired
+	private WeekService weekService;
 	@Test
 	void contextLoads() throws InterruptedException {
 //		Calendar now = Calendar.getInstance();
@@ -65,23 +67,23 @@ class GraduationApplicationTests {
 					.setTime(date);
 			int atcoder = records.getJSONObject(i).getInteger("atcoder");
 			acnumber = acnumber.setPlatform("atcoder").setCount(atcoder);
-			acnumberService.insert(acnumber);
+			acnumberService.addAcnumber(acnumber);
 
 			int nowcoder = records.getJSONObject(i).getInteger("niuke");
 			acnumber = acnumber.setPlatform("nowcoder").setCount(nowcoder);
-			acnumberService.insert(acnumber);
+			acnumberService.addAcnumber(acnumber);
 
 			int cf = records.getJSONObject(i).getInteger("codeforces");
 			acnumber = acnumber.setPlatform("codeforces").setCount(cf);
-			acnumberService.insert(acnumber);
+			acnumberService.addAcnumber(acnumber);
 
 			int vjudge = records.getJSONObject(i).getInteger("vjudge");
 			acnumber = acnumber.setPlatform("vjudge").setCount(vjudge);
-			acnumberService.insert(acnumber);
+			acnumberService.addAcnumber(acnumber);
 
 			int luogu = records.getJSONObject(i).getInteger("luogu");
 			acnumber = acnumber.setPlatform("luogu").setCount(luogu);
-			acnumberService.insert(acnumber);
+			acnumberService.addAcnumber(acnumber);
 
 		}
 		date = new Date();
@@ -139,6 +141,21 @@ class GraduationApplicationTests {
 		}
 		if(rating.get("history")!=null) {
 			ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+		}
+	}
+
+	@Test
+	void test1(){
+		List<Week> weekList = weekService.getLegalAllWeek();
+		Collections.sort(weekList, new Comparator<Week>() {
+			@Override
+			public int compare(Week o1, Week o2) {
+				return o2.getTime().compareTo(o1.getTime());
+			}
+		});
+		List<Score> scoreList = scoreService.getScoresByTime(weekList.get(0).getTime());
+		for (Score score : scoreList){
+			System.out.println(score);
 		}
 	}
 

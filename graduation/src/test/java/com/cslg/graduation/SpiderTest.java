@@ -47,37 +47,39 @@ public class SpiderTest {
         System.out.println("开始爬取队员各大oj上的rating");
         List<Oj> ojList = ojService.getAllOj();
         for (Oj oj : ojList) {
+            if(oj.getUsername().equals("092621114")) {
 //            Thread.sleep(1000);
-            String platform = oj.getPlatform();
-            String username = oj.getUsername();
-            String id = oj.getOjId();
-            System.out.println(username + "   " + platform + "   " + id);
-            if (platform.equals("nowcoder")) {
-                Map<String, Integer> rating = spiderService.getNowcoderRating(id);
-                if(rating.get("current")!=null) {
-                    ojService.updateNowRating(username, platform, id, rating.get("current"));
+                String platform = oj.getPlatform();
+                String username = oj.getUsername();
+                String id = oj.getOjId();
+                System.out.println(username + "   " + platform + "   " + id);
+                if (platform.equals("nowcoder")) {
+                    Map<String, Integer> rating = spiderService.getNowcoderRating(id);
+                    if (rating.get("current") != null) {
+                        ojService.updateNowRating(username, platform, id, rating.get("current"));
+                    }
+                    if (rating.get("history") != null) {
+                        ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                    }
+                } else if (platform.equals("codeforces")) {
+                    Map<String, Integer> rating = spiderService.getCfRating(id);
+                    if (rating.get("current") != null) {
+                        ojService.updateNowRating(username, platform, id, rating.get("current"));
+                    }
+                    if (rating.get("history") != null) {
+                        ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                    }
+                } else if (platform.equals("atcoder")) {
+                    Map<String, Integer> rating = spiderService.getAtcoderRating(id);
+                    if (rating.get("current") != null) {
+                        ojService.updateNowRating(username, platform, id, rating.get("current"));
+                    }
+                    if (rating.get("history") != null) {
+                        ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                    }
                 }
-                if(rating.get("history")!=null) {
-                    ojService.updateHistoryRating(username, platform, id, rating.get("history"));
-                }
-            } else if (platform.equals("codeforces")) {
-                Map<String, Integer> rating = spiderService.getCfRating(id);
-                if(rating.get("current")!=null) {
-                    ojService.updateNowRating(username, platform, id, rating.get("current"));
-                }
-                if(rating.get("history")!=null) {
-                    ojService.updateHistoryRating(username, platform, id, rating.get("history"));
-                }
-            } else if (platform.equals("atcoder")) {
-                Map<String, Integer> rating = spiderService.getAtcoderRating(id);
-                if(rating.get("current")!=null) {
-                    ojService.updateNowRating(username, platform, id, rating.get("current"));
-                }
-                if(rating.get("history")!=null) {
-                    ojService.updateHistoryRating(username, platform, id, rating.get("history"));
-                }
+                System.out.println("over");
             }
-            System.out.println("over");
         }
         date = new Date();
         System.out.println("当前时间:" + date);
@@ -86,7 +88,7 @@ public class SpiderTest {
 
     @Test
     public void spider() throws InterruptedException {
-        spiderService.updateUserRating();
-
+        Map<String, Integer> rating = spiderService.getCfRating("cslg052922104");
+        System.out.println(rating);
     }
 }

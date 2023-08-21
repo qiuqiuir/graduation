@@ -37,6 +37,10 @@
         select count(id) from contest
     </select>
 
+    <delete id="deleteContestById" parameterType="int">
+        DELETE FROM contest
+        WHERE id = #{id}
+    </delete>
 
 
 

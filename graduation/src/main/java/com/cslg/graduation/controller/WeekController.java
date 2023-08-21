@@ -1,6 +1,7 @@
 package com.cslg.graduation.controller;
 
 import com.cslg.graduation.common.ResponseService;
+import com.cslg.graduation.entity.User;
 import com.cslg.graduation.entity.Week;
 import com.cslg.graduation.service.WeekService;
 import com.cslg.graduation.util.GraduationUtil;
@@ -8,8 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @auther xurou
@@ -64,4 +66,21 @@ public class WeekController {
         weekService.reloadScore();
         return ResponseService.createBySuccess();
     }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @RequestMapping("/gongjia")
+    public ResponseService gongjia() throws ParseException {
+        List<Week> weekList = weekService.getLegalAllWeek();
+        Collections.sort(weekList, new Comparator<Week>() {
+            @Override
+            public int compare(Week o1, Week o2) {
+                return o2.getTime().compareTo(o1.getTime());
+            }
+        });
+
+        List<Map<String, String>> users = weekService.getNote(weekList.get(0).getTime());
+
+        return ResponseService.createBySuccess(users);
+    }
+
 }

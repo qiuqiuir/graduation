@@ -60,5 +60,13 @@ public class ContestService {
         return contestMapper.selectContestById(id);
     }
 
+    /**
+     * 根据比赛id删除这场比赛
+     * @param id
+     */
+    public void deleteContestById(int id){
+        contestMapper.deleteContestById(id);
+    }
+
 
 }

@@ -282,17 +282,26 @@ public class SpiderService {
         }
         Map<String, Integer> map = new HashMap<>();
         if (data == null) {
-            map.put("history", 0);
-            map.put("current", 0);
+            return map;
+        }
+        if(!data.containsKey("msg")) {
             return map;
         }
         data = data.getJSONObject("msg");
+        if(!data.containsKey("result")){
+            return map;
+        }
+        if(data.getJSONArray("result").size()==0){
+            return map;
+        }
         data = data.getJSONArray("result").getJSONObject(0);
-        // 获取历史最高分和当前分数
-        Integer maxn = data.getInteger("maxRating");
-        Integer now = data.getInteger("rating");
-        map.put("history",maxn);
-        map.put("current",now);
+        if(data.containsKey("maxRating")&&data.containsKey("rating")) {
+            // 获取历史最高分和当前分数
+            Integer maxn = data.getInteger("maxRating");
+            Integer now = data.getInteger("rating");
+            map.put("history", maxn);
+            map.put("current", now);
+        }
         return map;
     }
 
@@ -358,23 +367,23 @@ public class SpiderService {
                     .setTime(date);
             int atcoder = records.getJSONObject(i).getInteger("atcoder");
             acnumber = acnumber.setPlatform("atcoder").setCount(atcoder);
-            acnumberService.insert(acnumber);
+            acnumberService.addAcnumber(acnumber);
 
             int nowcoder = records.getJSONObject(i).getInteger("niuke");
             acnumber = acnumber.setPlatform("nowcoder").setCount(nowcoder);
-            acnumberService.insert(acnumber);
+            acnumberService.addAcnumber(acnumber);
 
             int cf = records.getJSONObject(i).getInteger("codeforces");
             acnumber = acnumber.setPlatform("codeforces").setCount(cf);
-            acnumberService.insert(acnumber);
+            acnumberService.addAcnumber(acnumber);
 
             int vjudge = records.getJSONObject(i).getInteger("vjudge");
             acnumber = acnumber.setPlatform("vjudge").setCount(vjudge);
-            acnumberService.insert(acnumber);
+            acnumberService.addAcnumber(acnumber);
 
             int luogu = records.getJSONObject(i).getInteger("luogu");
             acnumber = acnumber.setPlatform("luogu").setCount(luogu);
-            acnumberService.insert(acnumber);
+            acnumberService.addAcnumber(acnumber);
 
         }
         date = new Date();
@@ -383,7 +392,7 @@ public class SpiderService {
     }
 
     /**
-     * 定时组件，每天2点爬取队员rating
+     * 定时组件，每天2点和12点爬取队员rating
      *
      * @throws InterruptedException
      */

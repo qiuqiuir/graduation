@@ -59,6 +59,7 @@ public class AwardService {
             String name = userService.findUserByUsername(username).getName();
             awardList.get(i).setUsername(name);
         }
+        int number = contestService.getNumberById(awardList.get(0).getContestId());
         Collections.sort(awardList, new Comparator<Award>() {
             @Override
             public int compare(Award o1, Award o2) {
@@ -68,12 +69,12 @@ public class AwardService {
         String winner = "";
         boolean isFirst = true;
         for (int i = 0; i < awardList.size(); i++) {
-            if (i != awardList.size() - 1 && awardList.get(i).getNumber() == awardList.get(i + 1).getNumber()) {
+            if (i != awardList.size() - 1 && awardList.get(i).getNumber() == awardList.get(i + 1).getNumber() && number != 1) {
                 if (isFirst) winner += "【";
                 winner += awardList.get(i).getUsername();
                 winner += "、";
                 isFirst = false;
-            } else if (i > 0 && awardList.get(i).getNumber() == awardList.get(i - 1).getNumber()) {
+            } else if (i > 0 && awardList.get(i).getNumber() == awardList.get(i - 1).getNumber() && number != 1) {
                 winner += awardList.get(i).getUsername();
                 winner += "】";
                 isFirst = true;
@@ -89,7 +90,7 @@ public class AwardService {
     }
 
     /**
-     * 根据比赛id和比赛类型查找该比赛已经有几个人获奖
+     * 根据比赛id查找该比赛已经有几个人获奖
      *
      * @param id
      * @return
@@ -98,6 +99,12 @@ public class AwardService {
         return awardMapper.selectNumberById(id);
     }
 
+    /**
+     * 根据比赛id和比赛类型查找该比赛已经有几个人获奖
+     *
+     * @param id
+     * @return
+     */
     public int getNumberById(int id, String type) {
         return awardMapper.selectNumberByIdAndType(id, type);
     }

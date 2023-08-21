@@ -64,30 +64,7 @@ public class DataBaseTest {
     @Test
     public void testUser() {
 
-        User user = userMapper.selectByUsername("093119134");
-        System.out.println(user);
-
-//        System.out.println("--------------");
-//        List<String> userList = userMapper.selectIsScoreUsers();
-//
-//        for (String user1 : userList) {
-//            System.out.println(user1);
-//        }
-//
-//        System.out.println("--------------");
-
-//        User user = new User()
-//                .setUsername("093119134")
-//                .setName("徐柔")
-//                .setMajor("数据科学与大数据技术")
-//                .setEmail("1143853098@qq.com")
-//                .setGender("女")
-//                .setIdentityCard("350102200111151624")
-//                .setClothingSize("M");
-//        userService.updateUser(user);
-//
-//        userMapper.insertUser(user);
-//        System.out.println(userService.findUserByUsername("093119134"));
+        contestMapper.deleteContestById(160);
 
     }
 

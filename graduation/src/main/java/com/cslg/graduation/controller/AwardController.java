@@ -386,7 +386,7 @@ public class AwardController {
      *
      * @return
      */
-    @RequestMapping("/AwardFirst")
+    @RequestMapping("/getAwardFirst")
     public ResponseService getAwardFirst() {
         Map<String, Object> result = new HashMap<>();
         List<Contest> contestList = contestService.getAllContest();
@@ -406,6 +406,7 @@ public class AwardController {
         contestName.add("robocom");
         contestName.add("天梯赛");
         contestName.add("CCPC女生赛");
+        contestName.add("百度之星");
         for (String name : contestName) {
             Map<String, List<FirstAward>> map = awardService.getFirstAwardByName(name, contestList);
             result.put(name, map);
@@ -757,6 +758,38 @@ public class AwardController {
                 map.put("time", sdf.format(contest.getTime()));
                 map.put("type", award.getType());
                 map.put("level", contest.getLevel());
+                result.add(map);
+            }
+        }
+        Collections.sort(result, new Comparator<Map<String, Object>>() {
+            @Override
+            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+                String time1 = (String) o1.get("time");
+                String time2 = (String) o2.get("time");
+                return time2.compareTo(time1);
+            }
+        });
+        return ResponseService.createBySuccess(result);
+    }
+
+    @RequestMapping("/getAwardBaiduStar")
+    public ResponseService getAwardBaiduStar() {
+        List<Award> awardList = awardService.getAllAward();
+        List<Map<String, Object>> result = new ArrayList<>();
+        for (Award award : awardList) {
+            Contest contest = contestService.getContestById(award.getContestId());
+            if (contest.getName().contains("百度之星")) {
+                Map<String, Object> map = new HashMap<>();
+                String name = (1900 + contest.getTime().getYear()) + "年" + contest.getName();
+                if (!StringUtils.isBlank(contest.getRemark())) {
+                    name = name + "(" + contest.getRemark() + ")";
+                }
+                map.put("name", name);
+                map.put("time", sdf.format(contest.getTime()));
+                map.put("type", award.getType());
+                map.put("level", contest.getLevel());
+                String awardName = userService.findUserByUsername(award.getUsername()).getName();
+                map.put("people", awardName);
                 result.add(map);
             }
         }

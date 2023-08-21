@@ -1,13 +1,14 @@
 package com.cslg.graduation.service;
 
 import com.cslg.graduation.dao.WeekMapper;
+import com.cslg.graduation.entity.Score;
+import com.cslg.graduation.entity.User;
 import com.cslg.graduation.entity.Week;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * @auther xurou
@@ -23,6 +24,12 @@ public class WeekService {
     @Lazy
     private ScoreService scoreService;
 
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private AcnumberService acnumberService;
+
     /**
      * 新增一场周赛信息
      *
@@ -32,7 +39,7 @@ public class WeekService {
         week = week.setIsShow(1);
         // 插入新周赛
         weekMapper.insertWeek(week);
-        System.out.println(week.getTime()+"周赛已添加完成，正在计算积分");
+        System.out.println(week.getTime() + "周赛已添加完成，正在计算积分");
         // 对于每位同学计算积分
         scoreService.addWeekScore(week);
         System.out.println("积分已计算完成，正在更新周赛数据");
@@ -88,28 +95,30 @@ public class WeekService {
 
     /**
      * 根据time时间获取那场周赛信息
+     *
      * @param time
      * @return
      */
-    public Week getWeekByTime(Date time){
+    public Week getWeekByTime(Date time) {
         return weekMapper.selectWeekByTime(time);
     }
 
     /**
      * 更改时间为time的周赛的是否展示状态
+     *
      * @param time
      */
-    public void updateIsShow(Date time){
+    public void updateIsShow(Date time) {
         Week week = getWeekByTime(time);
-        weekMapper.updateIsShow(time, 1- week.getIsShow());
+        weekMapper.updateIsShow(time, 1 - week.getIsShow());
     }
 
     /**
      * 更改本学期所有周赛为不显示状态
      */
-    public void updateLegalWeek(){
+    public void updateLegalWeek() {
         List<Week> weekList = getLegalAllWeek();
-        for(Week week : weekList){
+        for (Week week : weekList) {
             updateIsShow(week.getTime());
         }
     }
@@ -117,18 +126,62 @@ public class WeekService {
     /**
      * 删除本学期所有积分
      */
-    public void deleteLegalWeek(){
+    public void deleteLegalWeek() {
         weekMapper.deleteLegalWeek();
     }
 
     /**
      * 重跑本学期积分
      */
-    public void reloadScore(){
+    public void reloadScore() {
         List<Week> weekList = getLegalAllWeek();
         deleteLegalWeek();
-        for(Week week:weekList){
+        for (Week week : weekList) {
             addWeek(week);
         }
+    }
+
+    /**
+     * 获取公假名单
+     *
+     * @return
+     */
+    public List<Map<String, String>> getNote(Date time) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(time);
+        int year = calendar.get(Calendar.YEAR);
+        if (calendar.get(Calendar.MONTH) + 1 < 9) {
+            year = year - 1;
+        }
+        calendar.add(Calendar.DATE, -7);
+        Date last = calendar.getTime();
+        String findYear = String.valueOf(year % 100);
+        List<Score> scoreList = scoreService.getScoresByTime(time);
+        double sumScore = scoreService.getSumByTime(time);
+        // 获取周赛参与人数
+        int cntScore = scoreService.getNumByTime(time);
+        double avg = sumScore / cntScore;
+//        System.out.println(avg);
+        List<Map<String, String>> list = new ArrayList<>();
+        for (Score score : scoreList) {
+            String username = score.getUsername();
+            if (username.charAt(4)==findYear.charAt(0)&&username.charAt(5)==findYear.charAt(1)) {
+                int nowNumber = acnumberService.getAllCount(username, time);
+                int lastNumber = acnumberService.getAllCount(username, last);
+                int number = Math.max(0, nowNumber - lastNumber);
+                double nowScore = score.getDailyScore() + number;
+//                System.out.print(username + " " + nowScore + " ");
+                if (nowScore >= avg / 2) {
+                    User user = userService.findUserByUsername(username);
+                    if(user.getIsScore() == 1) {
+                        Map<String, String> map = new HashMap<>();
+                        map.put("username", username);
+                        map.put("name", user.getName());
+                        list.add(map);
+                    }
+                }
+            }
+        }
+        return list;
     }
 }

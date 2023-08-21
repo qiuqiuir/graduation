@@ -150,42 +150,5 @@ public class ScoreController {
         return ResponseService.createBySuccess(scoreList);
     }
 
-    @RequestMapping("/gongjia/{time}")
-    public ResponseService gongjia(@PathVariable ("time")String data) throws ParseException {
-        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
-        Date time = ft.parse(data);
-        Date zhousai = time;
-        List<User> userList = userService.getUsersBySession(22);
-        double avg = weekService.getWeekByTime(time).getAvg()/2.0;
-        int xu = (int) avg;
-        List<Map<String,String>> result = new ArrayList<>();
-        Calendar calendar = Calendar.getInstance();
 
-        calendar.setTime(new Date());
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
-        // 分
-        calendar.set(Calendar.MINUTE, 0);
-        // 秒
-        calendar.set(Calendar.SECOND, 0);
-        // 毫秒
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.add(Calendar.DATE,-1);
-        Date time1 = calendar.getTime();
-        calendar.add(Calendar.WEEK_OF_MONTH,-1);
-        Date time2 = calendar.getTime();
-        for(User user:userList){
-            String username = user.getUsername();
-            double score = scoreService.getDailyScoreByUsernameAndTime(username,zhousai);
-            int num1 = acnumberService.getAllCount(username,time1);
-            int num2=acnumberService.getAllCount(username,time2);
-            score=score+num1-num2;
-            if(score>=xu){
-                Map<String,String> map = new HashMap<>();
-                map.put("username",username);
-                map.put("name",user.getName());
-                result.add(map);
-            }
-        }
-        return ResponseService.createBySuccess(result);
-    }
 }
