@@ -5,7 +5,6 @@ import com.cslg.graduation.entity.Knowledge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -25,7 +24,7 @@ public class KnowledgeService {
     /**
      * 新增一条知识点
      *
-     * @param knowledge
+     * @param knowledge 知识点信息
      */
     public void insertKnowledge(Knowledge knowledge) {
         knowledgeMapper.insertknowledge(knowledge);
@@ -34,9 +33,9 @@ public class KnowledgeService {
     /**
      * 将username的knowledgeName知识点新增count个
      *
-     * @param username
-     * @param knowledgeName
-     * @param count
+     * @param username 学号
+     * @param knowledgeName 知识点
+     * @param count 数量
      */
     public void addKnowledgeCount(String username, String knowledgeName, int count) {
         int number = knowledgeMapper.selectKnowledgeByUsernameAndKnowledgeName(username, knowledgeName);
@@ -54,9 +53,9 @@ public class KnowledgeService {
     /**
      * 修改username的knowledgeName知识点的数量为count
      *
-     * @param username
-     * @param knowledgeName
-     * @param count
+     * @param username 学号
+     * @param knowledgeName 知识点
+     * @param count 数量
      */
     public void updateKnowledgeCount(String username, String knowledgeName, int count) {
         int number = knowledgeMapper.selectKnowledgeByUsernameAndKnowledgeName(username, knowledgeName);
@@ -73,8 +72,8 @@ public class KnowledgeService {
 
     /**
      * 一次性新增username学号，cf对应id的全部知识点
-     * @param username
-     * @param id
+     * @param username 学号
+     * @param id codeforces的昵称
      */
     public void addCodeforcesKnowledge(String username, String id) {
         Map<String, Integer> knowledges = spiderService.getCfSubmission(id);
@@ -85,8 +84,8 @@ public class KnowledgeService {
 
     /**
      * 获取username的所有知识点
-     * @param username
-     * @return
+     * @param username 学号
+     * @return List<Knowledge>
      */
     public List<Knowledge> getAllKnowledgeByUsername(String username){
         return knowledgeMapper.selectKnowledgeByUsername(username);

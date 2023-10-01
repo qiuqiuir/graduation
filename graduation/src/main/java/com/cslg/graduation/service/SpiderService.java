@@ -6,8 +6,6 @@ import com.cslg.graduation.entity.Acnumber;
 import com.cslg.graduation.entity.Oj;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.util.GetUrlJson;
-import com.cslg.graduation.util.GraduationUtil;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -34,10 +32,17 @@ public class SpiderService {
     /**
      * 根据牛客比赛id获取本周周赛情况
      *
-     * @param id
+     * @param id 牛客的昵称
      * @return Map<String, Double> 用户id-积分
      */
     public Map<String, Double> getNowcoderScore(String id) {
+        // 获取牛客平台上所有oj信息
+        List<Oj> nowcoderAllOj = ojService.getOjByPlatform("nowcoder");
+        // 键值对，oj的id——学号
+        Map<String, String> ojLists = new HashMap<>();
+        for (Oj oj : nowcoderAllOj) {
+            ojLists.put(oj.getOjId(), oj.getUsername());
+        }
         String url = "https://ac.nowcoder.com/acm-heavy/acm/contest/real-time-rank-data?token=&id=" + id + "&limit=0&_=1643019279364";
         JSONObject data = null;
         try {
@@ -55,7 +60,12 @@ public class SpiderService {
         int acceptedFirstCount = rankData.getJSONObject(0).getInteger("acceptedCount");
         // 实际过题人数
         int peopleCount = 0;
+
+        // nowcoderData表示键值对,学号————积分,先初始化都是0
         Map<String, Double> nowcoderData = new HashMap<>();
+        for (Map.Entry<String, String> entry : ojLists.entrySet()) {
+            nowcoderData.put(entry.getValue(), 0.0);
+        }
         // 第一次遍历获取实际过题人数
         for (int i = 1; i <= pageCount; i++) {
             String nowUrl = "https://ac.nowcoder.com/acm-heavy/acm/contest/real-time-rank-data?token=&id=" + id + "&page=" + i + "&limit=0&_=1643019279364";
@@ -89,13 +99,20 @@ public class SpiderService {
             // 排行榜数据
             JSONArray nowRank = nowData.getJSONArray("rankData");
             for (int j = 0; j < nowRank.size(); j++) {
-                // 用户通过题数
-                int userAcCount = nowRank.getJSONObject(j).getInteger("acceptedCount");
-                // 用户排名
-                int ranking = nowRank.getJSONObject(j).getInteger("ranking");
-                // 计算积分
-                double score = 100.0 * (userAcCount * 1.0 / acceptedFirstCount) * (2 * peopleCount - 2) / (peopleCount + ranking - 2);
-                nowcoderData.put(nowRank.getJSONObject(j).getString("uid"), score);
+                String uid = nowRank.getJSONObject(j).getString("uid");
+                if (ojLists.containsKey(uid)) {
+                    // 用户通过题数
+                    int userAcCount = nowRank.getJSONObject(j).getInteger("acceptedCount");
+                    // 用户排名
+                    int ranking = nowRank.getJSONObject(j).getInteger("ranking");
+                    // 计算积分
+                    double score = 100.0 * (userAcCount * 1.0 / acceptedFirstCount) * (2 * peopleCount - 2) / (peopleCount + ranking - 2);
+                    // 学号
+                    String username = ojLists.get(uid);
+                    if (score > nowcoderData.get(username)) {
+                        nowcoderData.put(username, score);
+                    }
+                }
             }
         }
         return nowcoderData;
@@ -104,10 +121,17 @@ public class SpiderService {
     /**
      * 根据atcoder比赛id获取该场周赛的积分
      *
-     * @param id
-     * @return Map<String, Double> 用户id-积分
+     * @param id 比赛id
+     * @return 键值对, String 学号,Double 积分
      */
     public Map<String, Double> getAtcoderScore(String id) {
+        // 获取atcoder平台上所有oj信息
+        List<Oj> atcoderAllOj = ojService.getOjByPlatform("atcoder");
+        // 键值对,oj的id——学号
+        Map<String, String> ojLists = new HashMap<>();
+        for (Oj oj : atcoderAllOj) {
+            ojLists.put(oj.getOjId(), oj.getUsername());
+        }
         String url = "https://atcoder.jp/contests/" + id + "/standings/json";
         JSONObject data = null;
         Map<String, String> cookies = new HashMap<>();
@@ -121,14 +145,34 @@ public class SpiderService {
         data = data.getJSONObject("msg");
         JSONArray standingsData = data.getJSONArray("StandingsData");
         int acceptedFirstCount = standingsData.getJSONObject(0).getJSONObject("TotalResult").getInteger("Accepted");
+        // rankData,学号————积分,先初始化都是0
         Map<String, Double> rankData = new HashMap<>();
+        for (Map.Entry<String, String> entry : ojLists.entrySet()) {
+            rankData.put(entry.getValue(), 0.0);
+        }
         int peopleCount = standingsData.size();
         for (int j = 0; j < standingsData.size(); j++) {
-            int userAcCount = standingsData.getJSONObject(j).getJSONObject("TotalResult").getInteger("Accepted");
-            int ranking = standingsData.getJSONObject(j).getInteger("Rank");
-            double score = 100.0 * (userAcCount * 1.0 / acceptedFirstCount) * (2 * peopleCount - 2) / (peopleCount + ranking - 2);
-            rankData.put(standingsData.getJSONObject(j).getString("UserName"), score);
-            rankData.put(standingsData.getJSONObject(j).getString("UserScreenName"), score);
+            String ojId = standingsData.getJSONObject(j).getString("UserName");
+            if (ojLists.containsKey(ojId)) {
+                int userAcCount = standingsData.getJSONObject(j).getJSONObject("TotalResult").getInteger("Accepted");
+                int ranking = standingsData.getJSONObject(j).getInteger("Rank");
+                double score = 100.0 * (userAcCount * 1.0 / acceptedFirstCount) * (2 * peopleCount - 2) / (peopleCount + ranking - 2);
+                String username = ojLists.get(ojId);
+                if (score > rankData.get(username)) {
+                    rankData.put(username, score);
+                }
+            } else {
+                ojId = standingsData.getJSONObject(j).getString("UserScreenName");
+                if (ojLists.containsKey(ojId)) {
+                    int userAcCount = standingsData.getJSONObject(j).getJSONObject("TotalResult").getInteger("Accepted");
+                    int ranking = standingsData.getJSONObject(j).getInteger("Rank");
+                    double score = 100.0 * (userAcCount * 1.0 / acceptedFirstCount) * (2 * peopleCount - 2) / (peopleCount + ranking - 2);
+                    String username = ojLists.get(ojId);
+                    if (score > rankData.get(username)) {
+                        rankData.put(username, score);
+                    }
+                }
+            }
         }
         return rankData;
     }
@@ -136,7 +180,7 @@ public class SpiderService {
     /**
      * 根据用户cf的id统计该用户通过题目的知识点情况
      *
-     * @param id
+     * @param id codeforces的昵称
      * @return Map<String, Integer> 知识点-个数
      */
     public Map<String, Integer> getCfSubmission(String id) {
@@ -181,7 +225,7 @@ public class SpiderService {
     /**
      * 根据用户洛谷的id统计该用户通过题目的知识点情况
      *
-     * @param id
+     * @param id 洛谷的昵称
      */
     public void getLuoguSubmission(String id) {
         int num = 0;
@@ -236,8 +280,8 @@ public class SpiderService {
     /**
      * 根据队员牛客的id统计当前rating和历史最高rating
      *
-     * @param id
-     * @return
+     * @param id 牛客的昵称
+     * @return Map<String, Integer>,"current"表示当前rating,"history"表示最高rating
      */
     public Map<String, Integer> getNowcoderRating(String id) {
         String url = "https://ac.nowcoder.com/acm/contest/rating-history?token=&uid=" + id + "&_=1681560296783";
@@ -266,8 +310,8 @@ public class SpiderService {
     /**
      * 根据队员codeforces的id统计当前rating和历史最高rating
      *
-     * @param id
-     * @return
+     * @param id codeforces的昵称
+     * @return Map<String, Integer>,"current"表示当前rating,"history"表示最高rating
      */
     public Map<String, Integer> getCfRating(String id) {
         String url = "https://codeforces.com/api/user.info?handles=" + id;
@@ -284,18 +328,18 @@ public class SpiderService {
         if (data == null) {
             return map;
         }
-        if(!data.containsKey("msg")) {
+        if (!data.containsKey("msg")) {
             return map;
         }
         data = data.getJSONObject("msg");
-        if(!data.containsKey("result")){
+        if (!data.containsKey("result")) {
             return map;
         }
-        if(data.getJSONArray("result").size()==0){
+        if (data.getJSONArray("result").size() == 0) {
             return map;
         }
         data = data.getJSONArray("result").getJSONObject(0);
-        if(data.containsKey("maxRating")&&data.containsKey("rating")) {
+        if (data.containsKey("maxRating") && data.containsKey("rating")) {
             // 获取历史最高分和当前分数
             Integer maxn = data.getInteger("maxRating");
             Integer now = data.getInteger("rating");
@@ -308,8 +352,8 @@ public class SpiderService {
     /**
      * 根据队员atcoder的id统计当前rating和历史最高rating
      *
-     * @param id
-     * @return
+     * @param id atcoder的昵称
+     * @return Map<String, Integer>,"current"表示当前rating,"history"表示最高rating
      */
     public Map<String, Integer> getAtcoderRating(String id) {
         String url = "https://atcoder.jp/users/" + id + "/history/json";
@@ -358,7 +402,6 @@ public class SpiderService {
         data = data.getJSONObject("msg");
         data = data.getJSONObject("data");
         JSONArray records = data.getJSONArray("records");
-        List<User> userList = userService.getACMer();
         for (int i = 0; i < records.size(); i++) {
             String username = records.getJSONObject(i).getString("username");
             if (userService.findUserByUsername(username) == null) continue;
@@ -408,29 +451,36 @@ public class SpiderService {
             String username = oj.getUsername();
             String id = oj.getOjId();
             System.out.println(username + "   " + platform + "   " + id);
-            if (platform.equals("nowcoder")) {
-                Map<String, Integer> rating = getNowcoderRating(id);
-                if(rating.get("current")!=null) {
-                    ojService.updateNowRating(username, platform, id, rating.get("current"));
+            switch (platform) {
+                case "nowcoder": {
+                    Map<String, Integer> rating = getNowcoderRating(id);
+                    if (rating.get("current") != null) {
+                        ojService.updateNowRating(username, platform, id, rating.get("current"));
+                    }
+                    if (rating.get("history") != null) {
+                        ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                    }
+                    break;
                 }
-                if(rating.get("history")!=null) {
-                    ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                case "codeforces": {
+                    Map<String, Integer> rating = getCfRating(id);
+                    if (rating.get("current") != null) {
+                        ojService.updateNowRating(username, platform, id, rating.get("current"));
+                    }
+                    if (rating.get("history") != null) {
+                        ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                    }
+                    break;
                 }
-            } else if (platform.equals("codeforces")) {
-                Map<String, Integer> rating = getCfRating(id);
-                if(rating.get("current")!=null) {
-                    ojService.updateNowRating(username, platform, id, rating.get("current"));
-                }
-                if(rating.get("history")!=null) {
-                    ojService.updateHistoryRating(username, platform, id, rating.get("history"));
-                }
-            } else if (platform.equals("atcoder")) {
-                Map<String, Integer> rating = getAtcoderRating(id);
-                if(rating.get("current")!=null) {
-                    ojService.updateNowRating(username, platform, id, rating.get("current"));
-                }
-                if(rating.get("history")!=null) {
-                    ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                case "atcoder": {
+                    Map<String, Integer> rating = getAtcoderRating(id);
+                    if (rating.get("current") != null) {
+                        ojService.updateNowRating(username, platform, id, rating.get("current"));
+                    }
+                    if (rating.get("history") != null) {
+                        ojService.updateHistoryRating(username, platform, id, rating.get("history"));
+                    }
+                    break;
                 }
             }
             System.out.println("over");

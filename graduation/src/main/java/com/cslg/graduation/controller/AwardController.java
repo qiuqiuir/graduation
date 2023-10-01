@@ -79,7 +79,7 @@ public class AwardController {
     }
 
     /**
-     * 获取所有获奖记录（用于时间线的j'son）
+     * 获取所有获奖记录（用于时间线的json）
      *
      * @return
      */
@@ -108,6 +108,7 @@ public class AwardController {
             map.put("label", name);
             map.put("timestamp", contest.getTime());
             map.put("level", contest.getLevel());
+            map.put("id", contest.getId());
             List<Map<String, Object>> childrens = new ArrayList<>();
             boolean one = false, two = false, three = false;
             for (Award award : awardList) {
@@ -218,6 +219,16 @@ public class AwardController {
     public ResponseService getCountPersonTimes() {
         int count = awardService.getCountPersonTimes();
         return ResponseService.createBySuccess(count);
+    }
+
+    /**
+     * 获取总获奖人数
+     * @return
+     */
+    @RequestMapping("/getCountPerson")
+    public ResponseService getCountPerson(){
+        int people = awardService.getCountPerson();;
+        return ResponseService.createBySuccess(people);
     }
 
     /**

@@ -52,7 +52,7 @@
     </select>
 
     <select id="selectSumByTime" resultType="double">
-        select sum(daily_score)
+        SELECT IFNULL(sum(daily_score),0.0)
         from score
         where time = #{time} and daily_score > 0
     </select>
@@ -72,6 +72,12 @@
         select <include refid="selectFields"></include>
         from score
         where time = #{time}
+    </select>
+
+    <select id="selectScoresByUsername" resultType="Score">
+        select score.time, score.daily_score, score.rank from score,week
+        where username = #{username} and score.time = week.time and week.is_show = 1
+        ORDER BY time desc
     </select>
 
 

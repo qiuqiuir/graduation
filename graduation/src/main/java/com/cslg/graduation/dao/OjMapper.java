@@ -30,4 +30,5 @@ public interface OjMapper {
     public void updateHistoryRating(String username, String platform, String ojId, int historyRating);
 
     public List<Oj> selectOjByPlatform(String platform);
+
 }

@@ -149,6 +149,14 @@ public class AwardService {
     }
 
     /**
+     * 获得比赛获奖人数
+     * @return
+     */
+    public int getCountPerson(){
+        return awardMapper.selectCountPeople();
+    }
+
+    /**
      * 根据学号username获取该用户所有获奖记录
      *
      * @param username

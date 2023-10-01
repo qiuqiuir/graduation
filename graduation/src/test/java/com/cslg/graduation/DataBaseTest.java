@@ -47,6 +47,9 @@ public class DataBaseTest {
     private OjMapper ojMapper;
 
     @Autowired
+    private OjService ojService;
+
+    @Autowired
     private SpiderService spiderService;
 
     @Autowired
@@ -64,7 +67,7 @@ public class DataBaseTest {
     @Test
     public void testUser() {
 
-        contestMapper.deleteContestById(160);
+        ojService.deleteOjByUsername("093119134");
 
     }
 

@@ -40,8 +40,8 @@ public class UserController {
     /**
      * 登录,传入User,包含用户名username和密码password
      *
-     * @param loginVO
-     * @return
+     * @param loginVO 用户
+     * @return Map<String, String> mp,"token"验证码,"name"姓名,"username"学号,"admin"是否管理员
      */
     @PostMapping(value = "/login")
     public ResponseService login(@RequestBody User loginVO) {
@@ -66,8 +66,8 @@ public class UserController {
     /**
      * 注册,传入User,包含用户名username和密码password和姓名name
      *
-     * @param user
-     * @return
+     * @param user 用户
+     * @return 是否成功
      */
     @PostMapping("/register")
     public ResponseService register(@RequestBody User user) {
@@ -78,8 +78,8 @@ public class UserController {
     /**
      * 通过传入的User里的username信息查找用户
      *
-     * @param user
-     * @return
+     * @param user 用户
+     * @return User
      */
     @PostMapping("/getUser")
     public ResponseService getUserByUsername(@RequestBody User user) {
@@ -91,10 +91,10 @@ public class UserController {
     }
 
     /**
-     * 更新user用户信息
+     * 更新user用户信息，仅管理员
      *
-     * @param user
-     * @return
+     * @param user 用户
+     * @return 是否成功
      */
 
     @PreAuthorize("hasAuthority('user')")
@@ -105,10 +105,10 @@ public class UserController {
     }
 
     /**
-     * 更新user权限
+     * 更新user权限，仅管理员
      *
-     * @param username
-     * @return
+     * @param username 学号
+     * @return 是否成功
      */
     @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/updateUserStatus")
@@ -118,9 +118,10 @@ public class UserController {
     }
 
     /**
-     * 更新user打星
-     * @param username
-     * @return
+     * 更新user打星，仅管理员
+     *
+     * @param username 学号
+     * @return 是否成功
      */
     @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/updateUserIsScore")
@@ -130,6 +131,11 @@ public class UserController {
     }
 
 
+    /**
+     * 获取所有用户，仅管理员
+     *
+     * @return List<User>
+     */
     @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/getAllUser")
     public ResponseService getAllUser() {
@@ -141,19 +147,28 @@ public class UserController {
     }
 
     /**
-     * 获取所有在役队员信息
-     * @return
+     * 获取所有在役队员信息，仅管理员
+     *
+     * @return List<User>
      */
+    @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/getAllUserMessage")
     public ResponseService getAllUserMessage() {
-        List<Map<String, Object>> userList = userService.getAllUserMessage();
+        List<User> userList = userService.getAllUserMessage();
+        for (User user : userList) {
+            user.setPassword("*");
+            user.setIdentityCard("*");
+            user.setPhone("*");
+            user.setEmail("*");
+            user.setClothingSize("*");
+        }
         return ResponseService.createBySuccess(userList);
     }
 
     /**
      * 主页人员信息
      *
-     * @return
+     * @return Map<String, Object>
      */
     @GetMapping("/getPeople")
     public ResponseService getPeople() {
@@ -198,8 +213,8 @@ public class UserController {
     /**
      * 获取第session届所有队员的情况，并计分后降序返回
      *
-     * @param session
-     * @return
+     * @param session 第几届
+     * @return List<Map < String, Object>>
      */
     @GetMapping("/getPeople/{session}")
     public ResponseService getPeopleBySession(@PathVariable("session") int session) {
@@ -240,16 +255,10 @@ public class UserController {
             map.put("score", score);
             result.add(map);
         }
-        Collections.sort(result, new Comparator<Map<String, Object>>() {
-            @Override
-            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                Integer y = (Integer) o2.get("score");
-                if (y == null) {
-                    int df = 5;
-                }
-                Integer x = (Integer) o1.get("score");
-                return y.compareTo(x);
-            }
+        result.sort((o1, o2) -> {
+            Integer y = (Integer) o2.get("score");
+            Integer x = (Integer) o1.get("score");
+            return y.compareTo(x);
         });
         return ResponseService.createBySuccess(result);
     }
@@ -296,16 +305,10 @@ public class UserController {
             map.put("score", score);
             result.add(map);
         }
-        Collections.sort(result, new Comparator<Map<String, Object>>() {
-            @Override
-            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                Integer y = (Integer) o2.get("score");
-                if (y == null) {
-                    int df = 5;
-                }
-                Integer x = (Integer) o1.get("score");
-                return y.compareTo(x);
-            }
+        result.sort((o1, o2) -> {
+            Integer y = (Integer) o2.get("score");
+            Integer x = (Integer) o1.get("score");
+            return y.compareTo(x);
         });
         List<AwardTeam> awardTeams = new ArrayList<>();
         for (int i = 0; i < result.size() / 3 * 3; i += 3) {

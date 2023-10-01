@@ -27,17 +27,14 @@ public class ScoreService {
     private SpiderService spiderService;
 
     @Autowired
-    private OjService ojService;
-
-    @Autowired
     private WeekService weekService;
 
 
     /**
      * 获取username总积分
      *
-     * @param username
-     * @return
+     * @param username 学号
+     * @return 返回总积分
      */
     public double getTotalScoreByUsername(String username) {
         return scoreMapper.findTotalScoreByUsername(username);
@@ -46,7 +43,7 @@ public class ScoreService {
     /**
      * 新增username在某天的分数
      *
-     * @param score
+     * @param score 积分
      */
     public void addScore(Score score) {
         scoreMapper.insertScore(score);
@@ -55,9 +52,9 @@ public class ScoreService {
     /**
      * 更改username某天积分
      *
-     * @param username
-     * @param time
-     * @param dailyScore
+     * @param username   学号
+     * @param time       时间
+     * @param dailyScore 当场周赛的分数
      */
     public void updateScore(String username, Date time, double dailyScore) {
         //计算差值
@@ -83,11 +80,9 @@ public class ScoreService {
     /**
      * 根据周赛信息计算所有队员的积分
      *
-     * @param week
+     * @param week 某场周赛的信息
      */
     public void addWeekScore(Week week) {
-        // 所有计算积分的用户
-        List<User> usernameList = userService.getAllUsers();
         // 爬虫获取本场比赛所有用户的分数
         Map<String, Double> rankData = new HashMap<>();
         if (week.getPlatform().equals("nowcoder")) {
@@ -97,38 +92,49 @@ public class ScoreService {
         }
         System.out.println("本场周赛所有数据计算完毕");
         // 所有用户本周总积分，用于计算排名
-        List<Score> scoreList = new ArrayList<>();
-        for (User user : usernameList) {
-            String username = user.getUsername();
-            // 该用户的积分
-            double scorevalue = 0.0;
-            // 该用户在该平台的所有id
-            List<String> ojIdlist = ojService.getAllOjId(username, week.getPlatform());
-            for (String ojId : ojIdlist) {
-                for (Map.Entry<String, Double> entry : rankData.entrySet()) {
-                    if (entry.getKey().equals(ojId)) {
-                        double nowScore = entry.getValue();
-                        if (nowScore > scorevalue) scorevalue = nowScore;
-                    }
-                }
-            }
-            // 添加积分到list
+        for (Map.Entry<String, Double> entry : rankData.entrySet()) {
+            String username = entry.getKey();
+            Double dailyScore = entry.getValue();
             double totalScore = getTotalScoreByUsername(username);
             Score score = new Score()
                     .setUsername(username)
                     .setTime(week.getTime())
-                    .setDailyScore(scorevalue)
-                    .setTotalScore(scorevalue + totalScore);
+                    .setDailyScore(dailyScore)
+                    .setTotalScore(dailyScore + totalScore);
             addScore(score);
         }
+//        List<Score> scoreList = new ArrayList<>();
+//        for (User user : usernameList) {
+//            String username = user.getUsername();
+//            // 该用户的积分
+//            double scorevalue = 0.0;
+//            // 该用户在该平台的所有id
+//            List<String> ojIdlist = ojService.getAllOjId(username, week.getPlatform());
+//            for (String ojId : ojIdlist) {
+//                for (Map.Entry<String, Double> entry : rankData.entrySet()) {
+//                    if (entry.getKey().equals(ojId)) {
+//                        double nowScore = entry.getValue();
+//                        if (nowScore > scorevalue) scorevalue = nowScore;
+//                    }
+//                }
+//            }
+//            // 添加积分到list
+//            double totalScore = getTotalScoreByUsername(username);
+//            Score score = new Score()
+//                    .setUsername(username)
+//                    .setTime(week.getTime())
+//                    .setDailyScore(scorevalue)
+//                    .setTotalScore(scorevalue + totalScore);
+//            addScore(score);
+//        }
 
     }
 
     /**
      * 返回time时间参加周赛的人数
      *
-     * @param time
-     * @return
+     * @param time 时间
+     * @return 参加该时间周赛的人数
      */
     public int getNumByTime(Date time) {
         return scoreMapper.selectCountByTime(time);
@@ -137,8 +143,8 @@ public class ScoreService {
     /**
      * 返回time时间周赛的总积分
      *
-     * @param time
-     * @return
+     * @param time 时间
+     * @return 该时间周赛的总积分
      */
     public double getSumByTime(Date time) {
         return scoreMapper.selectSumByTime(time);
@@ -147,9 +153,9 @@ public class ScoreService {
     /**
      * 获取学号为username的队员在time的积分
      *
-     * @param username
-     * @param time
-     * @return
+     * @param username 学号
+     * @param time     时间
+     * @return 当场周赛的积分
      */
     public double getDailyScoreByUsernameAndTime(String username, Date time) {
         Score score = getScore(username, time);
@@ -160,9 +166,9 @@ public class ScoreService {
     /**
      * 获取学号为username的队员在time的排名
      *
-     * @param username
-     * @param time
-     * @return
+     * @param username 学号
+     * @param time     时间
+     * @return 当场周赛的排名
      */
     public int getRankByUsernameAndTime(String username, Date time) {
         Score score = getScore(username, time);
@@ -171,9 +177,10 @@ public class ScoreService {
 
     /**
      * 根据学号和时间获取某个人某场周赛情况
-     * @param username
-     * @param time
-     * @return
+     *
+     * @param username 学号
+     * @param time     时间
+     * @return 返回Score
      */
     public Score getScore(String username, Date time) {
         return scoreMapper.selectScoreByUsernameAndTime(username, time);
@@ -181,9 +188,10 @@ public class ScoreService {
 
     /**
      * 更新周赛排名
-     * @param username
-     * @param time
-     * @param rank
+     *
+     * @param username 学号
+     * @param time     时间
+     * @param rank     排名
      */
     public void updateRank(String username, Date time, int rank) {
         scoreMapper.updateRank(username, time, rank);
@@ -191,8 +199,9 @@ public class ScoreService {
 
     /**
      * 获取某个时间所有积分
-     * @param time
-     * @return
+     *
+     * @param time 时间
+     * @return 该场周赛所有积分
      */
     public List<Score> getScoresByTime(Date time) {
         return scoreMapper.selectScoresByTime(time);
@@ -200,11 +209,12 @@ public class ScoreService {
 
     /**
      * 根据时间更新周赛排名
-     * @param time
+     *
+     * @param time 时间
      */
     public void updateWeekRank(Date time) {
         List<Score> scoreList = getScoresByTime(time);
-        Collections.sort(scoreList, new Comparator<Score>() {
+        scoreList.sort(new Comparator<Score>() {
             @Override
             public int compare(Score o1, Score o2) {
                 return Double.compare(o2.getTotalScore(), o1.getTotalScore());
@@ -224,7 +234,24 @@ public class ScoreService {
         }
     }
 
+    /**
+     * 获取时间为time的周赛的最高积分
+     *
+     * @param time 时间
+     * @return 该场周赛最高积分
+     */
+    public Double getMaxDailyScore(Date time) {
+        List<Score> scoreList = getScoresByTime(time);
+        double maxScore = 0;
+        for (Score score : scoreList) {
+            maxScore = Math.max(maxScore, score.getDailyScore());
+        }
+        return maxScore;
+    }
 
+    public List<Score> getScoresByUsername(String username) {
+        return scoreMapper.selectScoresByUsername(username);
+    }
 
 
 }

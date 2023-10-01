@@ -24,7 +24,7 @@ public interface ContestMapper {
     int selectCountContest();
 
     // 根据比赛id删除该比赛
-    int deleteContestById(int id);
+    boolean deleteContestById(int id);
 
 
 }

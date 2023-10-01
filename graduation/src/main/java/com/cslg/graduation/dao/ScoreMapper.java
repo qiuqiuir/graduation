@@ -44,4 +44,6 @@ public interface ScoreMapper {
     public void updateRank(String username,Date time,int rank);
 
     public List<Score> selectScoresByTime(Date time);
+
+    public List<Score> selectScoresByUsername(String username);
 }

@@ -1,14 +1,10 @@
 package com.cslg.graduation.service;
 
-import com.cslg.graduation.common.ResponseCode;
 import com.cslg.graduation.expection.MallException;
 import com.cslg.graduation.dao.UserMapper;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.util.GraduationUtil;
-import com.cslg.graduation.util.RedisKeyUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -24,15 +20,11 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private RedisTemplate redisTemplate;
-
-
     /**
      * 根据学号找人
      *
-     * @param username
-     * @return
+     * @param username 学号
+     * @return User
      */
     public User findUserByUsername(String username) {
         return userMapper.selectByUsername(username);
@@ -41,8 +33,8 @@ public class UserService {
     /**
      * 根据姓名找人
      *
-     * @param name
-     * @return
+     * @param name 姓名
+     * @return User
      */
     public User findUserByName(String name) {
         return userMapper.selectByName(name);
@@ -50,6 +42,8 @@ public class UserService {
 
     /**
      * 返回数据库所有用户
+     *
+     * @return List<User>
      */
     public List<User> getAllUsers() {
         return userMapper.selectAllUsers();
@@ -58,8 +52,8 @@ public class UserService {
     /**
      * 用户登录
      *
-     * @param user
-     * @return
+     * @param user 用户
+     * @return User
      */
     public User login(User user) {
         User u = userMapper.selectByUsername(user.getUsername());
@@ -67,6 +61,7 @@ public class UserService {
             throw new MallException(400, "该学号未注册");
         }
         String password = GraduationUtil.md5(user.getPassword());
+        assert password != null;
         if (!password.equals(u.getPassword())) {
             throw new MallException(400, "密码错误");
         }
@@ -77,8 +72,7 @@ public class UserService {
     /**
      * 用户注册
      *
-     * @param user
-     * @return
+     * @param user 用户
      */
     public void register(User user) {
         User u = userMapper.selectByUsername(user.getUsername());
@@ -88,17 +82,14 @@ public class UserService {
         user.setPassword(GraduationUtil.md5(user.getPassword()));
         user.setStatus(0);
         user.setIsScore(0);
-//        String nowDate = "";
-//        GraduationUtil.DateToString(new Date());
         user.setCreateDate(new Date());
         userMapper.insertUser(user);
-        return;
     }
 
     /**
      * 根据学号更新管理信息
      *
-     * @param username
+     * @param username 学号
      */
     public void updateStatus(String username) {
         int status = userMapper.selectByUsername(username).getStatus();
@@ -111,7 +102,8 @@ public class UserService {
 
     /**
      * 根据学号更新是否集训队队员
-     * @param username
+     *
+     * @param username 学号
      */
     public void updateIsScore(String username) {
         int isScore = userMapper.selectByUsername(username).getIsScore();
@@ -125,18 +117,15 @@ public class UserService {
     /**
      * 获取所有在役用户信息
      *
-     * @return
+     * @return List<User>
      */
-    public List<Map<String, Object>> getAllUserMessage() {
+    public List<User> getAllUserMessage() {
         List<User> userList = getACMer();
-        List<Map<String, Object>> shuju = new ArrayList<>();
+        List<User> shuju = new ArrayList<>();
         int year = GraduationUtil.getNowYear();
         for (User user : userList) {
             if (user.getSession() >= year % 100 - 4) {
-                Map<String, Object> map = new HashMap<>();
-                map.put("username", user.getUsername());
-                map.put("name", user.getName());
-                shuju.add(map);
+                shuju.add(user);
             }
         }
         return shuju;
@@ -145,7 +134,7 @@ public class UserService {
     /**
      * 根据User更新用户
      *
-     * @param user
+     * @param user 用户
      */
     public void updateUser(User user) {
         if (user.getPassword() != null) {
@@ -160,8 +149,8 @@ public class UserService {
     /**
      * 根据第session届获取该届所有用户
      *
-     * @param session
-     * @return
+     * @param session 第几届
+     * @return List<User>
      */
     public List<User> getUsersBySession(int session) {
         return userMapper.selectUsersBySession(session);
@@ -170,8 +159,8 @@ public class UserService {
     /**
      * 获取第session届所有专业
      *
-     * @param session
-     * @return
+     * @param session 第几届
+     * @return List<String>
      */
     public List<String> getMajorsBySession(int session) {
         return userMapper.selectMajorBySession(session);
@@ -180,7 +169,7 @@ public class UserService {
     /**
      * 获取所有集训队队员
      *
-     * @return
+     * @return List<User>
      */
     public List<User> getACMer() {
         return userMapper.selectIsScoreUsers();

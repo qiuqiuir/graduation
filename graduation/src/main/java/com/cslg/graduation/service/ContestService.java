@@ -20,52 +20,58 @@ public class ContestService {
 
     /**
      * 获取所有比赛获奖记录
+     *
      * @return
      */
-    public List<Contest> getAllContest(){
+    public List<Contest> getAllContest() {
         return contestMapper.selectAllContest();
     }
 
     /**
      * 添加一场比赛获奖记录
+     *
      * @param contest
      */
-    public void addContest(Contest contest){
+    public void addContest(Contest contest) {
         contestMapper.insertContest(contest);
     }
 
     /**
      * 根据id获取该比赛单次获奖多少人
+     *
      * @param id
      * @return
      */
-    public int getNumberById(int id){
+    public int getNumberById(int id) {
         return contestMapper.selectNumberById(id);
     }
 
     /**
      * 获取比赛数量
+     *
      * @return
      */
-    public int getCountContest(){
+    public int getCountContest() {
         return contestMapper.selectCountContest();
     }
 
     /**
      * 根据比赛id查找比赛
+     *
      * @param id
      * @return
      */
-    public Contest getContestById(int id){
+    public Contest getContestById(int id) {
         return contestMapper.selectContestById(id);
     }
 
     /**
      * 根据比赛id删除这场比赛
+     *
      * @param id
      */
-    public void deleteContestById(int id){
-        contestMapper.deleteContestById(id);
+    public boolean deleteContestById(int id) {
+        return contestMapper.deleteContestById(id);
     }
 
 

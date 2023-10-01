@@ -93,41 +93,38 @@ class GraduationApplicationTests {
 	}
 	@Test
 	void contextLoads1() {
-		Date date = new Date(2023-1900,2,4);
-		Map<String,Double> rankData = spiderService.getAtcoderScore("abc292");
+//		Date date = new Date(2023-1900,10,4);
+		Map<String,Double> rankData = spiderService.getAtcoderScore("abc321");
 		for (Map.Entry<String, Double> entry : rankData.entrySet()) {
-			if (entry.getKey().equals("cslg092222216")) {
-				double nowScore = entry.getValue();
-				System.out.println(nowScore);
-				scoreService.updateScore("092222216",date,nowScore);
-			}
+			System.out.print(userService.findUserByUsername(entry.getKey()).getUsername()+" ");
+			System.out.println(entry.getKey()+" "+entry.getValue());
 		}
 
 	}
 	@Test
 	void contextLoads2() {
-		Date date = new Date(2023-1900,2,25);
-		Map<String,Double> rankData = spiderService.getAtcoderScore("abc295");
-		for (Map.Entry<String, Double> entry : rankData.entrySet()) {
-			if (entry.getKey().equals("cslg092222216")) {
-				double nowScore = entry.getValue();
-				System.out.println(nowScore);
-				scoreService.updateScore("092222216",date,nowScore);
-			}
-		}
+//		Date date = new Date(2023-1900,2,25);
+//		Map<String,Double> rankData = spiderService.getAtcoderScore("abc295");
+//		for (Map.Entry<String, Double> entry : rankData.entrySet()) {
+//			if (entry.getKey().equals("cslg092222216")) {
+//				double nowScore = entry.getValue();
+//				System.out.println(nowScore);
+//				scoreService.updateScore("092222216",date,nowScore);
+//			}
+//		}
 
 	}
 	@Test
 	void contextLoads3() {
-		Date date = new Date(2023-1900,3,29);
-		Map<String,Double> rankData = spiderService.getAtcoderScore("abc300");
-		for (Map.Entry<String, Double> entry : rankData.entrySet()) {
-			if (entry.getKey().equals("cslg092222216")) {
-				double nowScore = entry.getValue();
-				System.out.println(nowScore);
-				scoreService.updateScore("092222216",date,nowScore);
-			}
-		}
+//		Date date = new Date(2023-1900,3,29);
+//		Map<String,Double> rankData = spiderService.getAtcoderScore("abc300");
+//		for (Map.Entry<String, Double> entry : rankData.entrySet()) {
+//			if (entry.getKey().equals("cslg092222216")) {
+//				double nowScore = entry.getValue();
+//				System.out.println(nowScore);
+//				scoreService.updateScore("092222216",date,nowScore);
+//			}
+//		}
 
 	}
 	@Test

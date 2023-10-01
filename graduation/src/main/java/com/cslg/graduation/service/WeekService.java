@@ -51,7 +51,6 @@ public class WeekService {
     /**
      * 更新一场周赛的总信息：总分、人数、平均分
      *
-     * @param time
      */
     public void updateNumSumAvgByTime(Date time) {
         // 统计周赛总积分
@@ -67,8 +66,8 @@ public class WeekService {
     /**
      * 获取本学期某天之后的所有周赛时间
      *
-     * @param time
-     * @return
+     * @param time 时间
+     * @return List<Week>
      */
     public List<Week> getLegalWeek(Date time) {
         return weekMapper.selectLegalWeek(time);
@@ -77,7 +76,7 @@ public class WeekService {
     /**
      * 获取所有周赛信息
      *
-     * @return
+     * @return List<Week>所有周赛信息
      */
     public List<Week> getAllWeek() {
         return weekMapper.selectAllWeek();
@@ -86,18 +85,18 @@ public class WeekService {
     /**
      * 获取所有本学期周赛时间
      *
-     * @return
+     * @return List<Week>所有本学期周赛信息
      */
     public List<Week> getLegalAllWeek() {
-        return weekMapper.selectLegalWeek(new Date(0, 0, 0));
+        return weekMapper.selectLegalWeek(new Date(0, Calendar.JANUARY, 0));
     }
 
 
     /**
      * 根据time时间获取那场周赛信息
      *
-     * @param time
-     * @return
+     * @param time 时间
+     * @return Week周赛信息
      */
     public Week getWeekByTime(Date time) {
         return weekMapper.selectWeekByTime(time);
@@ -106,7 +105,7 @@ public class WeekService {
     /**
      * 更改时间为time的周赛的是否展示状态
      *
-     * @param time
+     * @param time 时间
      */
     public void updateIsShow(Date time) {
         Week week = getWeekByTime(time);
@@ -144,7 +143,7 @@ public class WeekService {
     /**
      * 获取公假名单
      *
-     * @return
+     * @return List<Map<String, String>>,Map<String, String>包含"username"学号,"name"姓名
      */
     public List<Map<String, String>> getNote(Date time) {
         Calendar calendar = Calendar.getInstance();

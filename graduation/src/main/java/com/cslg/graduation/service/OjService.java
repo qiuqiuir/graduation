@@ -81,7 +81,7 @@ public class OjService {
     }
 
     /**
-     * 根据学号，平台，oj的id，当前分数更新
+     * 根据学号，平台，oj的id，更新当前分数
      *
      * @param username
      * @param platform
@@ -93,7 +93,7 @@ public class OjService {
     }
 
     /**
-     * 根据学号，平台，oj的id，历史最高分更新
+     * 根据学号，平台，oj的id，更新历史最高分
      *
      * @param username
      * @param platform
@@ -105,22 +105,42 @@ public class OjService {
     }
 
     /**
+     * 获取某平台所有oj信息
+     *
+     * @param platform
+     * @return
+     */
+    public List<Oj> selectOjByPlatform(String platform) {
+        return ojMapper.selectOjByPlatform(platform);
+    }
+
+    /**
      * 获取某个平台上所有用户当前rating，按学号升序
      *
      * @param platform
      * @return
      */
     public List<Oj> getOjByPlatform(String platform) {
-        List<Oj> ojList = ojMapper.selectOjByPlatform(platform);
-        Collections.sort(ojList, new Comparator<Oj>() {
-            @Override
-            public int compare(Oj o1, Oj o2) {
-                String a = o1.getUsername();
-                String b = o2.getUsername();
-                return a.compareTo(b);
+        List<Oj> ojList = selectOjByPlatform(platform);
+        Map<String, Integer> maxRating = new HashMap<>();
+        for (Oj oj : ojList) {
+            String username = oj.getUsername();
+            int rating = oj.getNowRating();
+            if (maxRating.containsKey(username)) {
+                if (rating > maxRating.get(username)) {
+                    maxRating.put(username, rating);
+                }
+            } else {
+                maxRating.put(username, rating);
             }
-        });
-        return ojList;
+        }
+        List<Oj> ojRating = new ArrayList<>();
+        for (Oj oj : ojList) {
+            if (oj.getNowRating() == maxRating.get(oj.getUsername())) {
+                ojRating.add(oj);
+            }
+        }
+        return ojRating;
     }
 
     /**
@@ -143,6 +163,11 @@ public class OjService {
         }
     }
 
+    /**
+     * 获取所有学生的所有rating
+     *
+     * @return
+     */
     public List<Rating> getRating() {
         List<Oj> atcoder = getOjByPlatform("atcoder");
         List<Oj> codeforces = getOjByPlatform("codeforces");
@@ -153,14 +178,14 @@ public class OjService {
             int rating = oj.getNowRating();
             if (map.containsKey(username)) {
                 map.get(username).setAtcoder(rating);
-                map.get(username).setAtcoderUrl("https://atcoder.jp/users/"+oj.getOjId());
+                map.get(username).setAtcoderUrl("https://atcoder.jp/users/" + oj.getOjId());
             } else {
                 String name = userService.findUserByUsername(username).getName();
                 Rating now = new Rating()
                         .setUsername(username)
                         .setName(name)
                         .setAtcoder(rating)
-                        .setAtcoderUrl("https://atcoder.jp/users/"+oj.getOjId());
+                        .setAtcoderUrl("https://atcoder.jp/users/" + oj.getOjId());
                 map.put(username, now);
             }
         }
@@ -169,14 +194,14 @@ public class OjService {
             int rating = oj.getNowRating();
             if (map.containsKey(username)) {
                 map.get(username).setNowcoder(rating);
-                map.get(username).setNowcoderUrl("https://ac.nowcoder.com/acm/contest/profile/"+oj.getOjId());
+                map.get(username).setNowcoderUrl("https://ac.nowcoder.com/acm/contest/profile/" + oj.getOjId());
             } else {
                 String name = userService.findUserByUsername(username).getName();
                 Rating now = new Rating()
                         .setUsername(username)
                         .setName(name)
                         .setNowcoder(rating)
-                        .setNowcoderUrl("https://ac.nowcoder.com/acm/contest/profile/"+oj.getOjId());
+                        .setNowcoderUrl("https://ac.nowcoder.com/acm/contest/profile/" + oj.getOjId());
                 map.put(username, now);
             }
         }
@@ -184,19 +209,16 @@ public class OjService {
         for (Oj oj : codeforces) {
             String username = oj.getUsername();
             int rating = oj.getNowRating();
-            if(username.equals("093119134")){
-                int fdf=7;
-            }
             if (map.containsKey(username)) {
                 map.get(username).setCodeforces(rating);
-                map.get(username).setCodeforcesUrl("https://codeforces.com/profile/"+oj.getOjId());
+                map.get(username).setCodeforcesUrl("https://codeforces.com/profile/" + oj.getOjId());
             } else {
                 String name = userService.findUserByUsername(username).getName();
                 Rating now = new Rating()
                         .setUsername(username)
                         .setName(name)
                         .setCodeforces(rating)
-                        .setCodeforcesUrl("https://codeforces.com/profile/"+oj.getOjId());
+                        .setCodeforcesUrl("https://codeforces.com/profile/" + oj.getOjId());
                 map.put(username, now);
             }
         }
@@ -207,6 +229,7 @@ public class OjService {
             ratingList.add(entry.getValue());
         }
 
+        // 按照cf分数降序排序
         Collections.sort(ratingList, new Comparator<Rating>() {
             @Override
             public int compare(Rating o1, Rating o2) {

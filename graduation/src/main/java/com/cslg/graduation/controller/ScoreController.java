@@ -1,11 +1,9 @@
 package com.cslg.graduation.controller;
 
 import com.cslg.graduation.common.ResponseService;
-import com.cslg.graduation.dao.ScoreMapper;
 import com.cslg.graduation.entity.Score;
 import com.cslg.graduation.entity.User;
 import com.cslg.graduation.entity.Week;
-import com.cslg.graduation.service.AcnumberService;
 import com.cslg.graduation.service.ScoreService;
 import com.cslg.graduation.service.UserService;
 import com.cslg.graduation.service.WeekService;
@@ -13,8 +11,6 @@ import com.cslg.graduation.util.GraduationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -32,16 +28,10 @@ public class ScoreController {
     private ScoreService scoreService;
 
     @Autowired
-    private ScoreMapper scoreMapper;
-
-    @Autowired
     private UserService userService;
 
     @Autowired
     private WeekService weekService;
-
-    @Autowired
-    private AcnumberService acnumberService;
 
     @RequestMapping("/getLegalScore")
     @ResponseBody
@@ -49,12 +39,17 @@ public class ScoreController {
         // 返回的所有积分数据
         List<Map<String, Object>> scoreList = new ArrayList<>();
         // 获取所有显示的学号
-        List<User> userList = userService.getAllUsers();
+        List<User> userList = userService.getAllUserMessage();
         // 获取所有周赛时间
         List<Week> allWeek = weekService.getLegalAllWeek();
         List<Date> allTime = new ArrayList<>();
-        for(Week week:allWeek){
+        for (Week week : allWeek) {
             allTime.add(week.getTime());
+        }
+        // 每周最高积分
+        Map<Date, Double> maxScore = new HashMap<>();
+        for (Date time : allTime) {
+            maxScore.put(time, scoreService.getMaxDailyScore(time));
         }
         Collections.reverse(allTime);
         for (User user : userList) {
@@ -65,32 +60,36 @@ public class ScoreController {
             double totalScore = scoreService.getTotalScoreByUsername(username);
             // 每周积分合集
             List<Map<String, Object>> allDailyScore = new ArrayList<>();
-            for (Date time : allTime) {
+            // 参加周赛次数
+            int cnt = 0;
+            // 学号为username的学生参加的所有场次
+            List<Score> scoreListByUsername = scoreService.getScoresByUsername(username);
+            for (Score score : scoreListByUsername) {
+                Double dailyScore = score.getDailyScore();
+                Date time = score.getTime();
                 Map<String, Object> ScoreAll = new HashMap<>();
-                Score score = scoreService.getScore(username,time);
-                if(score == null){
-                    continue;
-                }
-                ScoreAll.put("score", score.getDailyScore());
+                ScoreAll.put("score", dailyScore);
                 ScoreAll.put("rank", score.getRank());
                 ScoreAll.put("time", GraduationUtil.DateToString(time).substring(5));
+                ScoreAll.put("isOne", dailyScore.equals(maxScore.get(time)));
                 allDailyScore.add(ScoreAll);
+                if (dailyScore > 0) {
+                    cnt++;
+                }
             }
             map.put("total", totalScore);
             map.put("name", user.getName());
-            map.put("isAcm",user.getIsScore());
+            map.put("isAcm", user.getIsScore());
             map.put("username", user.getUsername());
             map.put("week", allDailyScore);
+            map.put("attendance", cnt == allTime.size());
             scoreList.add(map);
         }
         // 按照积分总分降序排序
-        Collections.sort(scoreList, new Comparator<Map<String, Object>>() {
-            @Override
-            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                double a = (double) o1.get("total");
-                double b = (double) o2.get("total");
-                return -Double.compare(a, b);
-            }
+        scoreList.sort((o1, o2) -> {
+            double a = (double) o1.get("total");
+            double b = (double) o2.get("total");
+            return -Double.compare(a, b);
         });
         // 排序后计算排名
         for (int i = 0; i < scoreList.size(); i++) {
@@ -109,7 +108,7 @@ public class ScoreController {
         // 获取所有周赛时间
         List<Week> allWeek = weekService.getAllWeek();
         List<Date> allTime = new ArrayList<>();
-        for(Week week:allWeek){
+        for (Week week : allWeek) {
             allTime.add(week.getTime());
         }
         Collections.reverse(allTime);
@@ -120,28 +119,24 @@ public class ScoreController {
             // 积分总分
             double totalScore = 0;
             for (Date time : allTime) {
-                Map<String, Object> ScoreAll = new HashMap<>();
-                Score score = scoreService.getScore(username,time);
-                if(score == null){
+                Score score = scoreService.getScore(username, time);
+                if (score == null) {
                     continue;
                 }
                 totalScore += score.getDailyScore();
-                map.put(GraduationUtil.DateToString(time),score.getDailyScore());
+                map.put(GraduationUtil.DateToString(time), score.getDailyScore());
             }
             map.put("total", totalScore);
             map.put("name", user.getName());
-            map.put("isAcm",user.getIsScore());
+            map.put("isAcm", user.getIsScore());
             map.put("username", user.getUsername());
             scoreList.add(map);
         }
         // 按照积分总分降序排序
-        Collections.sort(scoreList, new Comparator<Map<String, Object>>() {
-            @Override
-            public int compare(Map<String, Object> o1, Map<String, Object> o2) {
-                double a = (double) o1.get("total");
-                double b = (double) o2.get("total");
-                return -Double.compare(a, b);
-            }
+        scoreList.sort((o1, o2) -> {
+            double a = (double) o1.get("total");
+            double b = (double) o2.get("total");
+            return -Double.compare(a, b);
         });
         // 排序后计算排名
         for (int i = 0; i < scoreList.size(); i++) {

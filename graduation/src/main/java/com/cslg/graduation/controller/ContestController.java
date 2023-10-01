@@ -78,6 +78,9 @@ public class ContestController {
     @PostMapping("/addContest")
     public ResponseService addContest(@RequestBody Contest contest){
         contest.setTime(GraduationUtil.changeTime(contest.getTime()));
+        if(contest.getNumber() == 0){
+            contest.setNumber(1);
+        }
         contestService.addContest(contest);
         return ResponseService.createBySuccess();
     }
@@ -90,6 +93,13 @@ public class ContestController {
     public ResponseService getCount(){
         int count = contestService.getCountContest();
         return ResponseService.createBySuccess(count);
+    }
+
+    @PreAuthorize("hasAuthority('admin')")
+    @PostMapping("/deleteContest")
+    public ResponseService deleteContest(@RequestBody Contest contest){
+        boolean is = contestService.deleteContestById(contest.getId());
+        return ResponseService.createBySuccess(is);
     }
 
 //    @RequestMapping("/getTeam")

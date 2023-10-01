@@ -55,7 +55,7 @@
         select count(id) from award
     </select>
 
-    <select id="selectCountRenci" resultType="int">
+    <select id="selectCountPeople" resultType="int">
         select count( DISTINCT username) from award
     </select>
 
@@ -69,6 +69,10 @@
     <select id="selectAllTeacher" resultType="String">
         select DISTINCT(teacher) from award
         where teacher is not null
+    </select>
+
+    <select id="selectCountRenci" resultType="int">
+        select count(*) from award
     </select>
 
 

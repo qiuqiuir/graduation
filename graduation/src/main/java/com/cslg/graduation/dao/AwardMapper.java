@@ -29,6 +29,8 @@ public interface AwardMapper {
 
     int selectCountRenci();
 
+    int selectCountPeople();
+
     List<String> selectAwardsByIdAndNumber(int id, int number, String type);
 
     List<String> selectAllTeacher();
